@@ -1,3 +1,4 @@
+import axios from "axios";
 import { TextInput } from "flowbite-react";
 import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
@@ -16,8 +17,20 @@ export const ConfigLineas = () => {
 
   const [lineas, setLineas] = useState([""]);
 
+  const postLineas = async (lineasGuardar: string[]) => {
+    const response = await axios.post(
+      "http://localhost:3000/api/linea/crearLinea",
+      {
+        nombres: lineasGuardar,
+      },
+    );
+
+    console.log(response);
+  };
+
   const agregarLineas = (newLines: string[]) => {
     setLineas(newLines);
+    postLineas(newLines);
   };
 
   useEffect(() => {
@@ -132,7 +145,6 @@ export const ConfigLineas = () => {
             linea6,
             linea7,
           ]);
-
           navegacion("/configuracionBotones");
         }}
       >

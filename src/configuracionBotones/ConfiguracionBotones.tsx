@@ -57,12 +57,30 @@ export const ConfiguracionBotones = () => {
                 color="yellow"
                 onClick={() => cambiarColor(index, "#FFFF00")}
               ></Button>
-              <Button color="orange"></Button>
-              <Button color="blue"></Button>
-              <Button color="purple"></Button>
-              <Button color="pink"></Button>
-              <Button color="cyan"></Button>
-              <Button color="teal"></Button>
+              <Button
+                color="orange"
+                onClick={() => cambiarColor(index, "#FFA500")}
+              ></Button>
+              <Button
+                color="blue"
+                onClick={() => cambiarColor(index, "#4169E1")}
+              ></Button>
+              <Button
+                color="purple"
+                onClick={() => cambiarColor(index, "#A020F0")}
+              ></Button>
+              <Button
+                color="pink"
+                onClick={() => cambiarColor(index, "#FFB6C1")}
+              ></Button>
+              <Button
+                color="cyan"
+                onClick={() => cambiarColor(index, "#33FFFF")}
+              ></Button>
+              <Button
+                color="teal"
+                onClick={() => cambiarColor(index, "#006D5B")}
+              ></Button>
             </ButtonGroup>
           </div>
         ))}

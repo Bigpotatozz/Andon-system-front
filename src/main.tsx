@@ -7,6 +7,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { Menu } from "./menu/Menu.tsx";
 import { ConfiguracionBotones } from "./configuracionBotones/ConfiguracionBotones.tsx";
+import { ConfigLineas } from "./configLineas/ConfigLineas.tsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/configuracionBotones",
     element: <ConfiguracionBotones></ConfiguracionBotones>,
+  },
+  {
+    path: "/configuracionLineas",
+    element: <ConfigLineas></ConfigLineas>,
   },
 ]);
 

@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, TextInput } from "flowbite-react";
+import { Button, ButtonGroup } from "flowbite-react";
 import { FileInput, Label } from "flowbite-react";
 import { useState } from "react";
 
@@ -44,12 +44,6 @@ export const ConfiguracionBotones = () => {
               Upload file
             </Label>
             <FileInput id="file-upload" />
-
-            <TextInput
-              className=""
-              value={boton.nombre}
-              onChange={(e) => cambiarNombre(index, e.target.value)}
-            ></TextInput>
             <ButtonGroup>
               <Button
                 color="green"

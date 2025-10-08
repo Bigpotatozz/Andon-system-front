@@ -1,53 +1,10 @@
-import axios from "axios";
-import { TextInput, Button, Label } from "flowbite-react";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Button, Label, TextInput } from "flowbite-react";
 
-export const ConfigLineas = () => {
-  const navegacion = useNavigate();
-
-  const [linea1, setLinea1] = useState("");
-  const [linea2, setLinea2] = useState("");
-  const [linea3, setLinea3] = useState("");
-  const [linea4, setLinea4] = useState("");
-  const [linea5, setLinea5] = useState("");
-  const [linea6, setLinea6] = useState("");
-  const [linea7, setLinea7] = useState("");
-
-  const [lineas, setLineas] = useState([""]);
-
-  let idsLineas: number[] = [];
-
-  const postLineas = async (lineasGuardar: string[]) => {
-    const response = await axios.post(
-      "http://localhost:3000/api/linea/crearLinea",
-      {
-        nombres: lineasGuardar,
-      },
-    );
-
-    idsLineas = response.data.idsLineas;
-
-    localStorage.setItem("idsLineas", JSON.stringify(idsLineas));
-    console.log(response);
-  };
-
-  const agregarLineas = (newLines: string[]) => {
-    setLineas(newLines);
-    postLineas(newLines);
-
-    localStorage.setItem("lineas", JSON.stringify(newLines));
-  };
-
-  useEffect(() => {
-    console.log(lineas);
-  }, [lineas]);
-
+export const InputEstate = () => {
   return (
     <>
       <div className="align-center flex flex-col items-center justify-center">
-        <h1>Registra tus lineas de produccion:</h1>
-        <div className="flex w-full">
+        <div className="flex w-full p-10">
           <div className="g-10 w-full p-10">
             <div className="mb-2 block">
               <Label htmlFor="small">Nombre de linea 1:</Label>
@@ -178,11 +135,9 @@ export const ConfigLineas = () => {
           </div>
         </div>
 
-        <Link to={"/configuracionBotones"}>
-          <Button color="green" className="m-5">
-            Registrar lineas
-          </Button>
-        </Link>
+        <Button color="green" className="m-5">
+          Registrar lineas
+        </Button>
       </div>
     </>
   );

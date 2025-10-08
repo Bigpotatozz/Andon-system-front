@@ -6,7 +6,7 @@ export const Menu = () => {
     <>
       <div className="p-10">
         <Link to={"/configuracionLineas"}>
-          <Card href="#" className="p-10">
+          <Card className="p-10">
             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
               Configurar nueva linea
             </h5>

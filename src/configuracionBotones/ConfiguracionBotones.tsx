@@ -1,106 +1,65 @@
+import axios from "axios";
 import { Button, ButtonGroup } from "flowbite-react";
 import { FileInput, Label } from "flowbite-react";
 import { useState } from "react";
+import { InputEstatus } from "./components/InputEstatus";
+import { Estatus } from "../Models/Estatus";
 
 export const ConfiguracionBotones = () => {
-  const [botones, setBotones] = useState([{ color: "#B4E50D", nombre: "" }]);
+  let lineasIds = localStorage.getItem("idsLineas");
+  lineasIds = JSON.parse(lineasIds);
 
-  const agregarColor = () => {
-    if (botones.length >= 10) {
-      alert("Solo se puede un maximo de 10 colores");
-      return;
-    }
-    setBotones([...botones, { color: "#B4E50D", nombre: "" }]);
+  const [estatus, setEstatus] = useState<Estatus[]>([
+    new Estatus("#49FF00", 0, ""),
+    new Estatus("#FBFF00", 0, ""),
+    new Estatus("#FF9300", 0, ""),
+    new Estatus("#FF0000", 0, ""),
+    new Estatus("#0046FF", 0, ""),
+    new Estatus("#7B542F", 0, ""),
+    new Estatus("#3338A0", 0, ""),
+    new Estatus("#2DCDDF", 0, ""),
+    new Estatus("#B6EB7A", 0, ""),
+    new Estatus("#F6ACC8", 0, ""),
+  ]);
+
+  const actualizarPeso = (indice: number, peso: number) => {
+    setEstatus((prev) => {
+      const nuevoArray = [...prev];
+      nuevoArray[indice] = { ...nuevoArray[indice], peso: peso };
+      return nuevoArray;
+    });
   };
 
-  const cambiarColor = (index, nuevoColor) => {
-    const nuevosBotones = [...botones];
-    nuevosBotones[index] = {
-      ...nuevosBotones[index],
-      color: nuevoColor,
-    };
-    setBotones(nuevosBotones);
-
-    console.log(botones);
-  };
-
-  const cambiarNombre = (index, nuevoNombre) => {
-    const nuevosBotones = [...botones];
-    nuevosBotones[index] = { ...nuevosBotones[index], nombre: nuevoNombre };
-    setBotones(nuevosBotones);
+  const actualizarCancion = (indice: number, cancion: string) => {
+    setEstatus((prev) => {
+      const nuevoArregloMusica = [...prev];
+      nuevoArregloMusica[indice] = {
+        ...nuevoArregloMusica[indice],
+        cancion: cancion,
+      };
+      return nuevoArregloMusica;
+    });
   };
 
   return (
     <>
-      <h1>Botones funcionando</h1>
+      <div className="h-full text-center">
+        <div className="flex flex-col p-10">
+          {estatus.map((objeto, index) => (
+            <InputEstatus
+              key={index}
+              estatus={objeto}
+              actualizarPeso={(nuevoPeso) => {
+                actualizarPeso(index, nuevoPeso);
+              }}
+              actualizarMusica={(nuevaCancion) => {
+                actualizarCancion(index, nuevaCancion);
+              }}
+            />
+          ))}
 
-      <div className="flex flex-col items-center">
-        {botones.map((boton, index) => (
-          <div
-            key={index}
-            className="align-center flex place-content-center items-center justify-center gap-2"
-          >
-            <Label className="mb-2 block" htmlFor="file-upload">
-              Upload file
-            </Label>
-            <FileInput id="file-upload" />
-            <ButtonGroup>
-              <Button
-                color="green"
-                onClick={() => cambiarColor(index, "#B4E50D")}
-              ></Button>
-              <Button
-                color="red"
-                onClick={() => cambiarColor(index, "#FF0000")}
-              ></Button>
-              <Button
-                color="yellow"
-                onClick={() => cambiarColor(index, "#FFFF00")}
-              ></Button>
-              <Button
-                color="orange"
-                onClick={() => cambiarColor(index, "#FFA500")}
-              ></Button>
-              <Button
-                color="blue"
-                onClick={() => cambiarColor(index, "#4169E1")}
-              ></Button>
-              <Button
-                color="purple"
-                onClick={() => cambiarColor(index, "#A020F0")}
-              ></Button>
-              <Button
-                color="pink"
-                onClick={() => cambiarColor(index, "#FFB6C1")}
-              ></Button>
-              <Button
-                color="cyan"
-                onClick={() => cambiarColor(index, "#33FFFF")}
-              ></Button>
-              <Button
-                color="teal"
-                onClick={() => cambiarColor(index, "#006D5B")}
-              ></Button>
-            </ButtonGroup>
-          </div>
-        ))}
-
-        <div className="flex gap-4">
-          <Button
-            color="green"
-            onClick={agregarColor}
-            disabled={botones.length >= 10}
-          >
-            Agregar color
-          </Button>
-
-          <Button
-            color="blue"
-            onClick={() => {
-              console.log(botones);
-            }}
-          >
-            Guardar estados
+          <Button color="green" onClick={() => console.log(estatus)}>
+            Confirmar
           </Button>
         </div>
       </div>

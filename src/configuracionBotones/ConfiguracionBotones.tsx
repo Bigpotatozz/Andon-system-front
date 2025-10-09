@@ -41,6 +41,18 @@ export const ConfiguracionBotones = () => {
     });
   };
 
+  const postEstados = async (lineasids: number[], colores: Estatus[]) => {
+    const response = await axios.post(
+      "http://localhost:3000/api/estatus/crearColor",
+      {
+        colores: estatus,
+        lineas: lineasIds,
+      },
+    );
+
+    console.log(response);
+  };
+
   return (
     <>
       <div className="h-full text-center">
@@ -61,7 +73,7 @@ export const ConfiguracionBotones = () => {
             />
           ))}
 
-          <Button color="green" onClick={() => console.log(estatus)}>
+          <Button color="green" onClick={() => postEstados(lineasIds, estatus)}>
             Confirmar
           </Button>
         </div>

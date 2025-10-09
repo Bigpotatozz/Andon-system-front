@@ -44,6 +44,9 @@ export const ConfiguracionBotones = () => {
   return (
     <>
       <div className="h-full text-center">
+        <h1 className="pt-5 text-center text-lg font-bold text-white">
+          Registra tus lineas de produccion:
+        </h1>
         <div className="flex flex-col p-10">
           {estatus.map((objeto, index) => (
             <InputEstatus

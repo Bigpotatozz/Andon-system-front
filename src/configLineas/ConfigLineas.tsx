@@ -1,28 +1,41 @@
 import axios from "axios";
 import { TextInput, Button, Label } from "flowbite-react";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export const ConfigLineas = () => {
   const navegacion = useNavigate();
+  const [lineas, setLineas] = useState(new Array(10).fill(""));
+  const [lineas2, setLineas2] = useState(new Array(10).fill(""));
+  const [lineas3, setLineas3] = useState(new Array(10).fill(""));
 
-  const [linea1, setLinea1] = useState("");
-  const [linea2, setLinea2] = useState("");
-  const [linea3, setLinea3] = useState("");
-  const [linea4, setLinea4] = useState("");
-  const [linea5, setLinea5] = useState("");
-  const [linea6, setLinea6] = useState("");
-  const [linea7, setLinea7] = useState("");
-
-  const [lineas, setLineas] = useState([""]);
+  let lineasGeneral: string[] = [];
 
   let idsLineas: number[] = [];
 
-  const postLineas = async (lineasGuardar: string[]) => {
+  const unirArreglo = (
+    lineas1: string[],
+    lineas2: string[],
+    lineas3: string[],
+  ) => {
+    const lineasLimpias1 = lineas1.filter((e) => e != "");
+    const lineasLimpias2 = lineas2.filter((e) => e != "");
+    const lineasLimpias3 = lineas3.filter((e) => e != "");
+
+    const arregloUnido = [
+      ...lineasLimpias1,
+      ...lineasLimpias2,
+      ...lineasLimpias3,
+    ];
+
+    lineasGeneral = arregloUnido;
+  };
+
+  const postLineas = async (lineasTotales: string[]) => {
     const response = await axios.post(
       "http://localhost:3000/api/linea/crearLinea",
       {
-        nombres: lineasGuardar,
+        nombres: lineasTotales,
       },
     );
 
@@ -32,157 +45,105 @@ export const ConfigLineas = () => {
     console.log(response);
   };
 
-  const agregarLineas = (newLines: string[]) => {
-    setLineas(newLines);
-    postLineas(newLines);
-
-    localStorage.setItem("lineas", JSON.stringify(newLines));
+  const agregarLinea = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    indice: number,
+    setLineaParametro: React.Dispatch<React.SetStateAction<string[]>>,
+    linea: string[],
+  ) => {
+    const lineasModificadas = [...linea];
+    lineasModificadas[indice] = e.target.value;
+    setLineaParametro(lineasModificadas);
   };
-
-  useEffect(() => {
-    console.log(lineas);
-  }, [lineas]);
 
   return (
     <>
       <div className="align-center flex flex-col items-center justify-center">
-        <h1>Registra tus lineas de produccion:</h1>
+        <h1 className="mt-5 text-center text-lg font-bold text-white">
+          Registra tus lineas de produccion:
+        </h1>
         <div className="flex w-full">
           <div className="g-10 w-full p-10">
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 1:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 2:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 3:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 4:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 5:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 6:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 7:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 8:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 9:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 10:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
+            {lineas.map((e, index) => {
+              return (
+                <>
+                  <div className="mb-2 block" key={index}>
+                    <Label htmlFor="small">Nombre de linea {index + 1}:</Label>
+                  </div>
+                  <TextInput
+                    id="small"
+                    type="text"
+                    sizing="sm"
+                    className="w-full"
+                    onChange={(e) => {
+                      agregarLinea(e, index, setLineas, lineas);
+                    }}
+                  />
+                </>
+              );
+            })}
           </div>
-
-          <div className="w-full p-10">
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 11:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 12:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 13:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 14:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 15:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 16:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 17:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 18:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 19</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 20:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
+          <div className="g-10 w-full p-10">
+            {lineas2.map((e, index) => {
+              return (
+                <>
+                  <div className="mb-2 block" key={index}>
+                    <Label htmlFor="small">Nombre de linea {index + 1}:</Label>
+                  </div>
+                  <TextInput
+                    id="small"
+                    type="text"
+                    sizing="sm"
+                    className="w-full"
+                    onChange={(e) => {
+                      agregarLinea(e, index, setLineas2, lineas2);
+                    }}
+                  />
+                </>
+              );
+            })}
           </div>
-
-          <div className="w-full p-10">
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 21:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 22:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 23:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 24:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 25:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 26:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 27:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 28:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 29:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
-            <div className="mb-2 block">
-              <Label htmlFor="small">Nombre de linea 30:</Label>
-            </div>
-            <TextInput id="small" type="text" sizing="sm" />
+          <div className="g-10 w-full p-10">
+            {lineas3.map((e, index) => {
+              return (
+                <>
+                  <div className="mb-2 block" key={index}>
+                    <Label htmlFor="small">Nombre de linea {index + 1}:</Label>
+                  </div>
+                  <TextInput
+                    id="small"
+                    type="text"
+                    sizing="sm"
+                    className="w-full"
+                    onChange={(e) => {
+                      agregarLinea(e, index, setLineas3, lineas3);
+                    }}
+                  />
+                </>
+              );
+            })}
           </div>
         </div>
 
-        <Link to={"/configuracionBotones"}>
-          <Button color="green" className="m-5">
-            Registrar lineas
-          </Button>
-        </Link>
+        <Button
+          color="green"
+          className="m-5"
+          onClick={() => {
+            unirArreglo(lineas, lineas2, lineas3);
+
+            if (lineasGeneral.length <= 0) {
+              alert("Registra al menos una linea");
+              return;
+            }
+
+            setTimeout(() => {
+              postLineas(lineasGeneral);
+            }, 2000);
+            navegacion("/configuracionBotones");
+          }}
+        >
+          Registrar lineas
+        </Button>
       </div>
     </>
   );

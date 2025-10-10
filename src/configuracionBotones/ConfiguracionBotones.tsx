@@ -1,13 +1,14 @@
 import axios from "axios";
-import { Button, ButtonGroup } from "flowbite-react";
-import { FileInput, Label } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { useState } from "react";
 import { InputEstatus } from "./components/InputEstatus";
 import { Estatus } from "../Models/Estatus";
+import { useNavigate } from "react-router";
 
 export const ConfiguracionBotones = () => {
   let lineasIds = localStorage.getItem("idsLineas");
   lineasIds = JSON.parse(lineasIds);
+  const navegacion = useNavigate();
 
   const [estatus, setEstatus] = useState<Estatus[]>([
     new Estatus("#49FF00", 0, ""),
@@ -73,7 +74,13 @@ export const ConfiguracionBotones = () => {
             />
           ))}
 
-          <Button color="green" onClick={() => postEstados(lineasIds, estatus)}>
+          <Button
+            color="green"
+            onClick={() => {
+              navegacion("/");
+              postEstados(lineasIds, estatus);
+            }}
+          >
             Confirmar
           </Button>
         </div>

@@ -20,7 +20,7 @@ export const Menu = () => {
         </div>
 
         <div className="p-5">
-          <Link to={"/configuracionLineas"}>
+          <Link to={"/tableroGeneral"}>
             <Card className="!bg-green-600 p-10">
               <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 Tablero general

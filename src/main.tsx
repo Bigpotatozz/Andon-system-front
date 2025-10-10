@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { ConfiguracionBotones } from "./configuracionBotones/ConfiguracionBotones.tsx";
 import { ConfigLineas } from "./configLineas/ConfigLineas.tsx";
 import { Menu } from "./menu/Menu.tsx";
+import { TableroGeneral } from "./tableroGeneral/TableroGeneral.tsx";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/configuracionLineas",
         element: <ConfigLineas></ConfigLineas>,
+      },
+      {
+        path: "/tableroGeneral",
+        element: <TableroGeneral></TableroGeneral>,
       },
     ],
   },

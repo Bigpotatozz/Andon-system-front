@@ -35,7 +35,7 @@ export const ConfigLineas = () => {
     const response = await axios.post(
       "http://localhost:3000/api/linea/crearLinea",
       {
-        nombres: lineasTotales,
+        idsLineasProduccion: lineasTotales,
       },
     );
 

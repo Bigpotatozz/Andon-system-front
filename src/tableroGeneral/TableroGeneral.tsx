@@ -11,7 +11,7 @@ export const TableroGeneral = () => {
       "http://localhost:3000/api/estatus/obtenerEstatus",
     );
 
-    setEstados(response.data.response[0]);
+    setEstados(response.data.response);
     console.log(response.data);
   };
 
@@ -32,8 +32,8 @@ export const TableroGeneral = () => {
           return (
             <LineaCard
               key={estado.idLineaProduccion}
-              nombre={estado.nombre}
-              estatus={estado.estatusRealTime ?? 0}
+              nombre={estado.idLineaProduccion}
+              estatus={estado.estatusActual ?? 0}
               tiempo={"adadad"}
               color={estado.color}
             />

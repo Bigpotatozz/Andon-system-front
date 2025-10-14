@@ -47,7 +47,7 @@ export const ConfiguracionBotones = () => {
       "http://localhost:3000/api/estatus/crearColor",
       {
         colores: estatus,
-        lineas: lineasIds,
+        idsLineasProduccion: lineasIds,
       },
     );
 

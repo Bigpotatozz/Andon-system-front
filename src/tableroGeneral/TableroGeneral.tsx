@@ -1,10 +1,12 @@
 import axios from "axios";
 import { LineaCard } from "./components/LineaCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { EstatusResponse } from "../Models/EstatusResponse";
 
 export const TableroGeneral = () => {
   const [estados, setEstados] = useState<EstatusResponse[]>([]);
+
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const obtenerEstatus = async () => {
     const response = await axios.get(

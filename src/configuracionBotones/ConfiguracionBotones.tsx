@@ -4,6 +4,7 @@ import { useState } from "react";
 import { InputEstatus } from "./components/InputEstatus";
 import { Estatus } from "../Models/Estatus";
 import { useNavigate } from "react-router";
+import { LineaCard } from "../tableroGeneral/components/LineaCard";
 
 export const ConfiguracionBotones = () => {
   let lineasIds = localStorage.getItem("idsLineas");
@@ -87,24 +88,41 @@ export const ConfiguracionBotones = () => {
     <>
       <div className="h-full text-center">
         <h1 className="pt-5 text-center text-lg font-bold text-white">
-          Registra tus lineas de produccion:
+          Configura tus estatus:
         </h1>
         <div className="flex flex-col p-10">
-          {estatus.map((objeto, index) => (
-            <InputEstatus
-              key={index}
-              estatus={objeto}
-              actualizarPeso={(nuevoPeso) => {
-                actualizarPeso(index, nuevoPeso);
-              }}
-              actualizarCancion={(cancion) => {
-                actualizarCancion(index, cancion);
-              }}
-              actualizarArchivo={(cancion) => {
-                actualizarFileCanciones(index, cancion);
-              }}
-            />
-          ))}
+          <div className="mb-6 flex justify-center gap-10">
+            <div>
+              {estatus.map((objeto, index) => (
+                <InputEstatus
+                  key={index}
+                  estatus={objeto}
+                  actualizarPeso={(nuevoPeso) => {
+                    actualizarPeso(index, nuevoPeso);
+                  }}
+                  actualizarCancion={(cancion) => {
+                    actualizarCancion(index, cancion);
+                  }}
+                  actualizarArchivo={(cancion) => {
+                    actualizarFileCanciones(index, cancion);
+                  }}
+                />
+              ))}
+            </div>
+
+            <div className="flex max-w-2xl flex-wrap">
+              {estatus.slice(1).map((e, index) => {
+                return (
+                  <LineaCard
+                    color={e.color}
+                    estatus={10}
+                    tiempo="00:10:01"
+                    nombre={`P${index}`}
+                  ></LineaCard>
+                );
+              })}
+            </div>
+          </div>
 
           <Button
             color="green"

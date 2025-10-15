@@ -26,7 +26,7 @@ export const InputEstatus = ({
 
   return (
     <>
-      <div className="container m-3.5 flex items-center gap-2">
+      <div className="container mt-6 mb-5 flex items-center gap-2">
         <div className="color">
           <div
             className="h-7 w-10 rounded-lg"

@@ -3,6 +3,6 @@ export class Estatus {
     public color: string,
 
     public peso: number,
-    public cancion: string,
+    public cancion: File | string,
   ) {}
 }

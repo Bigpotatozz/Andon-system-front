@@ -5,20 +5,23 @@ import type { Estatus } from "../../Models/Estatus";
 type InputEstatusProps = {
   estatus: Estatus;
   actualizarPeso: (value: number) => void;
-  actualizarMusica: (value: string) => void;
+  actualizarCancion: (value: string) => void;
+  actualizarArchivo: (value: File) => void;
 };
 
 export const InputEstatus = ({
   estatus,
   actualizarPeso,
-  actualizarMusica,
+  actualizarCancion,
+  actualizarArchivo,
 }: InputEstatusProps) => {
   const cambiarPeso = (e: React.ChangeEvent<HTMLInputElement>) => {
     actualizarPeso(Number(e.target.value));
   };
 
   const cambiarMusica = (e: React.ChangeEvent<HTMLInputElement>) => {
-    actualizarMusica(e.target.value);
+    actualizarCancion(e.target.files ? e.target.files[0].name : "No file");
+    actualizarArchivo(e.target.files ? e.target.files[0] : null);
   };
 
   return (
@@ -43,7 +46,12 @@ export const InputEstatus = ({
           />
         </div>
         <div className="cancion flex items-center">
-          <FileInput id="file-upload" />
+          <FileInput
+            id="file-upload"
+            onChange={(e) => {
+              cambiarMusica(e);
+            }}
+          />
         </div>
       </div>
     </>

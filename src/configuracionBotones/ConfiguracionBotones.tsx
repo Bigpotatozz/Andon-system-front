@@ -10,6 +10,8 @@ export const ConfiguracionBotones = () => {
   lineasIds = JSON.parse(lineasIds);
   const navegacion = useNavigate();
 
+  const [canciones, setCanciones] = useState<File[]>([]);
+
   const [estatus, setEstatus] = useState<Estatus[]>([
     new Estatus("#49FF00", 0, ""),
     new Estatus("#FBFF00", 0, ""),
@@ -31,7 +33,7 @@ export const ConfiguracionBotones = () => {
     });
   };
 
-  const actualizarCancion = (indice: number, cancion: string) => {
+  const actualizarCancion = (indice: number, cancion: File) => {
     setEstatus((prev) => {
       const nuevoArregloMusica = [...prev];
       nuevoArregloMusica[indice] = {
@@ -42,12 +44,39 @@ export const ConfiguracionBotones = () => {
     });
   };
 
-  const postEstados = async (lineasids: number[], colores: Estatus[]) => {
+  const actualizarFileCanciones = (indice, cancion: File) => {
+    setCanciones((prev) => {
+      const nuevasCanciones = [...prev];
+      nuevasCanciones[indice] = cancion;
+      return nuevasCanciones;
+    });
+  };
+
+  const postEstados = async (
+    lineasids: number[],
+    colores: Estatus[],
+    canciones: File[],
+  ) => {
+    const reqBody = {
+      colores: colores,
+      idsLineasProduccion: lineasIds,
+    };
+
+    const formData = new FormData();
+
+    formData.append("data", JSON.stringify(reqBody));
+
+    canciones.forEach((cancion, index) => {
+      formData.append(`cancion${index}`, cancion);
+    });
+
     const response = await axios.post(
       "http://localhost:3000/api/estatus/crearColor",
+      formData,
       {
-        colores: estatus,
-        idsLineasProduccion: lineasIds,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
     );
 
@@ -68,8 +97,11 @@ export const ConfiguracionBotones = () => {
               actualizarPeso={(nuevoPeso) => {
                 actualizarPeso(index, nuevoPeso);
               }}
-              actualizarMusica={(nuevaCancion) => {
-                actualizarCancion(index, nuevaCancion);
+              actualizarCancion={(cancion) => {
+                actualizarCancion(index, cancion);
+              }}
+              actualizarArchivo={(cancion) => {
+                actualizarFileCanciones(index, cancion);
               }}
             />
           ))}
@@ -77,8 +109,8 @@ export const ConfiguracionBotones = () => {
           <Button
             color="green"
             onClick={() => {
-              navegacion("/");
-              postEstados(lineasIds, estatus);
+              postEstados(lineasIds, estatus, canciones);
+              navegacion("/tableroGeneral");
             }}
           >
             Confirmar

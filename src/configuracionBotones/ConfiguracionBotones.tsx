@@ -25,6 +25,11 @@ export const ConfiguracionBotones = () => {
     new Estatus("#B6EB7A", 0, ""),
     new Estatus("#F6ACC8", 0, ""),
   ]);
+  let estatusLimpios: Estatus[] = [];
+
+  const limpiarEstatus = () => {
+    estatusLimpios = estatus.filter((estatus) => estatus.peso != 0);
+  };
 
   const actualizarPeso = (indice: number, peso: number) => {
     setEstatus((prev) => {
@@ -127,7 +132,9 @@ export const ConfiguracionBotones = () => {
           <Button
             color="green"
             onClick={() => {
-              postEstados(lineasIds, estatus, canciones);
+              limpiarEstatus();
+
+              postEstados(lineasIds, estatusLimpios, canciones);
               navegacion("/tableroGeneral");
             }}
           >

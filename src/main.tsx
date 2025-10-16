@@ -9,6 +9,7 @@ import { ConfiguracionBotones } from "./configuracionBotones/ConfiguracionBotone
 import { ConfigLineas } from "./configLineas/ConfigLineas.tsx";
 import { Menu } from "./menu/Menu.tsx";
 import { TableroGeneral } from "./tableroGeneral/TableroGeneral.tsx";
+import { TableroIndividual } from "./tableroIndividual/TableroIndividual.tsx";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/tableroGeneral",
         element: <TableroGeneral></TableroGeneral>,
+      },
+      {
+        path: "/tableroLinea/:idLinea",
+        element: <TableroIndividual></TableroIndividual>,
       },
     ],
   },

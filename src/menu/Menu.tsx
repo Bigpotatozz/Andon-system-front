@@ -1,7 +1,13 @@
 import { Card } from "flowbite-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export const Menu = () => {
+  const navegacion = useNavigate();
+
+  const onClickLinea = (idLinea: string) => {
+    navegacion(`/tableroLinea/${idLinea}`);
+  };
+
   return (
     <>
       <div className="general flex min-h-screen flex-col items-center justify-center p-6">
@@ -53,19 +59,28 @@ export const Menu = () => {
           </div>
 
           <div className="flex">
-            <Link to={"/configuracionLineas"} className="w-full">
-              <Card className="flex h-full flex-col justify-between !bg-violet-500 p-10">
-                <div>
-                  <h5 className="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    Tablero de linea
-                  </h5>
-                  <p className="font-normal text-white">
-                    Visualiza con metricas el estado una linea de produccion en
-                    especifico
-                  </p>
-                </div>
-              </Card>
-            </Link>
+            <Card
+              className="flex h-full flex-col justify-between !bg-violet-500 p-10"
+              onClick={() => {
+                const idLinea = prompt("ID DE LA LINEA:");
+
+                if (idLinea == "" || idLinea == null) {
+                  alert("Debes introducir un ID");
+                  return;
+                }
+                onClickLinea(idLinea);
+              }}
+            >
+              <div>
+                <h5 className="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  Tablero de linea
+                </h5>
+                <p className="font-normal text-white">
+                  Visualiza con metricas el estado una linea de produccion en
+                  especifico
+                </p>
+              </div>
+            </Card>
           </div>
         </div>
       </div>

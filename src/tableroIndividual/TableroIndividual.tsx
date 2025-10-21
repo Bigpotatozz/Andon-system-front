@@ -2,12 +2,31 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { LineaProduccion } from "../Models/LineaProduccion";
+import { TiemposLineaProduccion } from "@/Models/TiemposLineaProduccion";
 
 export const TableroIndividual = () => {
   const navegacion = useNavigate();
   const [linea, setLinea] = useState<LineaProduccion>(
     new LineaProduccion("NE", "NE", 0, 0, 0, 0, 0, "NE", "NE"),
   );
+
+  const [tiempos, setTiempos] = useState<TiemposLineaProduccion[]>([
+    new TiemposLineaProduccion(
+      "NE",
+      "NE",
+      0,
+      0,
+      0,
+      0,
+      0,
+      "NE",
+      "NE",
+      "NE",
+      "NE",
+      "NE",
+      0,
+    ),
+  ]);
   const { idLinea } = useParams();
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -18,6 +37,7 @@ export const TableroIndividual = () => {
       `http://localhost:3000/api/estatus/obtenerEstatusEspecifico/${idLinea}`,
     );
     setLinea(response.data.response[0]);
+    setTiempos(response.data.response2);
     console.log(response.data);
   };
 
@@ -125,21 +145,34 @@ export const TableroIndividual = () => {
                     Estatus
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    Tiempo
+                    Fecha de inicio
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Fecha final
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Tiempo total (segundos)
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium whitespace-nowrap text-gray-900 dark:text-white"
-                  >
-                    {linea.idLineaProduccion}
-                  </th>
-
-                  <td className="px-6 py-4">$2999</td>
-                </tr>
+                {tiempos.map((linea) => {
+                  return (
+                    <>
+                      <tr className="border-b border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                        <td
+                          scope="row"
+                          className="px-6 py-4 font-medium whitespace-nowrap text-gray-900 dark:text-white"
+                        >
+                          {linea.color}
+                        </td>
+                        <td className="px-6 py-4">{linea.inicio}</td>
+                        <td className="px-6 py-4">{linea.final}</td>
+                        <td className="px-6 py-4">{linea.total} segundos</td>
+                      </tr>
+                    </>
+                  );
+                })}
               </tbody>
             </table>
           </div>

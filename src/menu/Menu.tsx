@@ -60,7 +60,7 @@ export const Menu = () => {
 
           <div className="flex">
             <Card
-              className="flex h-full flex-col justify-between !bg-violet-500 p-10"
+              className="flex h-full cursor-pointer flex-col justify-between !bg-violet-500 p-10"
               onClick={() => {
                 const idLinea = prompt("ID DE LA LINEA:");
 

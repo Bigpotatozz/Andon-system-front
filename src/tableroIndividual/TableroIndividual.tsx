@@ -73,7 +73,7 @@ export const TableroIndividual = () => {
 
   return (
     <>
-      <div className="generalContainer border-black text-center">
+      <div className="generalContainer items-center border-black text-center">
         <h1 className="p-3">
           <strong className="text-white">
             Estado de la linea de produccion

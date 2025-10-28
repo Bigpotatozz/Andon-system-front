@@ -5,22 +5,26 @@ import { useNavigate } from "react-router";
 
 export const ConfigLineas = () => {
   const navegacion = useNavigate();
-  const [lineas, setLineas] = useState(new Array(10).fill(""));
-  const [lineas2, setLineas2] = useState(new Array(10).fill(""));
-  const [lineas3, setLineas3] = useState(new Array(10).fill(""));
+  //Se declaran los arreglos de las 3 columnas
+  const [lineas, setLineas] = useState(new Array(10).fill(0));
+  const [lineas2, setLineas2] = useState(new Array(10).fill(0));
+  const [lineas3, setLineas3] = useState(new Array(10).fill(0));
 
-  let lineasGeneral: string[] = [];
+  //Se declara un arreglo que agrupa las 3 columnas
+  let lineasGeneral: number[] = [];
 
+  //Se declara un arreglo que guarda los ids de las lineas previamente insertadas
   let idsLineas: number[] = [];
 
+  //Funcion que une todos los arreglos en el lineasGeneral y limpia los que esten vacios
   const unirArreglo = (
-    lineas1: string[],
-    lineas2: string[],
-    lineas3: string[],
+    lineas1: number[],
+    lineas2: number[],
+    lineas3: number[],
   ) => {
-    const lineasLimpias1 = lineas1.filter((e) => e != "");
-    const lineasLimpias2 = lineas2.filter((e) => e != "");
-    const lineasLimpias3 = lineas3.filter((e) => e != "");
+    const lineasLimpias1 = lineas1.filter((e) => e != 0);
+    const lineasLimpias2 = lineas2.filter((e) => e != 0);
+    const lineasLimpias3 = lineas3.filter((e) => e != 0);
 
     const arregloUnido = [
       ...lineasLimpias1,
@@ -31,7 +35,9 @@ export const ConfigLineas = () => {
     lineasGeneral = arregloUnido;
   };
 
-  const postLineas = async (lineasTotales: string[]) => {
+  //Funcion que envia la peticion HTTP al servidor
+  //Recibe como parametro el arreglo
+  const postLineas = async (lineasTotales: number[]) => {
     const response = await axios.post(
       "http://localhost:3000/api/linea/crearLinea",
       {
@@ -48,11 +54,11 @@ export const ConfigLineas = () => {
   const agregarLinea = (
     e: React.ChangeEvent<HTMLInputElement>,
     indice: number,
-    setLineaParametro: React.Dispatch<React.SetStateAction<string[]>>,
-    linea: string[],
+    setLineaParametro: React.Dispatch<React.SetStateAction<number[]>>,
+    linea: number[],
   ) => {
     const lineasModificadas = [...linea];
-    lineasModificadas[indice] = e.target.value;
+    lineasModificadas[indice] = parseInt(e.target.value);
     setLineaParametro(lineasModificadas);
   };
 

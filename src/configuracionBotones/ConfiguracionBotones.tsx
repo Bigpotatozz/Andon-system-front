@@ -7,12 +7,15 @@ import { useNavigate } from "react-router";
 import { LineaCard } from "../tableroGeneral/components/LineaCard";
 
 export const ConfiguracionBotones = () => {
+  //Accede al arreglo de ids previamente guardados en el localStorage
   let lineasIds = localStorage.getItem("idsLineas");
+  //Las parsea para poder usarlas
   lineasIds = JSON.parse(lineasIds);
+  //Estado de navegacion
   const navegacion = useNavigate();
-
+  //Declara un arreglo Files que es donde iran las canciones (hook)
   const [canciones, setCanciones] = useState<File[]>([]);
-
+  //Declara un arreglo de estatus y los inicializa (hook)
   const [estatus, setEstatus] = useState<Estatus[]>([
     new Estatus("#49FF00", 1000, 0, ""),
     new Estatus("#FBFF00", 1001, 0, ""),
@@ -25,12 +28,15 @@ export const ConfiguracionBotones = () => {
     new Estatus("#B6EB7A", 1008, 0, ""),
     new Estatus("#F6ACC8", 1009, 0, ""),
   ]);
+  //Declara un arreglo de estatus donde se guardaran los que se van a enviar a la api
   let estatusLimpios: Estatus[] = [];
 
+  //Funcion que limpia el arreglo estatus para pasarlo a estatusLimpios
   const limpiarEstatus = () => {
     estatusLimpios = estatus.filter((estatus) => estatus.peso != 0);
   };
 
+  //Funcion que se encarga de actualizar el peso de cada uno de los estatus
   const actualizarPeso = (indice: number, peso: number) => {
     setEstatus((prev) => {
       const nuevoArray = [...prev];
@@ -39,6 +45,7 @@ export const ConfiguracionBotones = () => {
     });
   };
 
+  //Funcion que actualiza la cancion del estatus
   const actualizarCancion = (indice: number, cancion: File) => {
     setEstatus((prev) => {
       const nuevoArregloMusica = [...prev];
@@ -50,6 +57,7 @@ export const ConfiguracionBotones = () => {
     });
   };
 
+  //Funcion que actualiza los archivos de las canciones del estatus
   const actualizarFileCanciones = (indice, cancion: File) => {
     setCanciones((prev) => {
       const nuevasCanciones = [...prev];
@@ -58,24 +66,30 @@ export const ConfiguracionBotones = () => {
     });
   };
 
+  //Funcion para mandar los estatus a la api
   const postEstados = async (
     lineasids: number[],
     colores: Estatus[],
     canciones: File[],
   ) => {
+    //Define el cuerpo de la peticion
     const reqBody = {
       colores: colores,
       idsLineasProduccion: lineasIds,
     };
 
+    //Crea un nuevo formData para meter los datos a registrar
     const formData = new FormData();
 
+    //Le agrega el body al formData
     formData.append("data", JSON.stringify(reqBody));
 
+    //Recorre cada parte del arreglo de canciones y lo va a gregando al formData
     canciones.forEach((cancion, index) => {
       formData.append(`cancion${index}`, cancion);
     });
 
+    //Realiza la peticion HTTP
     const response = await axios.post(
       "http://localhost:3000/api/estatus/crearColor",
       formData,
@@ -89,6 +103,10 @@ export const ConfiguracionBotones = () => {
     console.log(response);
   };
 
+  //Frontend
+
+  //En el html se instancia otro componente donde se le pasa como prop la funcion de actualizacion
+  //esto para que al hijo pueda modificar datos del padre
   return (
     <>
       <div className="h-full text-center">

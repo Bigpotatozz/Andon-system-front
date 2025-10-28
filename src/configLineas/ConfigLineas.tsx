@@ -38,28 +38,32 @@ export const ConfigLineas = () => {
   //Funcion que envia la peticion HTTP al servidor
   //Recibe como parametro el arreglo
   const postLineas = async (lineasTotales: number[]) => {
+    //Realiza la peticion HTTP
     const response = await axios.post(
       "http://localhost:3000/api/linea/crearLinea",
       {
         idsLineasProduccion: lineasTotales,
       },
     );
-
+    //La respuesta ([1,2,4,5,6]) que son los ids de las lineas
+    //recien insertadas la guarda en el arreglo previamente realizado
     idsLineas = response.data.idsLineas;
 
+    //Guarda el arreglo en el localStorage para poder ser usado despues
     localStorage.setItem("idsLineas", JSON.stringify(idsLineas));
     console.log(response);
   };
 
+  //Funcion que agrega todas las lineas a un solo arreglo
   const agregarLinea = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    indice: number,
-    setLineaParametro: React.Dispatch<React.SetStateAction<number[]>>,
-    linea: number[],
+    e: React.ChangeEvent<HTMLInputElement>, //Elemento HTML con el id de la linea nueva
+    indice: number, //Indice de la linea
+    setLineaParametro: React.Dispatch<React.SetStateAction<number[]>>, //Setter del estado de las lineas generales
+    linea: number[], //Arreglo de lineas general
   ) => {
-    const lineasModificadas = [...linea];
-    lineasModificadas[indice] = parseInt(e.target.value);
-    setLineaParametro(lineasModificadas);
+    const lineasModificadas = [...linea]; //Declara un nuevo arreglo y le hace una copia
+    lineasModificadas[indice] = parseInt(e.target.value); //Parsea el elemento a un entero
+    setLineaParametro(lineasModificadas); //Setea el nuevo arreglo
   };
 
   return (
@@ -135,16 +139,23 @@ export const ConfigLineas = () => {
           color="green"
           className="m-5"
           onClick={() => {
+            //Une el arreglo en uno nuevo
             unirArreglo(lineas, lineas2, lineas3);
 
+            //Valida que el arreglo contenga al menos una linea
             if (lineasGeneral.length <= 0) {
+              //Alerta en caso de que no
               alert("Registra al menos una linea");
               return;
             }
 
+            //Agrega un timeOut para esperar a que las lineas se recompongan
+            //Esto evita que las lineas las de en nullas debido al flujo en el que trabaja js
             setTimeout(() => {
+              //Manda la peticion
               postLineas(lineasGeneral);
             }, 2000);
+            //Te redirige a la siguiente seccion
             navegacion("/configuracionBotones");
           }}
         >

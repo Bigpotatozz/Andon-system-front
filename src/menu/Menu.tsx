@@ -1,13 +1,17 @@
 import { Card } from "flowbite-react";
 import { Link, useNavigate } from "react-router";
 
+//Component que almacena el menu principal, este es el endpoint de la aplicacion.
 export const Menu = () => {
+  //state para navegar entre las diferentes
   const navegacion = useNavigate();
 
+  //Funcion que ejecuta el navigate para redirigirse a otra pagina
   const onClickLinea = (idLinea: string) => {
     navegacion(`/tableroLinea/${idLinea}`);
   };
 
+  //Frontend
   return (
     <>
       <div className="general flex min-h-screen flex-col items-center justify-center p-6">
@@ -61,13 +65,17 @@ export const Menu = () => {
           <div className="flex">
             <Card
               className="flex h-full cursor-pointer flex-col justify-between !bg-violet-500 p-10"
+              //Al hacer click despliega un modal del navegador donde te pide el id de la linea de produccion
+              //Que quieres visualizar
               onClick={() => {
                 const idLinea = prompt("ID DE LA LINEA:");
 
+                //Validacion isNotEmpty
                 if (idLinea == "" || idLinea == null) {
                   alert("Debes introducir un ID");
                   return;
                 }
+                //Invocacion de la funcion
                 onClickLinea(idLinea);
               }}
             >

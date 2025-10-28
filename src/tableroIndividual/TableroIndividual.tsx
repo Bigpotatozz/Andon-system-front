@@ -4,12 +4,17 @@ import { useNavigate, useParams } from "react-router";
 import { LineaProduccion } from "../Models/LineaProduccion";
 import { TiemposLineaProduccion } from "@/Models/TiemposLineaProduccion";
 
+//En este componente se puede ver el estado de la linea de produccion (individual)
+
 export const TableroIndividual = () => {
+  //hook de navegacion
   const navegacion = useNavigate();
+  //Inicializacion de los datos que es obtendran de la api
   const [linea, setLinea] = useState<LineaProduccion>(
     new LineaProduccion("NE", "NE", 0, 0, 0, 0, 0, "NE", "NE"),
   );
 
+  //Inicializacion de los tiempos que se obtendran de la api
   const [tiempos, setTiempos] = useState<TiemposLineaProduccion[]>([
     new TiemposLineaProduccion(
       "NE",
@@ -27,11 +32,15 @@ export const TableroIndividual = () => {
       0,
     ),
   ]);
+  //Accede al id indicado por la URL
   const { idLinea } = useParams();
 
+  //Inicializacion de elemento de audio
   const audioRef = useRef<HTMLAudioElement>(null);
+  //Inicializacion de estado de audio
   const [reproducirAudio, setReproducirAudio] = useState(false);
 
+  //Funcion que hace la peticion http para obtener la informacion de la linea de produccion
   const obtenerEstatusLinea = async (idLinea: string | undefined) => {
     const response = await axios.get(
       `http://localhost:3000/api/estatus/obtenerEstatusEspecifico/${idLinea}`,
@@ -41,6 +50,8 @@ export const TableroIndividual = () => {
     console.log(response.data);
   };
 
+  //Hook que al iniciar la pantalla obtiene automaticamente la informacion de la linea
+  //Hace la peticion
   useEffect(() => {
     if (!reproducirAudio) return;
 
@@ -54,6 +65,7 @@ export const TableroIndividual = () => {
     return () => clearInterval(loop);
   }, [reproducirAudio, idLinea]);
 
+  //Hook que controla la reproduccion de audio
   useEffect(() => {
     if (!reproducirAudio || !linea?.cancion) return;
 

@@ -1,12 +1,15 @@
 import { useEffect } from "react";
 
+//Componente que representa cada uno de los estatus en el tablero general
+
+//Props de la card
 type LineaCardProps = {
   nombre: string;
   estatus: number;
   tiempo: string;
   color: string;
 };
-
+//Componente
 export const LineaCard = ({
   nombre,
   estatus,

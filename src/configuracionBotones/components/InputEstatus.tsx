@@ -2,6 +2,7 @@ import { TextInput, FileInput, Label } from "flowbite-react";
 import React from "react";
 import type { Estatus } from "../../Models/Estatus";
 
+//Props del componente
 type InputEstatusProps = {
   estatus: Estatus;
   actualizarPeso: (value: number) => void;
@@ -9,16 +10,19 @@ type InputEstatusProps = {
   actualizarArchivo: (value: File) => void;
 };
 
+//Este componente lleva una serie de props que son setters para poder modificar datos del padre
 export const InputEstatus = ({
   estatus,
   actualizarPeso,
   actualizarCancion,
   actualizarArchivo,
 }: InputEstatusProps) => {
+  //Funcion que actualiza el peso del estatus padre
   const cambiarPeso = (e: React.ChangeEvent<HTMLInputElement>) => {
     actualizarPeso(Number(e.target.value));
   };
 
+  //Funcion que actualiza el file de musica del estatus - padre
   const cambiarMusica = (e: React.ChangeEvent<HTMLInputElement>) => {
     actualizarCancion(e.target.files ? e.target.files[0].name : "No file");
     actualizarArchivo(e.target.files ? e.target.files[0] : null);
@@ -41,6 +45,7 @@ export const InputEstatus = ({
             placeholder="Importancia"
             className="h-full"
             onChange={(e) => {
+              //Inovacion de funcion que actualiza el peso del estatus - padre
               cambiarPeso(e);
             }}
           />
@@ -49,6 +54,7 @@ export const InputEstatus = ({
           <FileInput
             id="file-upload"
             onChange={(e) => {
+              //Invocacion de funcion que actualiza el archivo de musica del estatus - padre
               cambiarMusica(e);
             }}
           />

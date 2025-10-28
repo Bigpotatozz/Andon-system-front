@@ -5,11 +5,13 @@ import type { EstatusResponse } from "../Models/EstatusResponse";
 import { Button } from "flowbite-react";
 import { Link } from "react-router";
 
+//En el tablero general puedes ver la informacion general de todas las lineas de produccion
+
 export const TableroGeneral = () => {
+  //Inicializacion de los estados que se recibiran de la API
   const [estados, setEstados] = useState<EstatusResponse[]>([]);
 
-  const audioRef = useRef<HTMLAudioElement>(null);
-
+  //Funcion que hace peticion a la api y guarda la respuesta en el state estados
   const obtenerEstatus = async () => {
     const response = await axios.get(
       "http://localhost:3000/api/estatus/obtenerEstatus",
@@ -19,6 +21,7 @@ export const TableroGeneral = () => {
     console.log(response.data);
   };
 
+  //Hook que al cargar la pagina hace automaticamente la peticion a la api con la funcion obtenerEstatus
   useEffect(() => {
     obtenerEstatus();
     const loop = setInterval(() => {

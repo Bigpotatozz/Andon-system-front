@@ -14,16 +14,16 @@ export const ConfiguracionBotones = () => {
   const [canciones, setCanciones] = useState<File[]>([]);
 
   const [estatus, setEstatus] = useState<Estatus[]>([
-    new Estatus("#49FF00", 0, ""),
-    new Estatus("#FBFF00", 0, ""),
-    new Estatus("#FF9300", 0, ""),
-    new Estatus("#FF0000", 0, ""),
-    new Estatus("#0046FF", 0, ""),
-    new Estatus("#7B542F", 0, ""),
-    new Estatus("#3338A0", 0, ""),
-    new Estatus("#2DCDDF", 0, ""),
-    new Estatus("#B6EB7A", 0, ""),
-    new Estatus("#F6ACC8", 0, ""),
+    new Estatus("#49FF00", 1000, 0, ""),
+    new Estatus("#FBFF00", 1001, 0, ""),
+    new Estatus("#FF9300", 1002, 0, ""),
+    new Estatus("#FF0000", 1003, 0, ""),
+    new Estatus("#0046FF", 1004, 0, ""),
+    new Estatus("#7B542F", 1005, 0, ""),
+    new Estatus("#3338A0", 1006, 0, ""),
+    new Estatus("#2DCDDF", 1007, 0, ""),
+    new Estatus("#B6EB7A", 1008, 0, ""),
+    new Estatus("#F6ACC8", 1009, 0, ""),
   ]);
   let estatusLimpios: Estatus[] = [];
 

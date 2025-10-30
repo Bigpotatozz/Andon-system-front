@@ -39,19 +39,28 @@ export const ConfigLineas = () => {
   //Recibe como parametro el arreglo
   const postLineas = async (lineasTotales: number[]) => {
     //Realiza la peticion HTTP
-    const response = await axios.post(
-      "http://localhost:3000/api/linea/crearLinea",
-      {
+    const response = await axios
+      .post("http://localhost:3000/api/linea/crearLinea", {
         idsLineasProduccion: lineasTotales,
-      },
-    );
-    //La respuesta ([1,2,4,5,6]) que son los ids de las lineas
-    //recien insertadas la guarda en el arreglo previamente realizado
-    idsLineas = response.data.idsLineas;
+      })
+      .catch((error) => {
+        console.log(error);
 
-    //Guarda el arreglo en el localStorage para poder ser usado despues
-    localStorage.setItem("idsLineas", JSON.stringify(idsLineas));
-    console.log(response);
+        return;
+      });
+
+    if (response) {
+      //La respuesta ([1,2,4,5,6]) que son los ids de las lineas
+      //recien insertadas la guarda en el arreglo previamente realizado
+      idsLineas = response.data.idsLineas;
+
+      //Guarda el arreglo en el localStorage para poder ser usado despues
+      localStorage.setItem("idsLineas", JSON.stringify(idsLineas));
+      console.log(response);
+      navegacion("/configuracionBotones");
+    } else {
+      alert("Error al registrar las lineas");
+    }
   };
 
   //Funcion que agrega todas las lineas a un solo arreglo
@@ -82,7 +91,7 @@ export const ConfigLineas = () => {
                   </div>
                   <TextInput
                     id="small"
-                    type="text"
+                    type="number"
                     sizing="sm"
                     className="w-full"
                     onChange={(e) => {
@@ -122,7 +131,7 @@ export const ConfigLineas = () => {
                   </div>
                   <TextInput
                     id="small"
-                    type="text"
+                    type="number"
                     sizing="sm"
                     className="w-full"
                     onChange={(e) => {
@@ -155,8 +164,6 @@ export const ConfigLineas = () => {
               //Manda la peticion
               postLineas(lineasGeneral);
             }, 2000);
-            //Te redirige a la siguiente seccion
-            navegacion("/configuracionBotones");
           }}
         >
           Registrar lineas

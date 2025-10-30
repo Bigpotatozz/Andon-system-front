@@ -40,7 +40,7 @@ export const InputEstatus = ({
         <div className="peso flex items-center">
           <TextInput
             id="small"
-            type="text"
+            type="number"
             sizing="sm"
             placeholder="Importancia"
             className="h-full"

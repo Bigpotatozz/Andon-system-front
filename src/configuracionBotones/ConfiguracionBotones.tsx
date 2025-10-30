@@ -90,17 +90,21 @@ export const ConfiguracionBotones = () => {
     });
 
     //Realiza la peticion HTTP
-    const response = await axios.post(
-      "http://localhost:3000/api/estatus/crearColor",
-      formData,
-      {
+    const response = await axios
+      .post("http://localhost:3000/api/estatus/crearColor", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      },
-    );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-    console.log(response);
+    if (response) {
+      navegacion("/tableroGeneral");
+    } else {
+      alert("Error al registrar estatus");
+    }
   };
 
   //Frontend
@@ -153,7 +157,6 @@ export const ConfiguracionBotones = () => {
               limpiarEstatus();
 
               postEstados(lineasIds, estatusLimpios, canciones);
-              navegacion("/tableroGeneral");
             }}
           >
             Confirmar

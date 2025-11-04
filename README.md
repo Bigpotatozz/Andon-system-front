@@ -1,7 +1,7 @@
 # Andon System Frontend
 
 ## Description  
-This frontend component of the is a configurable production line monitoring interface built using React with TypeScript, Flowbite for UI components, and Chart.js for data visualization. It allows uploading audio files, setting production line statuses with color codes, assigning weights to statuses, and attaching alert sounds. The frontend supports real-time monitoring and alerting within manufacturing environments. It works offline and includes a Progressive Web App (PWA) for offline-capable client access. Inputs can come from physical button panels connected through PLCs or virtual buttons on the interface. All interactions and events are managed via API and stored persistently in the backend database.
+This frontend component of the Andon System is a configurable production line monitoring interface built using React with TypeScript, Flowbite for UI components, and Chart.js for data visualization. It allows uploading audio files, setting production line statuses with color codes, assigning weights to statuses, and attaching alert sounds. The frontend supports real-time monitoring and alerting within manufacturing environments. It works offline and includes a Progressive Web App (PWA) for offline-capable client access. Inputs can come from physical button panels connected through PLCs or virtual buttons on the interface. All interactions and events are managed via API and stored persistently in the backend database.
 
 ## Installation  
 1. Clone the repository:  

@@ -1,54 +1,24 @@
-# React + TypeScript + Vite
+# Andon System Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description  
+This frontend component of the [translate:Andon System] is a configurable production line monitoring interface built using React with TypeScript, Flowbite for UI components, and Chart.js for data visualization. It allows uploading audio files, setting production line statuses with color codes, assigning weights to statuses, and attaching alert sounds. The frontend supports real-time monitoring and alerting within manufacturing environments. It works offline and includes a Progressive Web App (PWA) for offline-capable client access. Inputs can come from physical button panels connected through PLCs or virtual buttons on the interface. All interactions and events are managed via API and stored persistently in the backend database.
 
-Currently, two official plugins are available:
+## Installation  
+1. Clone the repository:  
+   `git clone https://github.com/your-username/andon-frontend.git`  
+2. Install dependencies:  
+   `npm install`  
+3. Start the development server:  
+   `npm start`  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Usage  
+- Upload audio files through the UI/API to associate sounds with production line events.  
+- Monitor production line statuses with color coding and visual charts.  
+- Use physical button panels connected through PLCs or virtual buttons in the web interface to update statuses.  
+- Receive alert sounds based on assigned status weights.  
+- Works fully offline with the included PWA implementation.  
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    "react-x": reactX,
-    "react-dom": reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs["recommended-typescript"].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+## Configuration  
+- UI components are styled with Flowbite.  
+- Charts displaying production data use Chart.js.  
+- Status colors, weights, and alert sounds are configurable through the UI.  

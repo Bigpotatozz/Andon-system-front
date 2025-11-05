@@ -1,15 +1,17 @@
 import axios from "axios";
 import { LineaCard } from "./components/LineaCard";
-import { useEffect, useRef, useState } from "react";
-import type { EstatusResponse } from "../Models/EstatusResponse";
+import { useEffect, useState } from "react";
 import { Button } from "flowbite-react";
 import { Link } from "react-router";
+import { convertirSegundos } from "@/helpers/conversorSegundos";
 
 //En el tablero general puedes ver la informacion general de todas las lineas de produccion
 
 export const TableroGeneral = () => {
   //Inicializacion de los estados que se recibiran de la API
-  const [estados, setEstados] = useState<EstatusResponse[]>([]);
+  const [estados, setEstados] = useState<any[]>([]);
+
+  const segundosParseados: string = "";
 
   //Funcion que hace peticion a la api y guarda la respuesta en el state estados
   const obtenerEstatus = async () => {
@@ -18,6 +20,7 @@ export const TableroGeneral = () => {
     );
 
     setEstados(response.data.response);
+
     console.log(response.data);
   };
 
@@ -42,7 +45,7 @@ export const TableroGeneral = () => {
                 key={estado.idLineaProduccion}
                 nombre={estado.idLineaProduccion}
                 estatus={estado.estatusActual ?? 0}
-                tiempo={"adadad"}
+                tiempo={convertirSegundos(estado.total ?? 0)}
                 color={estado.color}
               />
             );

@@ -95,19 +95,22 @@ export const TableroIndividual = () => {
         <div className="container1">
           <div className="flex">
             <div className="infoLinea m-5 w-xl rounded-md border-black bg-gray-700 text-start">
-              <div className="rounded-md bg-lime-400 p-3 text-center">
+              <div
+                className="rounded-md p-3 text-center"
+                style={{ background: `${linea.color}` }}
+              >
                 <h2 className="text-2xl">
-                  <strong>Linea</strong>
+                  <strong>Estatus actual</strong>
                 </h2>
               </div>
               <div className="flex justify-center gap-30 p-10 text-white">
-                <p className="text-2xl">
-                  <strong>Meta:</strong>
-                  <br></br> 3000
+                <p className="text-center text-2xl">
+                  <strong> Estatus: </strong>
+                  <br></br> {linea.estatusActual}
                 </p>
-                <p className="text-2xl">
-                  <strong>Real:</strong>
-                  <br></br> 2500
+                <p className="text-center text-2xl">
+                  <strong>Prioridad:</strong>
+                  <br></br> {linea.prioridad}
                 </p>
               </div>
             </div>
@@ -119,13 +122,13 @@ export const TableroIndividual = () => {
                 </h2>
               </div>
               <div className="flex justify-center gap-30 p-10 text-white">
-                <p className="text-2xl">
+                <p className="text-center text-2xl">
                   <strong>Meta:</strong>
-                  <br></br> 3000
+                  <br></br> 100%
                 </p>
-                <p className="text-2xl">
+                <p className="text-center text-2xl">
                   <strong>Real:</strong>
-                  <br></br> 2500
+                  <br></br> 80%
                 </p>
               </div>
             </div>

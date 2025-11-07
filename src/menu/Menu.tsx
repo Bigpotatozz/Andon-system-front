@@ -14,9 +14,9 @@ export const Menu = () => {
   //Frontend
   return (
     <>
-      <div className="general flex min-h-screen flex-col items-center justify-center p-6">
-        <div className="grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="flex">
+      <div className="general align-center flex h-full flex-col items-center justify-center p-6">
+        <div className="grid min-h-screen w-full grid-cols-4 grid-rows-2 gap-6 p-20">
+          <div className="col-row3 col-span-2 flex">
             <Link to={"/configuracionLineas"} className="w-full">
               <Card className="flex h-full flex-col justify-between !bg-sky-600 p-10">
                 <div>
@@ -32,7 +32,7 @@ export const Menu = () => {
             </Link>
           </div>
 
-          <div className="flex">
+          <div className="col-span-2 row-span-2 flex">
             <Link to={"/tableroGeneral"} className="w-full">
               <Card className="flex h-full flex-col justify-between !bg-green-600 p-10">
                 <div>
@@ -48,8 +48,8 @@ export const Menu = () => {
           </div>
 
           <div className="flex">
-            <Link to={"/configuracionLineas"} className="w-full">
-              <Card className="flex h-full flex-col justify-between !bg-orange-500 p-10">
+            <Link to={"/analisis"} className="w-full">
+              <Card className="flex h-full flex-col justify-between !bg-orange-900 p-10">
                 <div>
                   <h5 className="mb-4 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     Analisis

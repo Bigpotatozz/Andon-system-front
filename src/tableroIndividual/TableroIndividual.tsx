@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { LineaProduccion } from "../Models/LineaProduccion";
 import { TiemposLineaProduccion } from "@/Models/TiemposLineaProduccion";
+import { convertirSegundos } from "@/helpers/conversorSegundos";
 
 //En este componente se puede ver el estado de la linea de produccion (individual)
 
@@ -153,7 +154,7 @@ export const TableroIndividual = () => {
           </div>
 
           <div className="p-5">
-            <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+            <table className="w-full text-center text-sm text-gray-500 rtl:text-right dark:text-gray-400">
               <thead className="bg-gray-50 text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-6 py-3">
@@ -174,16 +175,25 @@ export const TableroIndividual = () => {
                 {tiempos.map((linea) => {
                   return (
                     <>
-                      <tr className="border-b border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                      <tr className="border-b border-gray-200 bg-white text-center hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
                         <td
                           scope="row"
                           className="px-6 py-4 font-medium whitespace-nowrap text-gray-900 dark:text-white"
                         >
-                          {linea.color}
+                          <div
+                            style={{
+                              width: "25px",
+                              height: "15px",
+                              background: `${linea.color}`,
+                              borderRadius: "2px",
+                            }}
+                          ></div>
                         </td>
                         <td className="px-6 py-4">{linea.inicio}</td>
                         <td className="px-6 py-4">{linea.final}</td>
-                        <td className="px-6 py-4">{linea.total} segundos</td>
+                        <td className="px-6 py-4">
+                          {convertirSegundos(linea.total)}
+                        </td>
                       </tr>
                     </>
                   );

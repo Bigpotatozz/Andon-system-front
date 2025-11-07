@@ -10,6 +10,7 @@ import { ConfigLineas } from "./configLineas/ConfigLineas.tsx";
 import { Menu } from "./menu/Menu.tsx";
 import { TableroGeneral } from "./tableroGeneral/TableroGeneral.tsx";
 import { TableroIndividual } from "./tableroIndividual/TableroIndividual.tsx";
+import Analisis from "./analisis/Analisis.tsx";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/tableroLinea/:idLinea",
         element: <TableroIndividual></TableroIndividual>,
+      },
+      {
+        path: "/analisis",
+        element: <Analisis></Analisis>,
       },
     ],
   },

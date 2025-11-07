@@ -37,8 +37,8 @@ export const TableroGeneral = () => {
 
   return (
     <>
-      <div className="align-center flex w-full flex-col items-center justify-center p-5">
-        <div className="flex flex-wrap">
+      <div className="align-center flex w-full flex-col items-center justify-center pt-5">
+        <div className="flex flex-wrap justify-center">
           {estados.map((estado, index) => {
             return (
               <LineaCard
@@ -52,7 +52,7 @@ export const TableroGeneral = () => {
           })}
         </div>
         <Link to={"/"}>
-          <Button className="me-2 rounded-lg bg-blue-700 p-10 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <Button className="me-2 mt-10 rounded-lg bg-blue-700 p-10 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             Regresar al inicio
           </Button>
         </Link>

@@ -61,6 +61,8 @@ const LineChartComponent = () => {
       eficiencia: 96,
     },
   ];
+
+  /*
   const produccionSemanal = [
     { fecha: "01/11", produccion: 450, paros: 45, eficiencia: 91 },
     { fecha: "02/11", produccion: 520, paros: 30, eficiencia: 95 },
@@ -70,6 +72,7 @@ const LineChartComponent = () => {
     { fecha: "06/11", produccion: 470, paros: 60, eficiencia: 89 },
     { fecha: "07/11", produccion: 530, paros: 25, eficiencia: 96 },
   ];
+  */
 
   const eficienciaLineas = [
     { linea: "Línea 1", eficiencia: 92, meta: 90 },
@@ -87,6 +90,7 @@ const LineChartComponent = () => {
     { linea: "Línea 5", tiempo: 160, estado: "Produciendo", color: "#10b981" },
   ];
 
+  /*
   const kpiRadar = [
     { kpi: "OEE", value: 85, fullMark: 100 },
     { kpi: "Calidad", value: 92, fullMark: 100 },
@@ -94,7 +98,7 @@ const LineChartComponent = () => {
     { kpi: "Rendimiento", value: 90, fullMark: 100 },
     { kpi: "Eficiencia", value: 87, fullMark: 100 },
   ];
-
+*/
   const tiposParos = [
     { nombre: "Mantenimiento", valor: 120, color: "#f59e0b" },
     { nombre: "Falta de Material", valor: 85, color: "#ef4444" },
@@ -196,8 +200,8 @@ const LineChartComponent = () => {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ nombre, percent }) =>
-                  `${nombre} ${(percent * 100).toFixed(0)}%`
+                label={({ name, percent }: any) =>
+                  `${name} ${(percent * 100).toFixed(0)}%`
                 }
                 outerRadius={80}
                 fill="#8884d8"

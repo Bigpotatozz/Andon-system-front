@@ -10,7 +10,7 @@ export const ConfiguracionBotones = () => {
   //Accede al arreglo de ids previamente guardados en el localStorage
   let lineasIds = localStorage.getItem("idsLineas");
   //Las parsea para poder usarlas
-  lineasIds = JSON.parse(lineasIds);
+  lineasIds = lineasIds ? JSON.parse(lineasIds) : [];
   //Estado de navegacion
   const navegacion = useNavigate();
   //Declara un arreglo Files que es donde iran las canciones (hook)
@@ -46,7 +46,7 @@ export const ConfiguracionBotones = () => {
   };
 
   //Funcion que actualiza la cancion del estatus
-  const actualizarCancion = (indice: number, cancion: File) => {
+  const actualizarCancion = (indice: number, cancion: string) => {
     setEstatus((prev) => {
       const nuevoArregloMusica = [...prev];
       nuevoArregloMusica[indice] = {
@@ -58,20 +58,20 @@ export const ConfiguracionBotones = () => {
   };
 
   //Funcion que actualiza los archivos de las canciones del estatus
-  const actualizarFileCanciones = (indice, cancion: File) => {
+  const actualizarFileCanciones = (indice: number, cancion: File | null) => {
     setCanciones((prev) => {
       const nuevasCanciones = [...prev];
+      if (cancion === null) {
+        nuevasCanciones[indice] = new File([], "");
+        return nuevasCanciones;
+      }
       nuevasCanciones[indice] = cancion;
       return nuevasCanciones;
     });
   };
 
   //Funcion para mandar los estatus a la api
-  const postEstados = async (
-    lineasids: number[],
-    colores: Estatus[],
-    canciones: File[],
-  ) => {
+  const postEstados = async (colores: Estatus[], canciones: File[]) => {
     //Define el cuerpo de la peticion
     const reqBody = {
       colores: colores,
@@ -138,7 +138,7 @@ export const ConfiguracionBotones = () => {
             </div>
 
             <div className="flex max-w-2xl flex-wrap">
-              {estatus.slice(1).map((e, index) => {
+              {estatus.slice(2).map((e, index) => {
                 return (
                   <LineaCard
                     color={e.color}
@@ -156,7 +156,7 @@ export const ConfiguracionBotones = () => {
             onClick={() => {
               limpiarEstatus();
 
-              postEstados(lineasIds, estatusLimpios, canciones);
+              postEstados(estatusLimpios, canciones);
             }}
           >
             Confirmar

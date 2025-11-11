@@ -11,8 +11,6 @@ export const TableroGeneral = () => {
   //Inicializacion de los estados que se recibiran de la API
   const [estados, setEstados] = useState<any[]>([]);
 
-  const segundosParseados: string = "";
-
   //Funcion que hace peticion a la api y guarda la respuesta en el state estados
   const obtenerEstatus = async () => {
     const response = await axios.get(
@@ -39,7 +37,7 @@ export const TableroGeneral = () => {
     <>
       <div className="align-center flex w-full flex-col items-center justify-center pt-5">
         <div className="flex flex-wrap justify-center">
-          {estados.map((estado, index) => {
+          {estados.map((estado) => {
             return (
               <LineaCard
                 key={estado.idLineaProduccion}

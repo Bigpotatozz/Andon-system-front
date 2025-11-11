@@ -84,6 +84,7 @@ export const ConfigLineas = () => {
         <div className="flex w-full">
           <div className="g-10 w-full p-10">
             {lineas.map((e, index) => {
+              console.log(e);
               return (
                 <>
                   <div className="mb-2 block" key={index}>
@@ -104,6 +105,7 @@ export const ConfigLineas = () => {
           </div>
           <div className="g-10 w-full p-10">
             {lineas2.map((e, index) => {
+              console.log(e);
               return (
                 <>
                   <div className="mb-2 block" key={index}>
@@ -124,6 +126,7 @@ export const ConfigLineas = () => {
           </div>
           <div className="g-10 w-full p-10">
             {lineas3.map((e, index) => {
+              console.log(e);
               return (
                 <>
                   <div className="mb-2 block" key={index}>

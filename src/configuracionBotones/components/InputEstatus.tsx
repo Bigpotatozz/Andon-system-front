@@ -1,4 +1,4 @@
-import { TextInput, FileInput, Label } from "flowbite-react";
+import { TextInput, FileInput } from "flowbite-react";
 import React from "react";
 import type { Estatus } from "../../Models/Estatus";
 
@@ -7,7 +7,7 @@ type InputEstatusProps = {
   estatus: Estatus;
   actualizarPeso: (value: number) => void;
   actualizarCancion: (value: string) => void;
-  actualizarArchivo: (value: File) => void;
+  actualizarArchivo: (value: File | null) => void;
 };
 
 //Este componente lleva una serie de props que son setters para poder modificar datos del padre

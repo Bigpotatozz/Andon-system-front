@@ -20,6 +20,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Columns3Cog, Dice1, Dice6 } from "lucide-react";
+import axios from "axios";
 
 //Component que almacena el menu principal, este es el endpoint de la aplicacion.
 export const Menu = () => {
@@ -27,8 +28,27 @@ export const Menu = () => {
   const navegacion = useNavigate();
 
   //Funcion que ejecuta el navigate para redirigirse a otra pagina
-  const onClickLinea = (idLinea: string) => {
-    navegacion(`/tableroLinea/${idLinea}`);
+  const onClickLinea = async (idLinea: string) => {
+    try {
+      const response = await verificarLinea(idLinea);
+      if (!response.linea) {
+        alert("La linea de produccion indicada no existe");
+        return;
+      }
+      navegacion(`/tableroLinea/${idLinea}`);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error al verificar la línea");
+    }
+  };
+
+  const verificarLinea = async (id: string) => {
+    const response = await axios.get(
+      `http://localhost:3000/api/linea/verificarExistenciaLinea/${id}`,
+    );
+
+    console.log(response);
+    return response.data;
   };
 
   const data = [

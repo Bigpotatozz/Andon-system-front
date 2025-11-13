@@ -1,13 +1,4 @@
-import {
-  Calendar,
-  ChartArea,
-  Columns3Cog,
-  Dice1,
-  Dice6,
-  Home,
-  Search,
-  Settings,
-} from "lucide-react";
+import { ChartArea, Columns3Cog, Dice1, Dice6, Home } from "lucide-react";
 
 import {
   Sidebar,
@@ -20,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 // Menu items.
 const items = [
@@ -53,8 +45,27 @@ const items = [
 
 export function AppSidebar() {
   const navegacion = useNavigate();
-  const onClickLinea = (idLinea: string) => {
-    navegacion(`/tableroLinea/${idLinea}`);
+  const onClickLinea = async (idLinea: string) => {
+    try {
+      const response = await verificarLinea(idLinea);
+      if (!response.linea) {
+        alert("La linea de produccion indicada no existe");
+        return;
+      }
+      navegacion(`/tableroLinea/${idLinea}`);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error al verificar la línea");
+    }
+  };
+
+  const verificarLinea = async (id: string) => {
+    const response = await axios.get(
+      `http://localhost:3000/api/linea/verificarExistenciaLinea/${id}`,
+    );
+
+    console.log(response);
+    return response.data;
   };
 
   return (

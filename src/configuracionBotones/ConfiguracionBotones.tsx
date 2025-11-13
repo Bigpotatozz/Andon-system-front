@@ -114,10 +114,10 @@ export const ConfiguracionBotones = () => {
   return (
     <>
       <div className="h-full text-center">
-        <h1 className="pt-5 text-center text-lg font-bold text-white">
+        <h1 className="text-center text-lg font-bold text-white">
           Configura tus estatus:
         </h1>
-        <div className="flex flex-col p-10">
+        <div className="flex flex-col p-3">
           <div className="mb-6 flex justify-center gap-10">
             <div>
               {estatus.map((objeto, index) => (
@@ -138,7 +138,7 @@ export const ConfiguracionBotones = () => {
             </div>
 
             <div className="flex max-w-2xl flex-wrap">
-              {estatus.slice(2).map((e, index) => {
+              {estatus.slice(4).map((e, index) => {
                 return (
                   <LineaCard
                     color={e.color}
@@ -151,16 +151,20 @@ export const ConfiguracionBotones = () => {
             </div>
           </div>
 
-          <Button
-            color="green"
-            onClick={() => {
-              limpiarEstatus();
+          <div>
+            <div className="flex justify-center">
+              <Button
+                color="green"
+                onClick={() => {
+                  limpiarEstatus();
 
-              postEstados(estatusLimpios, canciones);
-            }}
-          >
-            Confirmar
-          </Button>
+                  postEstados(estatusLimpios, canciones);
+                }}
+              >
+                Confirmar
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </>

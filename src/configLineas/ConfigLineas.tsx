@@ -78,7 +78,7 @@ export const ConfigLineas = () => {
   return (
     <>
       <div className="align-center flex flex-col items-center justify-center">
-        <h1 className="mt-5 text-center text-lg font-bold text-white">
+        <h1 className="text-center text-lg font-bold text-white">
           Registra tus lineas de produccion:
         </h1>
         <div className="flex w-full">

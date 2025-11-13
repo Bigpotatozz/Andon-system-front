@@ -48,6 +48,11 @@ export const TableroIndividual = () => {
     );
     setLinea(response.data.response[0]);
     setTiempos(response.data.response2);
+    console.log("adadawd");
+
+    setReproducirAudio(false);
+
+    console.log(response.data.response[0]);
     console.log(response.data);
   };
 
@@ -60,6 +65,7 @@ export const TableroIndividual = () => {
 
     const loop = setInterval(() => {
       obtenerEstatusLinea(idLinea);
+
       console.log("Loop iniciado");
     }, 10000);
 
@@ -68,8 +74,12 @@ export const TableroIndividual = () => {
 
   //Hook que controla la reproduccion de audio
   useEffect(() => {
-    if (!reproducirAudio || !linea?.cancion) return;
+    if (!reproducirAudio || !linea?.cancion) {
+      audioRef.current?.pause();
+      return;
+    }
 
+    console.log(audioRef);
     if (audioRef.current) {
       audioRef.current.pause();
     }
@@ -86,142 +96,144 @@ export const TableroIndividual = () => {
 
   return (
     <>
-      <div className="generalContainer items-center border-black text-center">
-        <h1 className="p-3">
-          <strong className="text-white">
-            Estado de la linea de produccion
-          </strong>
-        </h1>
-
-        <div className="container1">
-          <div className="flex">
-            <div className="infoLinea m-5 w-xl rounded-md border-black bg-gray-700 text-start">
-              <div
-                className="rounded-md p-3 text-center"
-                style={{ background: `${linea.color}` }}
-              >
-                <h2 className="text-2xl">
-                  <strong>Estatus actual</strong>
-                </h2>
-              </div>
-              <div className="flex justify-center gap-30 p-10 text-white">
-                <p className="text-center text-2xl">
-                  <strong> Estatus: </strong>
-                  <br></br> {linea.estatusActual}
-                </p>
-                <p className="text-center text-2xl">
-                  <strong>Prioridad:</strong>
-                  <br></br> {linea.prioridad}
-                </p>
-              </div>
-            </div>
-
-            <div className="infoLinea m-5 w-xl rounded-md border-black bg-gray-700 text-start">
-              <div className="rounded-md bg-yellow-300 p-3 text-center">
-                <h2 className="text-2xl">
-                  <strong>Produccion en porcentaje</strong>
-                </h2>
-              </div>
-              <div className="flex justify-center gap-30 p-10 text-white">
-                <p className="text-center text-2xl">
-                  <strong>Meta:</strong>
-                  <br></br> 100%
-                </p>
-                <p className="text-center text-2xl">
-                  <strong>Real:</strong>
-                  <br></br> 80%
-                </p>
-              </div>
-            </div>
-
-            <div className="infoLinea m-5 w-xl rounded-md border-black bg-gray-700 text-start">
-              <div className="rounded-md bg-cyan-400 p-3 text-center">
-                <h2 className="text-2xl">
-                  <strong>Produccion</strong>
-                </h2>
-              </div>
-              <div className="flex justify-center gap-30 p-10 text-white">
-                <p className="text-2xl">
-                  <strong>Meta:</strong>
-                  <br></br> 3000
-                </p>
-                <p className="text-2xl">
-                  <strong>Real:</strong>
-                  <br></br> 2500
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-5">
-            <table className="w-full text-center text-sm text-gray-500 rtl:text-right dark:text-gray-400">
-              <thead className="bg-gray-50 text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    Estatus
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Fecha de inicio
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Fecha final
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Tiempo total (segundos)
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {tiempos.map((linea) => {
-                  return (
-                    <>
-                      <tr className="border-b border-gray-200 bg-white text-center hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium whitespace-nowrap text-gray-900 dark:text-white"
-                        >
-                          <div
-                            style={{
-                              width: "25px",
-                              height: "15px",
-                              background: `${linea.color}`,
-                              borderRadius: "2px",
-                            }}
-                          ></div>
-                        </td>
-                        <td className="px-6 py-4">{linea.inicio}</td>
-                        <td className="px-6 py-4">{linea.final}</td>
-                        <td className="px-6 py-4">
-                          {convertirSegundos(linea.total)}
-                        </td>
-                      </tr>
-                    </>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+      <div className="flex min-h-screen flex-col">
+        <div className="p-4">
+          <h1 className="text-center">
+            <strong className="text-2xl text-white md:text-3xl">
+              Estado de la línea de producción
+            </strong>
+          </h1>
         </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            setReproducirAudio(!reproducirAudio);
-          }}
-          className="me-2 mb-2 rounded-lg bg-green-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 focus:outline-none dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Reproducir sonido
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            audioRef.current?.pause();
-            navegacion("/");
-          }}
-          className="me-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Volver al menu
-        </button>
+        <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col p-4">
+          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="overflow-hidden rounded-lg bg-gray-700 shadow-lg">
+              <div
+                className="p-4 text-center"
+                style={{ background: `${linea.color}` }}
+              >
+                <h2 className="text-xl font-bold text-white">Estatus actual</h2>
+              </div>
+              <div className="p-6 text-white">
+                <div className="mb-4">
+                  <p className="text-sm font-semibold text-gray-300">Estatus</p>
+                  <p className="text-2xl font-bold">{linea.estatusActual}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-300">
+                    Prioridad
+                  </p>
+                  <p className="text-2xl font-bold">{linea.prioridad}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-lg bg-gray-700 shadow-lg">
+              <div className="bg-yellow-400 p-4 text-center">
+                <h2 className="text-xl font-bold text-gray-900">
+                  Producción en porcentaje
+                </h2>
+              </div>
+              <div className="p-6 text-white">
+                <div className="mb-4">
+                  <p className="text-sm font-semibold text-gray-300">Meta</p>
+                  <p className="text-2xl font-bold">100%</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-300">Real</p>
+                  <p className="text-2xl font-bold">80%</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-lg bg-gray-700 shadow-lg">
+              <div className="bg-cyan-400 p-4 text-center">
+                <h2 className="text-xl font-bold text-gray-900">Producción</h2>
+              </div>
+              <div className="p-6 text-white">
+                <div className="mb-4">
+                  <p className="text-sm font-semibold text-gray-300">Meta</p>
+                  <p className="text-2xl font-bold">3000</p>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-300">Real</p>
+                  <p className="text-2xl font-bold">2500</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-6 flex-1 overflow-y-auto rounded-lg shadow-lg">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-gray-400">
+                <thead className="sticky top-0 bg-gray-800 text-gray-200 uppercase">
+                  <tr>
+                    <th scope="col" className="px-6 py-4 text-left">
+                      Estatus
+                    </th>
+                    <th scope="col" className="px-6 py-4 text-left">
+                      Fecha de inicio
+                    </th>
+                    <th scope="col" className="px-6 py-4 text-left">
+                      Fecha final
+                    </th>
+                    <th scope="col" className="px-6 py-4 text-left">
+                      Tiempo total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-700">
+                  {tiempos.map((tiempo, index) => (
+                    <tr
+                      key={index}
+                      className="bg-gray-750 transition-colors hover:bg-gray-700"
+                    >
+                      <td className="px-6 py-4">
+                        <div
+                          style={{
+                            width: "20px",
+                            height: "12px",
+                            background: `${tiempo.color}`,
+                            borderRadius: "2px",
+                          }}
+                        />
+                      </td>
+                      <td className="px-6 py-4 text-gray-300">
+                        {tiempo.inicio}
+                      </td>
+                      <td className="px-6 py-4 text-gray-300">
+                        {tiempo.final}
+                      </td>
+                      <td className="px-6 py-4 text-gray-300">
+                        {convertirSegundos(tiempo.total)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-center gap-3 pb-4 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => setReproducirAudio(!reproducirAudio)}
+              className="rounded-lg bg-green-600 px-6 py-3 font-medium text-white shadow-md transition-colors hover:bg-green-700 hover:shadow-lg"
+            >
+              {reproducirAudio ? "Detener sonido" : "Reproducir sonido"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                audioRef.current?.pause();
+                navegacion("/");
+              }}
+              className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-colors hover:bg-blue-700 hover:shadow-lg"
+            >
+              Volver al menú
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );

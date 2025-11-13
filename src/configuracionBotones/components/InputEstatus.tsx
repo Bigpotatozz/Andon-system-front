@@ -52,7 +52,9 @@ export const InputEstatus = ({
         </div>
         <div className="cancion flex items-center">
           <FileInput
+            className="w-50 text-sm [&::file-selector-button]:px-1 [&::file-selector-button]:text-xs"
             id="file-upload"
+            sizing="sm"
             onChange={(e) => {
               //Invocacion de funcion que actualiza el archivo de musica del estatus - padre
               cambiarMusica(e);

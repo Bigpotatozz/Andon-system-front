@@ -30,6 +30,11 @@ export const Menu = () => {
   //Funcion que ejecuta el navigate para redirigirse a otra pagina
   const onClickLinea = async (idLinea: string) => {
     try {
+      if (parseInt(idLinea) <= 0 || isNaN(parseInt(idLinea))) {
+        alert("Debes introducir un ID valido");
+        return;
+      }
+
       const response = await verificarLinea(idLinea);
       if (!response.linea) {
         alert("La linea de produccion indicada no existe");

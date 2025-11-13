@@ -1,6 +1,6 @@
 import axios from "axios";
 import { TextInput, Button, Label } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 export const ConfigLineas = () => {
@@ -9,6 +9,7 @@ export const ConfigLineas = () => {
   const [lineas, setLineas] = useState(new Array(10).fill(0));
   const [lineas2, setLineas2] = useState(new Array(10).fill(0));
   const [lineas3, setLineas3] = useState(new Array(10).fill(0));
+  const [lineasRegistradas, setLineasRegistradas] = useState([]);
 
   //Se declara un arreglo que agrupa las 3 columnas
   let lineasGeneral: number[] = [];
@@ -35,9 +36,24 @@ export const ConfigLineas = () => {
     lineasGeneral = arregloUnido;
   };
 
+  const obtenerLineasRegistradas = async () => {
+    const response = await axios.get(
+      "http://localhost:3000/api/linea/obtenerLineasRegistradas",
+    );
+    setLineasRegistradas(response.data.lineas);
+  };
+
+  useEffect(() => {
+    obtenerLineasRegistradas();
+  }, []);
+
+  useEffect(() => {
+    console.log(lineasRegistradas);
+  }, []);
+
   //Funcion que envia la peticion HTTP al servidor
   //Recibe como parametro el arreglo
-  const postLineas = async (lineasTotales: number[]) => {
+  async function postLineas(lineasTotales: number[]) {
     //Realiza la peticion HTTP
     const response = await axios
       .post("http://localhost:3000/api/linea/crearLinea", {
@@ -56,12 +72,11 @@ export const ConfigLineas = () => {
 
       //Guarda el arreglo en el localStorage para poder ser usado despues
       localStorage.setItem("idsLineas", JSON.stringify(idsLineas));
-      console.log(response);
       navegacion("/configuracionBotones");
     } else {
       alert("Error al registrar las lineas");
     }
-  };
+  }
 
   //Funcion que agrega todas las lineas a un solo arreglo
   const agregarLinea = (
@@ -76,102 +91,160 @@ export const ConfigLineas = () => {
   };
 
   return (
-    <>
-      <div className="align-center flex flex-col items-center justify-center">
-        <h1 className="text-center text-lg font-bold text-white">
-          Registra tus lineas de produccion:
+    <div className="min-h-screen">
+      <div className="mx-auto max-w-7xl">
+        <h1 className="mb-8 text-center font-bold text-white">
+          Registra tus líneas de producción
         </h1>
-        <div className="flex w-full">
-          <div className="g-10 w-full p-10">
-            {lineas.map((e, index) => {
-              console.log(e);
-              return (
-                <>
-                  <div className="mb-2 block" key={index}>
-                    <Label htmlFor="small">Nombre de linea {index + 1}:</Label>
+
+        <div className="mb-10 rounded-lg bg-gray-800 p-6">
+          <h2 className="mb-4 text-xl font-bold text-white">
+            Líneas de producción registradas
+          </h2>
+
+          {lineasRegistradas && lineasRegistradas.length > 0 ? (
+            <div className="overflow-x-auto rounded-lg">
+              <table className="w-full text-sm text-gray-300">
+                <thead className="bg-gray-700 text-white uppercase">
+                  <tr>
+                    <th className="px-6 py-3 text-left font-semibold">
+                      Identificador
+                    </th>
+                    <th className="px-6 py-3 text-left font-semibold">
+                      Nombre
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-700">
+                  {lineasRegistradas.map((linea, index) => (
+                    <tr
+                      key={index}
+                      className="hover:bg-gray-750 bg-gray-800 transition-colors"
+                    >
+                      <td className="px-6 py-4 font-medium">
+                        {linea.idLineaProduccion}
+                      </td>
+                      <td className="px-6 py-4 font-medium">
+                        {`Linea: ${linea.idLineaProduccion}`}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="py-8 text-center">
+              <p className="text-gray-400">
+                No hay líneas de producción registradas aún
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="mb-8 rounded-lg bg-gray-800 p-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div>
+              {lineas.map((e, index) => (
+                <div key={index}>
+                  <div className="mb-2">
+                    <Label
+                      htmlFor={`linea1-${index}`}
+                      className="text-sm text-white"
+                    >
+                      Línea {index + 1}:
+                    </Label>
                   </div>
                   <TextInput
-                    id="small"
+                    id={`linea1-${index}`}
                     type="number"
                     sizing="sm"
-                    className="w-full"
+                    placeholder="Ingresa ID"
+                    className="mb-4"
                     onChange={(e) => {
                       agregarLinea(e, index, setLineas, lineas);
                     }}
                   />
-                </>
-              );
-            })}
-          </div>
-          <div className="g-10 w-full p-10">
-            {lineas2.map((e, index) => {
-              console.log(e);
-              return (
-                <>
-                  <div className="mb-2 block" key={index}>
-                    <Label htmlFor="small">Nombre de linea {index + 1}:</Label>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              {lineas2.map((e, index) => (
+                <div key={index}>
+                  <div className="mb-2">
+                    <Label
+                      htmlFor={`linea2-${index}`}
+                      className="text-sm text-white"
+                    >
+                      Línea {index + 1}:
+                    </Label>
                   </div>
                   <TextInput
-                    id="small"
+                    id={`linea2-${index}`}
                     type="text"
                     sizing="sm"
-                    className="w-full"
+                    placeholder="Ingresa nombre"
+                    className="mb-4"
                     onChange={(e) => {
                       agregarLinea(e, index, setLineas2, lineas2);
                     }}
                   />
-                </>
-              );
-            })}
-          </div>
-          <div className="g-10 w-full p-10">
-            {lineas3.map((e, index) => {
-              console.log(e);
-              return (
-                <>
-                  <div className="mb-2 block" key={index}>
-                    <Label htmlFor="small">Nombre de linea {index + 1}:</Label>
+                </div>
+              ))}
+            </div>
+
+            <div>
+              {lineas3.map((e, index) => (
+                <div key={index}>
+                  <div className="mb-2">
+                    <Label
+                      htmlFor={`linea3-${index}`}
+                      className="text-sm text-white"
+                    >
+                      Línea {index + 1}:
+                    </Label>
                   </div>
                   <TextInput
-                    id="small"
+                    id={`linea3-${index}`}
                     type="number"
                     sizing="sm"
-                    className="w-full"
+                    placeholder="Ingresa ID"
+                    className="mb-4"
                     onChange={(e) => {
                       agregarLinea(e, index, setLineas3, lineas3);
                     }}
                   />
-                </>
-              );
-            })}
+                </div>
+              ))}
+            </div>
           </div>
+
+          <Button
+            color="green"
+            className="mt-6 w-full"
+            onClick={() => {
+              //Une el arreglo en uno nuevo
+              unirArreglo(lineas, lineas2, lineas3);
+
+              //Valida que el arreglo contenga al menos una linea
+              if (lineasGeneral.length <= 0) {
+                //Alerta en caso de que no
+                alert("Registra al menos una línea");
+                return;
+              }
+
+              //Agrega un timeOut para esperar a que las lineas se recompongan
+              //Esto evita que las lineas las de en nullas debido al flujo en el que trabaja js
+              setTimeout(() => {
+                //Manda la peticion
+                postLineas(lineasGeneral);
+              }, 2000);
+            }}
+          >
+            Registrar líneas
+          </Button>
         </div>
-
-        <Button
-          color="green"
-          className="m-5"
-          onClick={() => {
-            //Une el arreglo en uno nuevo
-            unirArreglo(lineas, lineas2, lineas3);
-
-            //Valida que el arreglo contenga al menos una linea
-            if (lineasGeneral.length <= 0) {
-              //Alerta en caso de que no
-              alert("Registra al menos una linea");
-              return;
-            }
-
-            //Agrega un timeOut para esperar a que las lineas se recompongan
-            //Esto evita que las lineas las de en nullas debido al flujo en el que trabaja js
-            setTimeout(() => {
-              //Manda la peticion
-              postLineas(lineasGeneral);
-            }, 2000);
-          }}
-        >
-          Registrar lineas
-        </Button>
       </div>
-    </>
+    </div>
   );
 };

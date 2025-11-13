@@ -47,6 +47,10 @@ export function AppSidebar() {
   const navegacion = useNavigate();
   const onClickLinea = async (idLinea: string) => {
     try {
+      if (parseInt(idLinea) <= 0 || isNaN(parseInt(idLinea))) {
+        alert("Debes introducir un ID valido");
+        return;
+      }
       const response = await verificarLinea(idLinea);
       if (!response.linea) {
         alert("La linea de produccion indicada no existe");

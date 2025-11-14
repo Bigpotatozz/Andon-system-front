@@ -49,9 +49,6 @@ export const TableroIndividual = () => {
     setLinea(response.data.response[0]);
     setTiempos(response.data.response2);
     console.log("adadawd");
-
-    setReproducirAudio(false);
-
     console.log(response.data.response[0]);
     console.log(response.data);
   };

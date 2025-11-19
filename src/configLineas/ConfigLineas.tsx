@@ -9,7 +9,7 @@ export const ConfigLineas = () => {
   const [lineas, setLineas] = useState(new Array(10).fill(0));
   const [lineas2, setLineas2] = useState(new Array(10).fill(0));
   const [lineas3, setLineas3] = useState(new Array(10).fill(0));
-  const [lineasRegistradas, setLineasRegistradas] = useState([]);
+  const [lineasRegistradas, setLineasRegistradas] = useState<any[]>([]);
 
   //Se declara un arreglo que agrupa las 3 columnas
   let lineasGeneral: number[] = [];
@@ -144,75 +144,39 @@ export const ConfigLineas = () => {
         <div className="mb-8 rounded-lg bg-gray-800 p-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div>
-              {lineas.map((e, index) => (
-                <div key={index}>
-                  <div className="mb-2">
-                    <Label
-                      htmlFor={`linea1-${index}`}
-                      className="text-sm text-white"
-                    >
-                      Línea {index + 1}:
-                    </Label>
-                  </div>
+              {lineas.map((_, idx) => (
+                <div key={idx}>
+                  <Label htmlFor={`linea1-${idx}`}>Línea {idx + 1}:</Label>
                   <TextInput
-                    id={`linea1-${index}`}
+                    id={`linea1-${idx}`}
                     type="number"
-                    sizing="sm"
-                    placeholder="Ingresa ID"
-                    className="mb-4"
-                    onChange={(e) => {
-                      agregarLinea(e, index, setLineas, lineas);
-                    }}
+                    onChange={(e) => agregarLinea(e, idx, setLineas, lineas)}
                   />
                 </div>
               ))}
             </div>
 
             <div>
-              {lineas2.map((e, index) => (
-                <div key={index}>
-                  <div className="mb-2">
-                    <Label
-                      htmlFor={`linea2-${index}`}
-                      className="text-sm text-white"
-                    >
-                      Línea {index + 1}:
-                    </Label>
-                  </div>
+              {lineas2.map((_, idx) => (
+                <div key={idx}>
+                  <Label htmlFor={`linea2-${idx}`}>Línea {idx + 1}:</Label>
                   <TextInput
-                    id={`linea2-${index}`}
-                    type="text"
-                    sizing="sm"
-                    placeholder="Ingresa nombre"
-                    className="mb-4"
-                    onChange={(e) => {
-                      agregarLinea(e, index, setLineas2, lineas2);
-                    }}
+                    id={`linea2-${idx}`}
+                    type="number"
+                    onChange={(e) => agregarLinea(e, idx, setLineas2, lineas2)}
                   />
                 </div>
               ))}
             </div>
 
             <div>
-              {lineas3.map((e, index) => (
-                <div key={index}>
-                  <div className="mb-2">
-                    <Label
-                      htmlFor={`linea3-${index}`}
-                      className="text-sm text-white"
-                    >
-                      Línea {index + 1}:
-                    </Label>
-                  </div>
+              {lineas3.map((_, idx) => (
+                <div key={idx}>
+                  <Label htmlFor={`linea3-${idx}`}>Línea {idx + 1}:</Label>
                   <TextInput
-                    id={`linea3-${index}`}
+                    id={`linea3-${idx}`}
                     type="number"
-                    sizing="sm"
-                    placeholder="Ingresa ID"
-                    className="mb-4"
-                    onChange={(e) => {
-                      agregarLinea(e, index, setLineas3, lineas3);
-                    }}
+                    onChange={(e) => agregarLinea(e, idx, setLineas3, lineas3)}
                   />
                 </div>
               ))}

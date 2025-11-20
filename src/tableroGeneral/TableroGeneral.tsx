@@ -11,6 +11,7 @@ export const TableroGeneral = () => {
   //Inicializacion de los estados que se recibiran de la API
   const [estados, setEstados] = useState<any[]>([]);
 
+  //Se declara un estado de tipo useRef
   const audioRef = useRef<HTMLAudioElement>(null);
 
   //Funcion que hace peticion a la api y guarda la respuesta en el state estados
@@ -19,28 +20,42 @@ export const TableroGeneral = () => {
       "http://localhost:3000/api/estatus/obtenerEstatus",
     );
 
+    //Declara una variable para no esperar el renderizado del estado
     const datosNuevos = response.data.response;
+    //En base a la variable ejecuta un renderizado
     setEstados(datosNuevos);
+    //Declara otra variable que almacenara el audio a reproducir
     let audioNuevo = "";
 
+    //Declara un numero maximo
     let max = 0;
+    //Recorre cada uno de los datos provenientes de la api
     datosNuevos.forEach((estado) => {
+      //Verifica si es mayor
       if (estado.prioridad > max) {
+        //Si es mayor lo asigna a max y le da ese valor a la variable que contendra la cancion
         max = estado.prioridad;
         audioNuevo = estado.cancion;
       }
     });
 
+    //Si existe un audio en audioRef y si audioNuevo tiene algo
     if (audioRef.current && audioNuevo) {
+      //Reconstruye una nueva ruta
       const nuevaRuta = `http://localhost:3000/uploads/${audioNuevo}`;
 
+      //Si la ruta del audio actual es diferente a la ruta nueva
       if (audioRef.current.src !== nuevaRuta) {
+        //Le asigna la ruta nueva
         audioRef.current.src = nuevaRuta;
+        //Indica que se ejecute hasta que llegue un nuevo audio
         audioRef.current.loop = true;
+        //Reproduce el sonido
         audioRef.current.play().catch((e) => {
           console.log(e);
         });
       } else {
+        //En caso de que sea igual simplemente imprime "Mismo audio"
         console.log("Mismo audio");
       }
     }

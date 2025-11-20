@@ -22,7 +22,7 @@ const items = [
   },
 
   {
-    title: "Configurar lineas",
+    title: "Configurar estaciones",
     url: "/configuracionLineas",
     icon: Columns3Cog,
   },
@@ -32,7 +32,7 @@ const items = [
     icon: Dice6,
   },
   {
-    title: "Tablero de linea",
+    title: "Tablero de estacion",
     url: "/tableroLinea/:idLinea",
     icon: Dice1,
   },
@@ -80,13 +80,13 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => {
-                if (item.title == "Tablero de linea") {
+                if (item.title == "Tablero de estacion") {
                   return (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
                         <a
                           onClick={() => {
-                            const idLinea = prompt("ID DE LA LINEA:");
+                            const idLinea = prompt("ID DE LA ESTACION:");
 
                             //Validacion isNotEmpty
                             if (idLinea == "" || idLinea == null) {

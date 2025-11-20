@@ -74,7 +74,7 @@ export const ConfigLineas = () => {
       localStorage.setItem("idsLineas", JSON.stringify(idsLineas));
       navegacion("/configuracionBotones");
     } else {
-      alert("Error al registrar las lineas");
+      alert("Error al registrar las estaciones");
     }
   }
 
@@ -94,12 +94,12 @@ export const ConfigLineas = () => {
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl">
         <h1 className="mb-8 text-center font-bold text-white">
-          Registra tus líneas de producción
+          Registra tus estaciónes
         </h1>
 
         <div className="mb-10 rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-bold text-white">
-            Líneas de producción registradas
+            Estaciónes registradas
           </h2>
 
           {lineasRegistradas && lineasRegistradas.length > 0 ? (
@@ -125,7 +125,7 @@ export const ConfigLineas = () => {
                         {linea.idLineaProduccion}
                       </td>
                       <td className="px-6 py-4 font-medium">
-                        {`Linea: ${linea.idLineaProduccion}`}
+                        {`Estacion: ${linea.idLineaProduccion}`}
                       </td>
                     </tr>
                   ))}
@@ -134,9 +134,7 @@ export const ConfigLineas = () => {
             </div>
           ) : (
             <div className="py-8 text-center">
-              <p className="text-gray-400">
-                No hay líneas de producción registradas aún
-              </p>
+              <p className="text-gray-400">No hay estaciónes registradas aún</p>
             </div>
           )}
         </div>
@@ -146,7 +144,7 @@ export const ConfigLineas = () => {
             <div>
               {lineas.map((_, idx) => (
                 <div key={idx}>
-                  <Label htmlFor={`linea1-${idx}`}>Línea {idx + 1}:</Label>
+                  <Label htmlFor={`linea1-${idx}`}>Estación {idx + 1}:</Label>
                   <TextInput
                     id={`linea1-${idx}`}
                     type="number"
@@ -159,7 +157,7 @@ export const ConfigLineas = () => {
             <div>
               {lineas2.map((_, idx) => (
                 <div key={idx}>
-                  <Label htmlFor={`linea2-${idx}`}>Línea {idx + 1}:</Label>
+                  <Label htmlFor={`linea2-${idx}`}>Estación {idx + 1}:</Label>
                   <TextInput
                     id={`linea2-${idx}`}
                     type="number"
@@ -172,7 +170,7 @@ export const ConfigLineas = () => {
             <div>
               {lineas3.map((_, idx) => (
                 <div key={idx}>
-                  <Label htmlFor={`linea3-${idx}`}>Línea {idx + 1}:</Label>
+                  <Label htmlFor={`linea3-${idx}`}>Estación {idx + 1}:</Label>
                   <TextInput
                     id={`linea3-${idx}`}
                     type="number"
@@ -205,7 +203,7 @@ export const ConfigLineas = () => {
               }, 2000);
             }}
           >
-            Registrar líneas
+            Registrar Estaciónes
           </Button>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { LineaCard } from "./components/LineaCard";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "flowbite-react";
 import { Link } from "react-router";
 import { convertirSegundos } from "@/helpers/conversorSegundos";
@@ -11,30 +11,56 @@ export const TableroGeneral = () => {
   //Inicializacion de los estados que se recibiran de la API
   const [estados, setEstados] = useState<any[]>([]);
 
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   //Funcion que hace peticion a la api y guarda la respuesta en el state estados
   const obtenerEstatus = async () => {
     const response = await axios.get(
       "http://localhost:3000/api/estatus/obtenerEstatus",
     );
 
-    setEstados(response.data.response);
+    const datosNuevos = response.data.response;
+    setEstados(datosNuevos);
+    let audioNuevo = "";
+
+    let max = 0;
+    datosNuevos.forEach((estado) => {
+      if (estado.prioridad > max) {
+        max = estado.prioridad;
+        audioNuevo = estado.cancion;
+      }
+    });
+
+    if (audioRef.current && audioNuevo) {
+      const nuevaRuta = `http://localhost:3000/uploads/${audioNuevo}`;
+
+      if (audioRef.current.src !== nuevaRuta) {
+        audioRef.current.src = nuevaRuta;
+        audioRef.current.loop = true;
+        audioRef.current.play().catch((e) => {
+          console.log(e);
+        });
+      } else {
+        console.log("Mismo audio");
+      }
+    }
 
     console.log(response.data);
   };
-
   //Hook que al cargar la pagina hace automaticamente la peticion a la api con la funcion obtenerEstatus
   useEffect(() => {
     obtenerEstatus();
     const loop = setInterval(() => {
       obtenerEstatus();
       console.log("Loop iniciado");
-    }, 10000);
+    }, 500);
 
     return () => clearInterval(loop);
   }, []);
 
   return (
     <>
+      <audio ref={audioRef} hidden></audio>
       <div className="align-center flex w-full flex-col items-center justify-center pt-5">
         <div className="flex flex-wrap justify-center">
           {estados.map((estado) => {

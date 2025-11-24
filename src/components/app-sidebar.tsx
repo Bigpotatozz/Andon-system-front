@@ -1,4 +1,12 @@
-import { ChartArea, Columns3Cog, Dice1, Dice6, Home } from "lucide-react";
+import {
+  Bolt,
+  ChartArea,
+  Columns3Cog,
+  Dice1,
+  Dice6,
+  FileChartColumnIcon,
+  Home,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -40,6 +48,16 @@ const items = [
     title: "Analisis",
     url: "/analisis",
     icon: ChartArea,
+  },
+  {
+    title: "Visualización general",
+    url: "/visualizacionGeneral",
+    icon: FileChartColumnIcon,
+  },
+  {
+    title: "Production ratio",
+    url: "/productionRatio",
+    icon: Bolt,
   },
 ];
 

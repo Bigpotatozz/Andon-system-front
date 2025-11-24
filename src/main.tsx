@@ -11,6 +11,8 @@ import { Menu } from "./menu/Menu.tsx";
 import { TableroGeneral } from "./tableroGeneral/TableroGeneral.tsx";
 import { TableroIndividual } from "./tableroIndividual/TableroIndividual.tsx";
 import Analisis from "./analisis/Analisis.tsx";
+import { ProductionRatio } from "./productionRatio/ProductionRatio.tsx";
+import VisualizacionGeneral from "./visualizacionGeneral/VisualizacionGeneral.tsx";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
       {
         path: "/analisis",
         element: <Analisis></Analisis>,
+      },
+      {
+        path: "/productionRatio",
+        element: <ProductionRatio></ProductionRatio>,
+      },
+      {
+        path: "/visualizacionGeneral",
+        element: <VisualizacionGeneral></VisualizacionGeneral>,
       },
     ],
   },

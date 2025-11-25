@@ -79,6 +79,14 @@ export const ProductionRatio = () => {
     }
   };
 
+  const resetTime = () => {
+    setTiempoLunch("");
+    setTiempoBreak("");
+    setTiempoParo("");
+    setTiempoPQ("");
+    setCicleTime("");
+  };
+
   return (
     <>
       <HeaderTurno turno="Primero turno"></HeaderTurno>
@@ -215,7 +223,14 @@ export const ProductionRatio = () => {
               Esta accion reseteara toda la información previamente puesta
             </p>
           </div>
-          <Button color="yellow">Resetear</Button>
+          <Button
+            color="yellow"
+            onClick={() => {
+              resetTime();
+            }}
+          >
+            Resetear
+          </Button>
         </div>
       </div>
     </>

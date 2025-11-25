@@ -1,24 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Plan } from "./components/Plan";
 import PlanSquare from "./components/PlanSquare";
+import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
 
 const VisualizacionGeneral = () => {
   return (
     <div>
-      <div className="flex items-center justify-between p-3">
-        <div className="turno">
-          <h2>
-            <strong className="text-3xl">Turno:</strong>
-          </h2>
-          <h2 className="text-2xl font-semibold text-amber-300">
-            Primer turno
-          </h2>
-        </div>
-        <div className="fecha">
-          <h3 className="text-xl text-lime-400">21/11/25</h3>
-          <h3 className="text-xl text-lime-400">09:28:11</h3>
-        </div>
-      </div>
+      <HeaderTurno turno="Primer turno"></HeaderTurno>
 
       <div className="flex justify-center">
         <Plan

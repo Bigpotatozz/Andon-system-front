@@ -1,3 +1,4 @@
+import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { TextInput, Button, Label } from "flowbite-react";
 import { useEffect, useState } from "react";
@@ -11,11 +12,52 @@ export const ConfigLineas = () => {
   const [lineas3, setLineas3] = useState(new Array(10).fill(0));
   const [lineasRegistradas, setLineasRegistradas] = useState<any[]>([]);
 
+  const [turnos, setTurnos] = useState([
+    { nombre: "", horaInicio: "", horaFin: "" },
+    { nombre: "", horaInicio: "", horaFin: "" },
+    { nombre: "", horaInicio: "", horaFin: "" },
+  ]);
+
   //Se declara un arreglo que agrupa las 3 columnas
   let lineasGeneral: number[] = [];
 
   //Se declara un arreglo que guarda los ids de las lineas previamente insertadas
   let idsLineas: number[] = [];
+
+  let turnosLimpios: any[] = [];
+
+  const actualizarNombreTurno = (
+    indice: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setTurnos((prev) => {
+      const arregloNuevo = [...prev];
+      arregloNuevo[indice].nombre = e.target.value;
+      return arregloNuevo;
+    });
+  };
+
+  const actualizarHoraInicioTurno = (
+    indice: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setTurnos((prev) => {
+      const arregloNuevo = [...prev];
+      arregloNuevo[indice].horaInicio = e.target.value;
+      return arregloNuevo;
+    });
+  };
+
+  const actualizarHoraFinTurno = (
+    indice: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setTurnos((prev) => {
+      const arregloNuevo = [...prev];
+      arregloNuevo[indice].horaFin = e.target.value;
+      return arregloNuevo;
+    });
+  };
 
   //Funcion que une todos los arreglos en el lineasGeneral y limpia los que esten vacios
   const unirArreglo = (
@@ -43,6 +85,14 @@ export const ConfigLineas = () => {
     setLineasRegistradas(response.data.lineas);
   };
 
+  const limpiarArregloTurnos = async () => {
+    turnosLimpios = turnos.filter(
+      (e) => e.nombre != "" || e.horaInicio != "" || e.horaFin != "",
+    );
+
+    console.log(turnosLimpios);
+  };
+
   useEffect(() => {
     obtenerLineasRegistradas();
   }, []);
@@ -54,10 +104,14 @@ export const ConfigLineas = () => {
   //Funcion que envia la peticion HTTP al servidor
   //Recibe como parametro el arreglo
   async function postLineas(lineasTotales: number[]) {
+    limpiarArregloTurnos();
+
+    console.log(turnosLimpios);
     //Realiza la peticion HTTP
     const response = await axios
       .post("http://localhost:3000/api/linea/crearLinea", {
         idsLineasProduccion: lineasTotales,
+        turnos: turnosLimpios,
       })
       .catch((error) => {
         console.log(error);
@@ -140,6 +194,64 @@ export const ConfigLineas = () => {
         </div>
 
         <div className="mb-8 rounded-lg bg-gray-800 p-6">
+          <h2 className="mb-4 text-xl font-bold text-white">
+            Configuracion de turnos
+          </h2>
+
+          {turnos.map((e, index) => {
+            return (
+              <div key={index}>
+                <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-3">
+                  <div>
+                    <Label htmlFor={`turno${index}`}>
+                      Nombre de turno {index + 1}:
+                    </Label>
+                    <Input
+                      id={`turno${index}`}
+                      type="text"
+                      value={e.nombre}
+                      onChange={(e) => {
+                        actualizarNombreTurno(index, e);
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="time-picker" className="px-1">
+                      Hora de inicio
+                    </Label>
+                    <Input
+                      value={e.horaInicio}
+                      onChange={(e) => {
+                        actualizarHoraInicioTurno(index, e);
+                      }}
+                      type="time"
+                      id="time-picker"
+                      step="1"
+                      className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="time-picker" className="px-1">
+                      Hora de fin
+                    </Label>
+                    <Input
+                      value={e.horaFin}
+                      onChange={(e) => {
+                        actualizarHoraFinTurno(index, e);
+                      }}
+                      type="time"
+                      id="time-picker"
+                      step="1"
+                      className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mb-8 rounded-lg bg-gray-800 p-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div>
               {lineas.map((_, idx) => (
@@ -189,6 +301,7 @@ export const ConfigLineas = () => {
               unirArreglo(lineas, lineas2, lineas3);
 
               //Valida que el arreglo contenga al menos una linea
+
               if (lineasGeneral.length <= 0) {
                 //Alerta en caso de que no
                 alert("Registra al menos una línea");
@@ -197,9 +310,10 @@ export const ConfigLineas = () => {
 
               //Agrega un timeOut para esperar a que las lineas se recompongan
               //Esto evita que las lineas las de en nullas debido al flujo en el que trabaja js
+
               setTimeout(() => {
                 //Manda la peticion
-                postLineas(lineasGeneral);
+                postLineas(lineasGeneral, turnosLimpios);
               }, 2000);
             }}
           >

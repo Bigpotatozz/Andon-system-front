@@ -1,35 +1,83 @@
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
+import axios from "axios";
 import { Button, TextInput } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const ProductionRatio = () => {
-  const [tiempoLunch, setTiempoLunch] = useState(0);
-  const [tiempoBreak, setTiempoBreak] = useState(0);
-  const [tiempoParo, setTiempoParo] = useState(0);
-  const [tiempoPQ, setTiempoPQ] = useState(0);
-  const [cicleTime, setCicleTime] = useState(0);
+  const [tiempoLunch, setTiempoLunch] = useState("");
+  const [tiempoBreak, setTiempoBreak] = useState("");
+  const [tiempoParo, setTiempoParo] = useState("");
+  const [tiempoPQ, setTiempoPQ] = useState("");
+  const [cicleTime, setCicleTime] = useState("");
 
-  //CODIGO PARA OBTENER LA FECHA
-  //Crea un nuevo estado con la fecha actual
-  const [fecha, setFecha] = useState(new Date().toLocaleDateString("en-GB"));
-  //Crea un estado con un string donde se guardara la hora
-  const [hora, setHora] = useState("");
-  //Se ejecuta un useEffect para que se realize al renderizar la pagina
+  const obtenerEstatus = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/estatus/obtenerEstatusProductionRatio",
+      );
+
+      response.data.response.forEach((e) => {
+        console.log(e);
+
+        switch (e.colorId) {
+          case 1011:
+            setTiempoLunch(e.tiempoDefinido);
+            break;
+          case 1012:
+            setTiempoBreak(e.tiempoDefinido);
+            break;
+          case 1013:
+            setTiempoParo(e.tiempoDefinido);
+            break;
+          case 1014:
+            setTiempoPQ(e.tiempoDefinido);
+            break;
+        }
+      });
+
+      console.log(response.data.response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    //Se crea un interval que se repite cada segundo
-    const intervalId = setInterval(() => {
-      //Se crea una nueva fecha
-      const date = new Date();
-      //Se pone la nueva fecha en el estado de fecha
-      setFecha(date.toLocaleDateString("en-GB"));
-      //A esa nueva fecha se le obtiene las horas, minutos y segundos y se pone como string
-      const tiempo = `${date.getHours()}: ${date.getMinutes()}: ${date.getSeconds()}`;
-      //Se establece el nuevo tiempo (hora)
-      setHora(tiempo);
-    }, 1000);
-    //Se limpia la memoria cuando el componente no se renderice
-    return () => clearInterval(intervalId);
+    obtenerEstatus();
   }, []);
+
+  const setTime = (
+    minuto: string,
+    setter: React.Dispatch<React.SetStateAction<string>>,
+  ) => {
+    const int = parseInt(minuto);
+    if (int > 59 || int < 0) {
+      alert("Valores no permitidos");
+    }
+    setter(`${int}`);
+  };
+
+  const updateProductionRatio = async (
+    tiempoLunch: string,
+    tiempoBreak: string,
+    tiempoParo: string,
+    tiempoPQ: string,
+  ) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:3000/api/linea/actualizarProductionRatio",
+        {
+          lunch: tiempoLunch,
+          descanso: tiempoBreak,
+          paro: tiempoParo,
+          kyt: tiempoPQ,
+        },
+      );
+
+      alert("Production ratio actualizado");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -39,7 +87,7 @@ export const ProductionRatio = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-semibold text-white">
-              Registro de tiempos
+              Registro de tiempos (min)
             </h2>
           </div>
           <div
@@ -47,7 +95,14 @@ export const ProductionRatio = () => {
             style={{ width: "fit-content" }}
           >
             <p>Cicle time (seg):</p>
-            <TextInput type="number" style={{ width: "80px" }} />
+            <TextInput
+              type="number"
+              style={{ width: "80px" }}
+              value={cicleTime}
+              onChange={(e) => {
+                setTime(e.target.value, setCicleTime);
+              }}
+            />
           </div>
         </div>
 
@@ -56,32 +111,67 @@ export const ProductionRatio = () => {
             <p className="mb-2 text-lg font-semibold">
               Establece el tiempo de lunch:
             </p>
-            <TextInput type="number" />
+            <TextInput
+              type="number"
+              value={tiempoLunch}
+              onChange={(e) => {
+                setTime(e.target.value, setTiempoLunch);
+              }}
+            />
           </div>
           <div className="text-start">
             <p className="mb-2 text-lg font-semibold">
               Establece el tiempo de break:
             </p>
-            <TextInput type="number" />
+            <TextInput
+              type="number"
+              value={tiempoBreak}
+              onChange={(e) => {
+                setTime(e.target.value, setTiempoBreak);
+              }}
+            />
           </div>
 
           <div className="text-start">
             <p className="mb-2 text-lg font-semibold">
               Establece el tiempo de paro:
             </p>
-            <TextInput type="number" />
+            <TextInput
+              value={tiempoParo}
+              type="number"
+              onChange={(e) => {
+                setTime(e.target.value, setTiempoParo);
+              }}
+            />
           </div>
 
           <div className="text-start">
             <p className="mb-2 text-lg font-semibold">
               Establece el tiempo PQ Time / KYT:
             </p>
-            <TextInput type="number" />
+            <TextInput
+              type="number"
+              value={tiempoPQ}
+              onChange={(e) => {
+                setTime(e.target.value, setTiempoPQ);
+              }}
+            />
           </div>
         </div>
 
         <div className="mt-8">
-          <Button color="green" style={{ width: "100%" }}>
+          <Button
+            color="green"
+            style={{ width: "100%" }}
+            onClick={() => {
+              updateProductionRatio(
+                tiempoLunch,
+                tiempoBreak,
+                tiempoParo,
+                tiempoPQ,
+              );
+            }}
+          >
             Guardar
           </Button>
         </div>

@@ -19,7 +19,7 @@ export const HeaderTurno = ({ turno }: FechaProps) => {
       //Se pone la nueva fecha en el estado de fecha
       setFecha(date.toLocaleDateString("en-GB"));
       //A esa nueva fecha se le obtiene las horas, minutos y segundos y se pone como string
-      const tiempo = `${date.getHours()}: ${date.getMinutes()}: ${date.getSeconds()}`;
+      const tiempo = `${date.getHours().toString().padStart(2, "0")}: ${date.getMinutes().toString().padStart(2, "0")}: ${date.getSeconds().toString().padStart(2, "0")}`;
       //Se establece el nuevo tiempo (hora)
       setHora(tiempo);
     }, 1000);

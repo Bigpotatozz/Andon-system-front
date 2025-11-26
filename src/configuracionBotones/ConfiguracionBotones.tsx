@@ -75,7 +75,7 @@ export const ConfiguracionBotones = () => {
     //Define el cuerpo de la peticion
     const reqBody = {
       colores: colores,
-      idsLineasProduccion: estacionesIds,
+      idsEstaciones: estacionesIds,
     };
 
     //Crea un nuevo formData para meter los datos a registrar

@@ -41,6 +41,21 @@ export const ProductionRatio = () => {
     }
   };
 
+  const activarEstatus = async (colorId: number) => {
+    const response = await axios.post(
+      "http://localhost:3000/api/estatus/activarEstatus",
+      {
+        colorId: colorId,
+      },
+    );
+
+    if (response.status === 200) {
+      alert("Estatus activado");
+    } else {
+      alert("Error al activar estatus");
+    }
+  };
+
   useEffect(() => {
     obtenerEstatus();
   }, []);
@@ -126,6 +141,18 @@ export const ProductionRatio = () => {
                 setTime(e.target.value, setTiempoLunch);
               }}
             />
+
+            <div className="mt-2 w-full">
+              <Button
+                style={{ background: "#F5C857", color: "black" }}
+                className="w-full"
+                onClick={() => {
+                  activarEstatus(1011);
+                }}
+              >
+                Lunch
+              </Button>
+            </div>
           </div>
           <div className="text-start">
             <p className="mb-2 text-lg font-semibold">
@@ -138,6 +165,18 @@ export const ProductionRatio = () => {
                 setTime(e.target.value, setTiempoBreak);
               }}
             />
+
+            <div className="mt-2 w-full">
+              <Button
+                className="w-full"
+                style={{ background: "#FF9013" }}
+                onClick={() => {
+                  activarEstatus(1012);
+                }}
+              >
+                Break
+              </Button>
+            </div>
           </div>
 
           <div className="text-start">
@@ -151,6 +190,18 @@ export const ProductionRatio = () => {
                 setTime(e.target.value, setTiempoParo);
               }}
             />
+
+            <div className="mt-2 w-full">
+              <Button
+                color="red"
+                className="w-full"
+                onClick={() => {
+                  activarEstatus(1013);
+                }}
+              >
+                Paro
+              </Button>
+            </div>
           </div>
 
           <div className="text-start">
@@ -164,6 +215,18 @@ export const ProductionRatio = () => {
                 setTime(e.target.value, setTiempoPQ);
               }}
             />
+
+            <div className="mt-2 w-full">
+              <Button
+                style={{ background: "#08CB00" }}
+                className="w-full"
+                onClick={() => {
+                  activarEstatus(1014);
+                }}
+              >
+                PQ Time
+              </Button>
+            </div>
           </div>
         </div>
 

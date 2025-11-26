@@ -8,9 +8,9 @@ import { LineaCard } from "../tableroGeneral/components/LineaCard";
 
 export const ConfiguracionBotones = () => {
   //Accede al arreglo de ids previamente guardados en el localStorage
-  let lineasIds = localStorage.getItem("idsLineas");
+  let estacionesIds = localStorage.getItem("idsEstaciones");
   //Las parsea para poder usarlas
-  lineasIds = lineasIds ? JSON.parse(lineasIds) : [];
+  estacionesIds = estacionesIds ? JSON.parse(estacionesIds) : [];
   //Estado de navegacion
   const navegacion = useNavigate();
   //Declara un arreglo Files que es donde iran las canciones (hook)
@@ -75,7 +75,7 @@ export const ConfiguracionBotones = () => {
     //Define el cuerpo de la peticion
     const reqBody = {
       colores: colores,
-      idsLineasProduccion: lineasIds,
+      idsLineasProduccion: estacionesIds,
     };
 
     //Crea un nuevo formData para meter los datos a registrar
@@ -101,7 +101,7 @@ export const ConfiguracionBotones = () => {
       });
 
     if (response) {
-      navegacion("/tableroGeneral");
+      //navegacion("/tableroGeneral");
     } else {
       alert("Error al registrar estatus");
     }

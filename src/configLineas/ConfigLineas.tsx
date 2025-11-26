@@ -22,7 +22,7 @@ export const ConfigLineas = () => {
   let lineasGeneral: number[] = [];
 
   //Se declara un arreglo que guarda los ids de las lineas previamente insertadas
-  let idsLineas: number[] = [];
+  let idsEstaciones: number[] = [];
 
   let turnosLimpios: any[] = [];
 
@@ -110,7 +110,7 @@ export const ConfigLineas = () => {
     //Realiza la peticion HTTP
     const response = await axios
       .post("http://localhost:3000/api/linea/crearLinea", {
-        idsLineasProduccion: lineasTotales,
+        estaciones: lineasTotales,
         turnos: turnosLimpios,
       })
       .catch((error) => {
@@ -122,10 +122,10 @@ export const ConfigLineas = () => {
     if (response) {
       //La respuesta ([1,2,4,5,6]) que son los ids de las lineas
       //recien insertadas la guarda en el arreglo previamente realizado
-      idsLineas = response.data.idsLineas;
+      idsEstaciones = response.data.idsEstaciones;
 
       //Guarda el arreglo en el localStorage para poder ser usado despues
-      localStorage.setItem("idsLineas", JSON.stringify(idsLineas));
+      localStorage.setItem("idsEstaciones", JSON.stringify(idsEstaciones));
       navegacion("/configuracionBotones");
     } else {
       alert("Error al registrar las estaciones");

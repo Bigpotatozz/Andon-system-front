@@ -101,7 +101,7 @@ export const ConfiguracionBotones = () => {
       });
 
     if (response) {
-      //navegacion("/tableroGeneral");
+      navegacion("/tableroGeneral");
     } else {
       alert("Error al registrar estatus");
     }

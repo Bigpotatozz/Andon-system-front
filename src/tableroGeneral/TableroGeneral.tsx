@@ -39,6 +39,19 @@ export const TableroGeneral = () => {
       }
     });
 
+    console.log(audioNuevo);
+
+    if (!audioNuevo) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.src = "";
+      return;
+    }
+
+    if (!audioRef.current || !audioNuevo) {
+      return;
+    }
+
     //Si existe un audio en audioRef y si audioNuevo tiene algo
     if (audioRef.current && audioNuevo) {
       //Reconstruye una nueva ruta

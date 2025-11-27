@@ -81,8 +81,8 @@ export const TableroGeneral = () => {
           {estados.map((estado) => {
             return (
               <LineaCard
-                key={estado.idLineaProduccion}
-                nombre={estado.idLineaProduccion}
+                key={estado.idEstacion}
+                nombre={estado.idEstacion}
                 estatus={estado.estatusActual ?? 0}
                 tiempo={convertirSegundos(estado.total ?? 0)}
                 color={estado.color}

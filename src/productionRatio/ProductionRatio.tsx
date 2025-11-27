@@ -56,6 +56,18 @@ export const ProductionRatio = () => {
     }
   };
 
+  const resetearProduccion = async () => {
+    const response = await axios.post(
+      "http://localhost:3000/api/historico/reset",
+    );
+
+    if (response.status === 200) {
+      alert("Produccion reseteado correctamente");
+    } else {
+      alert("Error al resetear produccion");
+    }
+  };
+
   useEffect(() => {
     obtenerEstatus();
   }, []);
@@ -258,7 +270,9 @@ export const ProductionRatio = () => {
               Esta acción eliminará todos los datos actuales
             </p>
           </div>
-          <Button color="red">Resetear</Button>
+          <Button color="red" onClick={resetearProduccion}>
+            Resetear
+          </Button>
         </div>
       </div>
 

@@ -176,10 +176,10 @@ export const ConfigLineas = () => {
                       className="hover:bg-gray-750 bg-gray-800 transition-colors"
                     >
                       <td className="px-6 py-4 font-medium">
-                        {linea.idLineaProduccion}
+                        {linea.idEstacion}
                       </td>
                       <td className="px-6 py-4 font-medium">
-                        {`Estacion: ${linea.idLineaProduccion}`}
+                        {`Estacion: ${linea.idEstacion}`}
                       </td>
                     </tr>
                   ))}

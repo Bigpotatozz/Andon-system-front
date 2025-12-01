@@ -1,4 +1,3 @@
-import axios from "axios";
 import { LineaCard } from "./components/LineaCard";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "flowbite-react";

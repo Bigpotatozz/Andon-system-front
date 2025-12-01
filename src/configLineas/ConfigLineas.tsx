@@ -313,7 +313,7 @@ export const ConfigLineas = () => {
 
               setTimeout(() => {
                 //Manda la peticion
-                postLineas(lineasGeneral, turnosLimpios);
+                postLineas(lineasGeneral);
               }, 2000);
             }}
           >

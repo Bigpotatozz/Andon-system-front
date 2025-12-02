@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import * as XLSX from "xlsx";
 import {
   Table,
   TableBody,
@@ -36,6 +37,23 @@ const TablaGeneral = () => {
     setLineasRegistradas(response.data.lineas);
   };
 
+  const exportarExcel = () => {
+    const datosFormateados = [
+      ["ID", "NOMBRE", "NUMERO DE VECES", "COLOR", "TIEMPO TOTAL"],
+      ...estaciones.map((estacion) => [
+        estacion.idEstacion,
+        estacion.nombre,
+        estacion.contador,
+        estacion.color,
+        convertirSegundos(estacion.total),
+      ]),
+    ];
+
+    const hojaExcel = XLSX.utils.aoa_to_sheet(datosFormateados);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, hojaExcel, "Hoja1");
+    XLSX.writeFile(workbook, "estaciones.xlsx");
+  };
   useEffect(() => {
     obtenerTiempos(estacionSeleccionada);
     obtenerEstacionesRegistradas();
@@ -46,23 +64,39 @@ const TablaGeneral = () => {
   }, [estacionSeleccionada]);
   return (
     <div>
-      <div className="mb-5 flex justify-end gap-3">
-        <Dropdown label="Dropdown button" dismissOnClick={true}>
-          {lineasRegistradas.map((estacion, index) => {
-            return (
-              <DropdownItem
-                key={index}
-                onClick={() => {
-                  setEstacionSeleccionada(estacion.idEstacion);
-                }}
-              >
-                {estacion.nombre}
-              </DropdownItem>
-            );
-          })}
-        </Dropdown>
-        <Button color="green">Exportar a excel</Button>
+      <div className="mb-5 flex items-center justify-between">
+        <div>
+          <h1 className="p-3">
+            <strong className="text-white">
+              {`Tiempos de estacion ${estacionSeleccionada}`}
+            </strong>
+          </h1>
+        </div>
+        <div className="mb-5 flex justify-end gap-3">
+          <Dropdown
+            className="max-h-60 overflow-y-auto"
+            label="Dropdown button"
+            dismissOnClick={true}
+          >
+            {lineasRegistradas.map((estacion, index) => {
+              return (
+                <DropdownItem
+                  key={index}
+                  onClick={() => {
+                    setEstacionSeleccionada(estacion.idEstacion);
+                  }}
+                >
+                  {estacion.nombre}
+                </DropdownItem>
+              );
+            })}
+          </Dropdown>
+          <Button color="green" onClick={exportarExcel}>
+            Exportar a excel
+          </Button>
+        </div>
       </div>
+
       <Table>
         <TableCaption>Lista de tus estaciones</TableCaption>
         <TableHeader>

@@ -90,7 +90,7 @@ export const TableroGeneral = () => {
             return (
               <LineaCard
                 key={estado.idEstacion}
-                nombre={estado.idEstacion}
+                nombre={estado.nombreEstacion}
                 estatus={estado.estatusActual ?? 0}
                 tiempo={convertirSegundos(estado.total ?? 0)}
                 color={estado.color}

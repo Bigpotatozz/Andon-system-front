@@ -7,9 +7,9 @@ import { useNavigate } from "react-router";
 export const ConfigLineas = () => {
   const navegacion = useNavigate();
   //Se declaran los arreglos de las 3 columnas
-  const [lineas, setLineas] = useState(new Array(10).fill(0));
-  const [lineas2, setLineas2] = useState(new Array(10).fill(0));
-  const [lineas3, setLineas3] = useState(new Array(10).fill(0));
+  const [lineas, setLineas] = useState(new Array(10).fill(""));
+  const [lineas2, setLineas2] = useState(new Array(10).fill(""));
+  const [lineas3, setLineas3] = useState(new Array(10).fill(""));
   const [lineasRegistradas, setLineasRegistradas] = useState<any[]>([]);
 
   const [turnos, setTurnos] = useState([
@@ -19,7 +19,7 @@ export const ConfigLineas = () => {
   ]);
 
   //Se declara un arreglo que agrupa las 3 columnas
-  let lineasGeneral: number[] = [];
+  let lineasGeneral: string[] = [];
 
   //Se declara un arreglo que guarda los ids de las lineas previamente insertadas
   let idsEstaciones: number[] = [];
@@ -61,13 +61,13 @@ export const ConfigLineas = () => {
 
   //Funcion que une todos los arreglos en el lineasGeneral y limpia los que esten vacios
   const unirArreglo = (
-    lineas1: number[],
-    lineas2: number[],
-    lineas3: number[],
+    lineas1: string[],
+    lineas2: string[],
+    lineas3: string[],
   ) => {
-    const lineasLimpias1 = lineas1.filter((e) => e != 0);
-    const lineasLimpias2 = lineas2.filter((e) => e != 0);
-    const lineasLimpias3 = lineas3.filter((e) => e != 0);
+    const lineasLimpias1 = lineas1.filter((e) => e != "");
+    const lineasLimpias2 = lineas2.filter((e) => e != "");
+    const lineasLimpias3 = lineas3.filter((e) => e != "");
 
     const arregloUnido = [
       ...lineasLimpias1,
@@ -103,7 +103,7 @@ export const ConfigLineas = () => {
 
   //Funcion que envia la peticion HTTP al servidor
   //Recibe como parametro el arreglo
-  async function postLineas(lineasTotales: number[]) {
+  async function postLineas(lineasTotales: string[]) {
     limpiarArregloTurnos();
 
     console.log(turnosLimpios);
@@ -136,11 +136,11 @@ export const ConfigLineas = () => {
   const agregarLinea = (
     e: React.ChangeEvent<HTMLInputElement>, //Elemento HTML con el id de la linea nueva
     indice: number, //Indice de la linea
-    setLineaParametro: React.Dispatch<React.SetStateAction<number[]>>, //Setter del estado de las lineas generales
-    linea: number[], //Arreglo de lineas general
+    setLineaParametro: React.Dispatch<React.SetStateAction<string[]>>, //Setter del estado de las lineas generales
+    linea: string[], //Arreglo de lineas general
   ) => {
     const lineasModificadas = [...linea]; //Declara un nuevo arreglo y le hace una copia
-    lineasModificadas[indice] = parseInt(e.target.value); //Parsea el elemento a un entero
+    lineasModificadas[indice] = e.target.value; //Parsea el elemento a un entero
     setLineaParametro(lineasModificadas); //Setea el nuevo arreglo
   };
 
@@ -179,7 +179,7 @@ export const ConfigLineas = () => {
                         {linea.idEstacion}
                       </td>
                       <td className="px-6 py-4 font-medium">
-                        {`Estacion: ${linea.idEstacion}`}
+                        {`Estacion: ${linea.nombre}`}
                       </td>
                     </tr>
                   ))}
@@ -259,7 +259,7 @@ export const ConfigLineas = () => {
                   <Label htmlFor={`linea1-${idx}`}>Estación {idx + 1}:</Label>
                   <TextInput
                     id={`linea1-${idx}`}
-                    type="number"
+                    type="text"
                     onChange={(e) => agregarLinea(e, idx, setLineas, lineas)}
                   />
                 </div>
@@ -272,7 +272,7 @@ export const ConfigLineas = () => {
                   <Label htmlFor={`linea2-${idx}`}>Estación {idx + 1}:</Label>
                   <TextInput
                     id={`linea2-${idx}`}
-                    type="number"
+                    type="text"
                     onChange={(e) => agregarLinea(e, idx, setLineas2, lineas2)}
                   />
                 </div>
@@ -285,7 +285,7 @@ export const ConfigLineas = () => {
                   <Label htmlFor={`linea3-${idx}`}>Estación {idx + 1}:</Label>
                   <TextInput
                     id={`linea3-${idx}`}
-                    type="number"
+                    type="text"
                     onChange={(e) => agregarLinea(e, idx, setLineas3, lineas3)}
                   />
                 </div>
@@ -313,6 +313,8 @@ export const ConfigLineas = () => {
 
               setTimeout(() => {
                 //Manda la peticion
+
+                console.log(lineasGeneral);
                 postLineas(lineasGeneral);
               }, 2000);
             }}

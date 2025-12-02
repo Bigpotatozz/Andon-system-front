@@ -6,6 +6,7 @@ import {
   Dice6,
   FileChartColumnIcon,
   Home,
+  Table,
 } from "lucide-react";
 
 import {
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { title } from "process";
 
 // Menu items.
 const items = [
@@ -58,6 +60,11 @@ const items = [
     title: "Production ratio",
     url: "/productionRatio",
     icon: Bolt,
+  },
+  {
+    title: "Tabla general",
+    url: "/tablaGeneral",
+    icon: Table,
   },
 ];
 

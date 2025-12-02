@@ -13,6 +13,7 @@ import { TableroIndividual } from "./tableroIndividual/TableroIndividual.tsx";
 import Analisis from "./analisis/Analisis.tsx";
 import { ProductionRatio } from "./productionRatio/ProductionRatio.tsx";
 import VisualizacionGeneral from "./visualizacionGeneral/VisualizacionGeneral.tsx";
+import TablaGeneral from "./tablaGeneral/TablaGeneral.tsx";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
         path: "/visualizacionGeneral",
         element: <VisualizacionGeneral></VisualizacionGeneral>,
       },
+      { path: "/tablaGeneral", element: <TablaGeneral></TablaGeneral> },
     ],
   },
 ]);

@@ -3,7 +3,7 @@ class ObtenerEstacionesRegistradas {
 }
 
 class Lineas {
-  constructor(idEstacion: number) {}
+  constructor(idEstacion: number, nombre: string) {}
 }
 
 export default ObtenerEstacionesRegistradas;

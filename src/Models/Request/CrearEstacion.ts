@@ -1,3 +1,4 @@
+/*
 class CrearEstacion {
   constructor(estaciones: number[], turnos: Turnos[]) {}
 }
@@ -7,3 +8,4 @@ class Turnos {
 }
 
 export default CrearEstacion;
+*/

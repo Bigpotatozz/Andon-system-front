@@ -1,3 +1,4 @@
+/*
 class CrearEstatus {
   constructor(colores: Color[], idsLineasProduccion: string[]) {}
 }
@@ -7,3 +8,4 @@ class Color {
 }
 
 export default CrearEstatus;
+*/

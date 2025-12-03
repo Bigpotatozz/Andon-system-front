@@ -1,3 +1,4 @@
+/*
 class ObtenerEstatusR {
   constructor(
     idEstacion: number,
@@ -21,3 +22,4 @@ class ObtenerEstatusR {
 }
 
 export default ObtenerEstatusR;
+*/

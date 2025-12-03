@@ -1,3 +1,4 @@
+/*
 class ObtenerEstatusProductionRatioR {
   constructor(
     idEstatus: number,
@@ -12,3 +13,4 @@ class ObtenerEstatusProductionRatioR {
 }
 
 export default ObtenerEstatusProductionRatioR;
+*/

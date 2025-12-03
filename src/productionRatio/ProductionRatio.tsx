@@ -16,24 +16,26 @@ export const ProductionRatio = () => {
         "http://localhost:3000/api/estatus/obtenerEstatusProductionRatio",
       );
 
-      response.data.response.forEach((e) => {
-        console.log(e);
+      response.data.response.forEach(
+        (e: { colorId: number; tiempoDefinido: string }) => {
+          console.log(e);
 
-        switch (e.colorId) {
-          case 1011:
-            setTiempoLunch(e.tiempoDefinido);
-            break;
-          case 1012:
-            setTiempoBreak(e.tiempoDefinido);
-            break;
-          case 1013:
-            setTiempoParo(e.tiempoDefinido);
-            break;
-          case 1014:
-            setTiempoPQ(e.tiempoDefinido);
-            break;
-        }
-      });
+          switch (e.colorId) {
+            case 1011:
+              setTiempoLunch(e.tiempoDefinido);
+              break;
+            case 1012:
+              setTiempoBreak(e.tiempoDefinido);
+              break;
+            case 1013:
+              setTiempoParo(e.tiempoDefinido);
+              break;
+            case 1014:
+              setTiempoPQ(e.tiempoDefinido);
+              break;
+          }
+        },
+      );
 
       console.log(response.data.response);
     } catch (error) {

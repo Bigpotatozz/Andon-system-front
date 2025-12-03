@@ -1,3 +1,4 @@
+/*
 class ObtenerEstacionesRegistradas {
   constructor(lineas: Lineas[]) {}
 }
@@ -7,3 +8,4 @@ class Lineas {
 }
 
 export default ObtenerEstacionesRegistradas;
+*/

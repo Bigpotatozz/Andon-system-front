@@ -24,7 +24,14 @@ const TablaGeneral = () => {
 
   const [estaciones, setEstaciones] = useState<Estacion[]>([]);
 
-  const [lineasRegistradas, setLineasRegistradas] = useState([]);
+  interface LineaRegistrada {
+    idEstacion: number;
+    nombre: string;
+  }
+
+  const [lineasRegistradas, setLineasRegistradas] = useState<LineaRegistrada[]>(
+    [],
+  );
   const [estacionSeleccionada, setEstacionSeleccionada] = useState(1);
 
   const obtenerTiempos = async (id: number) => {

@@ -29,7 +29,7 @@ export const TableroGeneral = () => {
       let audioNuevo = "";
       let max = 0;
 
-      data.forEach((estado) => {
+      data.forEach((estado: any) => {
         //Verifica si es mayor
         if (estado.prioridad > max) {
           //Si es mayor lo asigna a max y le da ese valor a la variable que contendra la cancion
@@ -38,16 +38,16 @@ export const TableroGeneral = () => {
         }
       });
 
+      if (!audioRef.current) {
+        return;
+      }
+
       console.log(audioNuevo);
 
       if (!audioNuevo) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
         audioRef.current.src = "";
-        return;
-      }
-
-      if (!audioRef.current || !audioNuevo) {
         return;
       }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import {
   Table,
@@ -14,7 +14,16 @@ import axios from "axios";
 import { convertirSegundos } from "@/helpers/conversorSegundos";
 
 const TablaGeneral = () => {
-  const [estaciones, setEstaciones] = useState([]);
+  interface Estacion {
+    idEstacion: number;
+    nombre: string;
+    contador: number;
+    color: string;
+    total: number;
+  }
+
+  const [estaciones, setEstaciones] = useState<Estacion[]>([]);
+
   const [lineasRegistradas, setLineasRegistradas] = useState([]);
   const [estacionSeleccionada, setEstacionSeleccionada] = useState(1);
 

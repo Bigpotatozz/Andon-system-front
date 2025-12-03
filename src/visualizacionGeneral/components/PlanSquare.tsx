@@ -1,5 +1,3 @@
-import React from "react";
-
 type PlanSquareProps = {
   numero: string;
   color: string;

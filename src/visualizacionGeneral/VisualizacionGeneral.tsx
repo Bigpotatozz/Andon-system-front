@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Plan } from "./components/Plan";
 import PlanSquare from "./components/PlanSquare";
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";

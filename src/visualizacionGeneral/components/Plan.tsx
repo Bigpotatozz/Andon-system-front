@@ -1,5 +1,3 @@
-import React from "react";
-
 type PlanProps = {
   texto1: string;
   texto2: string;

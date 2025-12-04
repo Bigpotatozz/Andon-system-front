@@ -4,4 +4,8 @@ const URL = "http://localhost:3000/";
 
 export const socket = io(URL, {
   autoConnect: true,
+  transports: ["websocket"],
+  upgrade: false,
+  reconnectionDelayMax: 10000,
+  reconnectionAttempts: 5,
 });

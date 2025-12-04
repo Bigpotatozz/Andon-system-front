@@ -1,6 +1,7 @@
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
 import axios from "axios";
 import { Button, TextInput } from "flowbite-react";
+import { parse } from "path";
 import React, { useEffect, useState } from "react";
 
 export const ProductionRatio = () => {
@@ -8,7 +9,7 @@ export const ProductionRatio = () => {
   const [tiempoBreak, setTiempoBreak] = useState("");
   const [tiempoParo, setTiempoParo] = useState("");
   const [tiempoPQ, setTiempoPQ] = useState("");
-  const [cicleTime, setCicleTime] = useState("");
+  const [cicleTime, setCicleTime] = useState(0);
 
   const obtenerEstatus = async () => {
     try {
@@ -90,6 +91,8 @@ export const ProductionRatio = () => {
     tiempoBreak: string,
     tiempoParo: string,
     tiempoPQ: string,
+    turno: number,
+    cicleTime: number,
   ) => {
     try {
       await axios.put(
@@ -99,6 +102,8 @@ export const ProductionRatio = () => {
           descanso: tiempoBreak,
           paro: tiempoParo,
           kyt: tiempoPQ,
+          turno: turno,
+          cicleTime: cicleTime,
         },
       );
 
@@ -113,7 +118,7 @@ export const ProductionRatio = () => {
     setTiempoBreak("");
     setTiempoParo("");
     setTiempoPQ("");
-    setCicleTime("");
+    setCicleTime(0);
   };
 
   return (
@@ -137,7 +142,8 @@ export const ProductionRatio = () => {
               style={{ width: "80px" }}
               value={cicleTime}
               onChange={(e) => {
-                setTime(e.target.value, setCicleTime);
+                const numero = parseInt(e.target.value);
+                setCicleTime(numero);
               }}
             />
           </div>
@@ -249,11 +255,19 @@ export const ProductionRatio = () => {
             color="green"
             style={{ width: "100%" }}
             onClick={() => {
+              if (isNaN(cicleTime) || cicleTime <= 0) {
+                alert("Ingresa un numero valido");
+                return;
+              }
+
+              localStorage.setItem("cicleTime", `${cicleTime}`);
               updateProductionRatio(
                 tiempoLunch,
                 tiempoBreak,
                 tiempoParo,
                 tiempoPQ,
+                1,
+                cicleTime,
               );
             }}
           >

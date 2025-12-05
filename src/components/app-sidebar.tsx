@@ -41,11 +41,6 @@ const items = [
     icon: Dice6,
   },
   {
-    title: "Tablero de estacion",
-    url: "/tableroLinea/:idLinea",
-    icon: Dice1,
-  },
-  {
     title: "Analisis",
     url: "/analisis",
     icon: ChartArea,

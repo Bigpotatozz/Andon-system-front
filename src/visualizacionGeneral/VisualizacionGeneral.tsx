@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Plan } from "./components/Plan";
 import PlanSquare from "./components/PlanSquare";
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
@@ -11,17 +11,25 @@ const VisualizacionGeneral = () => {
   const [planHora, setPlanHora] = useState(0);
   const [cicleTime, setCicleTime] = useState(0);
   const [planAcumulado, setPlanAcumulado] = useState(0);
+  const [realHora, setRealHora] = useState(0);
 
   const [inicioTurno, setInicioTurno] = useState(null);
+
   const obtenerProductionRatio = async () => {
     const response = await axios.get(
-      "http://localhost:3000/api/estatus/obtenerProductionRatio",
+      "http://localhost:3000/api/turno/obtenerProductionRatio",
     );
 
     setPlanHora(response.data.productionRatio[0].objetivoProduccion);
+    setRealHora(response.data.productionRatio[0].progresoProduccion);
 
     setCicleTime(
       Math.round(3600 / response.data.productionRatio[0].objetivoProduccion),
+    );
+
+    convertirTime(
+      response.data.productionRatio[0].horaInicio,
+      response.data.productionRatio[0].objetivoProduccion,
     );
     console.log(response.data.productionRatio[0]);
   };
@@ -37,10 +45,31 @@ const VisualizacionGeneral = () => {
     setColor(response.data.response[0].color);
   };
 
+  const convertirTime = (time: string, planHora: number) => {
+    const ahora = new Date();
+    const [horas, minutos, segundos] = time.split(":").map(Number);
+
+    const turnoInicioCompleto = new Date(
+      ahora.getFullYear(),
+      ahora.getMonth(),
+      ahora.getDate(),
+      horas,
+      minutos,
+      segundos,
+    );
+
+    const horasTranscurridas =
+      (ahora.getTime() - turnoInicioCompleto.getTime()) / (1000 * 60 * 60);
+
+    console.log(horasTranscurridas);
+    setPlanAcumulado(Math.floor(planHora * horasTranscurridas));
+  };
+
   useEffect(() => {
     obtenerEstatus();
     const loop = setInterval(() => {
       obtenerProductionRatio();
+      console.log(planAcumulado);
       obtenerEstatus();
       console.log("Loop iniciado");
     }, 1000);
@@ -48,14 +77,6 @@ const VisualizacionGeneral = () => {
     return () => clearInterval(loop);
   }, []);
 
-  useEffect(() => {
-    const planAcumuladoInterval = setInterval(() => {
-      setPlanAcumulado((prev) => prev + 1);
-
-      console.log(planAcumulado);
-    }, cicleTime * 1000);
-    return () => clearInterval(planAcumuladoInterval);
-  }, [cicleTime]);
   return (
     <div>
       <HeaderTurno turno="Primer turno"></HeaderTurno>
@@ -79,13 +100,13 @@ const VisualizacionGeneral = () => {
         <Plan
           texto1="REAL"
           texto2="HORA"
-          contador={`00029`}
+          contador={`${realHora}`}
           color="#FFFFFF"
         ></Plan>
         <Plan
           texto1="REAL"
           texto2="ACUMULADO"
-          contador={`00029`}
+          contador={`${realHora}`}
           color="#FFFFFF"
         ></Plan>
       </div>

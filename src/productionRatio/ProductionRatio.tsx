@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, TextInput } from "flowbite-react";
 import { parse } from "path";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 export const ProductionRatio = () => {
   const [tiempoLunch, setTiempoLunch] = useState("");
@@ -10,6 +11,8 @@ export const ProductionRatio = () => {
   const [tiempoParo, setTiempoParo] = useState("");
   const [tiempoPQ, setTiempoPQ] = useState("");
   const [cicleTime, setCicleTime] = useState(0);
+
+  const navigation = useNavigate();
 
   const obtenerEstatus = async () => {
     try {
@@ -168,6 +171,7 @@ export const ProductionRatio = () => {
                 className="w-full"
                 onClick={() => {
                   activarEstatus(1011);
+                  navigation("/visualizacionGeneral");
                 }}
               >
                 Lunch
@@ -192,6 +196,7 @@ export const ProductionRatio = () => {
                 style={{ background: "#FF9013" }}
                 onClick={() => {
                   activarEstatus(1012);
+                  navigation("/visualizacionGeneral");
                 }}
               >
                 Break
@@ -217,6 +222,7 @@ export const ProductionRatio = () => {
                 className="w-full"
                 onClick={() => {
                   activarEstatus(1013);
+                  navigation("/visualizacionGeneral");
                 }}
               >
                 Paro
@@ -242,6 +248,7 @@ export const ProductionRatio = () => {
                 className="w-full"
                 onClick={() => {
                   activarEstatus(1014);
+                  navigation("/visualizacionGeneral");
                 }}
               >
                 PQ Time

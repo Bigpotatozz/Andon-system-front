@@ -5,6 +5,8 @@ import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
 import axios from "axios";
 
 const VisualizacionGeneral = () => {
+  const [turno, setTurno] = useState(0);
+  const [turnoNombre, setTurnoNombre] = useState("");
   const [estatus, setEstatus] = useState(null);
   const [color, setColor] = useState("");
 
@@ -14,6 +16,17 @@ const VisualizacionGeneral = () => {
   const [realHora, setRealHora] = useState(0);
 
   const [inicioTurno, setInicioTurno] = useState(null);
+
+  const obtenerTurno = async () => {
+    const response = await axios.get(
+      "http://localhost:3000/api/turno/obtenerTurno",
+    );
+
+    console.log("TURNO///////////////////////////");
+    console.log(response.data.turno[0]);
+    setTurno(response.data.turno[0]);
+    setTurnoNombre(response.data.turno[0].nombreTurno);
+  };
 
   const obtenerProductionRatio = async () => {
     const response = await axios.get(
@@ -66,6 +79,7 @@ const VisualizacionGeneral = () => {
   };
 
   useEffect(() => {
+    obtenerTurno();
     obtenerEstatus();
     const loop = setInterval(() => {
       obtenerProductionRatio();
@@ -79,7 +93,7 @@ const VisualizacionGeneral = () => {
 
   return (
     <div>
-      <HeaderTurno turno="Primer turno"></HeaderTurno>
+      <HeaderTurno turno={turnoNombre}></HeaderTurno>
 
       <div className="flex justify-center">
         <Plan

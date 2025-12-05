@@ -33,6 +33,15 @@ const TablaGeneral = () => {
     [],
   );
   const [estacionSeleccionada, setEstacionSeleccionada] = useState(1);
+  const [allTiempos, setAllTiempos] = useState<any[]>([]);
+
+  const obtenerTiemposTotales = async () => {
+    const response = await axios.get(
+      "http://localhost:3000/api/estatus/obtenerEstatusTiempos/",
+    );
+
+    setAllTiempos(response.data.tiempos);
+  };
 
   const obtenerTiempos = async (id: number) => {
     const response = await axios.get(
@@ -50,13 +59,16 @@ const TablaGeneral = () => {
 
     console.log("lineas registradas");
     console.log(response.data.lineas);
+
     setLineasRegistradas(response.data.lineas);
   };
 
   const exportarExcel = () => {
+    console.log(`TIEMPOS TOTALES //////////////////`);
+    console.log(allTiempos);
     const datosFormateados = [
       ["ID", "NOMBRE", "NUMERO DE VECES", "COLOR", "TIEMPO TOTAL"],
-      ...estaciones.map((estacion) => [
+      ...allTiempos.map((estacion) => [
         estacion.idEstacion,
         estacion.nombre,
         estacion.contador,
@@ -71,7 +83,9 @@ const TablaGeneral = () => {
     XLSX.writeFile(workbook, "estaciones.xlsx");
   };
   useEffect(() => {
+    obtenerTiemposTotales();
     obtenerTiempos(estacionSeleccionada);
+
     obtenerEstacionesRegistradas();
   }, []);
 

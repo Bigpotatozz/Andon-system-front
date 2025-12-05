@@ -1,7 +1,6 @@
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
 import axios from "axios";
 import { Button, TextInput } from "flowbite-react";
-import { parse } from "path";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -11,6 +10,24 @@ export const ProductionRatio = () => {
   const [tiempoParo, setTiempoParo] = useState("");
   const [tiempoPQ, setTiempoPQ] = useState("");
   const [cicleTime, setCicleTime] = useState(0);
+
+  const [turno, setTurno] = useState(0);
+  const [turnoNombre, setTurnoNombre] = useState("");
+
+  const obtenerTurno = async () => {
+    const response = await axios.get(
+      "http://localhost:3000/api/turno/obtenerTurno",
+    );
+
+    console.log("TURNO///////////////////////////");
+    console.log(response.data.turno[0]);
+    setTurno(response.data.turno[0]);
+    setTurnoNombre(response.data.turno[0].nombreTurno);
+  };
+
+  useEffect(() => {
+    obtenerTurno();
+  }, []);
 
   const navigation = useNavigate();
 
@@ -126,7 +143,7 @@ export const ProductionRatio = () => {
 
   return (
     <>
-      <HeaderTurno turno="Primero turno"></HeaderTurno>
+      <HeaderTurno turno={turnoNombre}></HeaderTurno>
 
       <div className="m-2 rounded-md border border-white p-5">
         <div className="flex items-center justify-between">

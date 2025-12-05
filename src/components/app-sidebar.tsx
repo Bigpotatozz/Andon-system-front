@@ -2,7 +2,6 @@ import {
   Bolt,
   ChartArea,
   Columns3Cog,
-  Dice1,
   Dice6,
   FileChartColumnIcon,
   Home,

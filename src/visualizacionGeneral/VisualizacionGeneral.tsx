@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Plan } from "./components/Plan";
 import PlanSquare from "./components/PlanSquare";
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
-import axios from "axios";
+import { socket } from "@/sockets/socket";
+import dayjs from "dayjs";
 
 const VisualizacionGeneral = () => {
   const [turno, setTurno] = useState(0);
@@ -14,49 +15,8 @@ const VisualizacionGeneral = () => {
   const [cicleTime, setCicleTime] = useState(0);
   const [planAcumulado, setPlanAcumulado] = useState(0);
   const [realHora, setRealHora] = useState(0);
-
-  const [inicioTurno, setInicioTurno] = useState(null);
-
-  const obtenerTurno = async () => {
-    const response = await axios.get(
-      "http://localhost:3000/api/turno/obtenerTurno",
-    );
-
-    console.log("TURNO///////////////////////////");
-    console.log(response.data.turno[0]);
-    setTurno(response.data.turno[0]);
-    setTurnoNombre(response.data.turno[0].nombreTurno);
-  };
-
-  const obtenerProductionRatio = async () => {
-    const response = await axios.get(
-      "http://localhost:3000/api/turno/obtenerProductionRatio",
-    );
-
-    setPlanHora(response.data.productionRatio[0].objetivoProduccion);
-    setRealHora(response.data.productionRatio[0].progresoProduccion);
-
-    setCicleTime(
-      Math.round(3600 / response.data.productionRatio[0].objetivoProduccion),
-    );
-
-    convertirTime(
-      response.data.productionRatio[0].horaInicio,
-      response.data.productionRatio[0].objetivoProduccion,
-    );
-    console.log(response.data.productionRatio[0]);
-  };
-
-  const obtenerEstatus = async () => {
-    const response = await axios.get(
-      "http://localhost:3000/api/estatus/obtenerEstatusRatio",
-    );
-
-    console.log(response.data.response);
-
-    setEstatus(response.data.response[0].nombre);
-    setColor(response.data.response[0].color);
-  };
+  const [contador, setContador] = useState(0);
+  const [horaInicio, setHoraInicio] = useState("");
 
   const convertirTime = (time: string, planHora: number) => {
     const ahora = new Date();
@@ -79,17 +39,92 @@ const VisualizacionGeneral = () => {
   };
 
   useEffect(() => {
-    obtenerTurno();
-    obtenerEstatus();
-    const loop = setInterval(() => {
-      obtenerProductionRatio();
-      console.log(planAcumulado);
-      obtenerEstatus();
-      console.log("Loop iniciado");
-    }, 1000);
+    socket.off("obtenerTurno");
+    socket.on("obtenerTurno", (data) => {
+      console.log(data[0]);
+      setTurnoNombre(data[0].nombreTurno);
 
-    return () => clearInterval(loop);
+      setPlanHora(data[0].objetivoProduccion);
+      setRealHora(data[0].progresoProduccion);
+      setHoraInicio(data[0].horaInicio);
+
+      setCicleTime(Math.round(3600 / data[0].objetivoProduccion));
+
+      convertirTime(data[0].horaInicio, data[0].objetivoProduccion);
+    });
+
+    socket.emit("obtenerTurno");
+    return () => {
+      socket.off("obtenerTurno");
+    };
   }, []);
+
+  const proximaMarcaRef = useRef(null);
+
+  useEffect(() => {
+    //Si la hora de inicio es null retorna
+    if (!horaInicio) return;
+
+    // Usamos el state hora inicio y lo dividimos en horas minutos y segundos
+    const [horas, minutos, segundos] = horaInicio.split(":").map(Number);
+    //Creamos una nueva fecha de tipo dayjs con los datos extraidos de horaInicio
+    const inicioTurno = dayjs()
+      .hour(horas)
+      .minute(minutos)
+      .second(segundos || 0);
+
+    //Accedemos a la hora y fecha actual
+    const ahora = dayjs();
+
+    //Calculamos la diferencia de minutos que han pasado desde la hora de inicio y la actual
+    const minutosPasados = ahora.diff(inicioTurno, "minute");
+    //Agarramos los minutos que pasaron y los dividmos entre 60 para sacar las horas
+    const bloquesCompletos = Math.floor(minutosPasados / 60);
+
+    // agarra los bloques completos (horas) le suma 1 y luego lo pasa a minutos, para sacar la siguiente hora
+    proximaMarcaRef.current = inicioTurno.add(
+      (bloquesCompletos + 1) * 60,
+      "minute",
+    );
+
+    //Parsea los minutos a formato de hora
+    console.log(
+      `Próxima marca inicial: ${proximaMarcaRef.current.format("HH:mm:ss")}`,
+    );
+
+    const verificarMarcaHora = () => {
+      //Si no existe una proxima marca retorna
+      if (!proximaMarcaRef.current) return;
+
+      //Obtiene la hora actual
+      const ahoraActual = dayjs();
+
+      //Imprime la hora actual
+      console.log(`Hora actual: ${ahoraActual.format("HH:mm:ss")}`);
+
+      // si la hora actual es mayor o igual a la marca que ya esta
+      if (ahoraActual.valueOf() >= proximaMarcaRef.current.valueOf()) {
+        //Imprime que ya paso la hora
+        console.log("⏰ ¡Pasaron 60 minutos! Reiniciando contador");
+        //Reinicia el contador
+        setRealHora(0);
+
+        // A la marca le agrega 60 minutos para establecer la siguiente
+        proximaMarcaRef.current = proximaMarcaRef.current.add(60, "minute");
+        console.log(
+          `Nueva marca: ${proximaMarcaRef.current.format("HH:mm:ss")}`,
+        );
+      }
+    };
+
+    // Ejecutar inmediatamente
+    verificarMarcaHora();
+
+    // Interval cada minuto
+    const interval = setInterval(verificarMarcaHora, 60000);
+
+    return () => clearInterval(interval);
+  }, [horaInicio]);
 
   return (
     <div>

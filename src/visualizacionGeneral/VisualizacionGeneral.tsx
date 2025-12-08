@@ -4,9 +4,10 @@ import PlanSquare from "./components/PlanSquare";
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
 import { socket } from "@/sockets/socket";
 import dayjs from "dayjs";
+import axios from "axios";
 
 const VisualizacionGeneral = () => {
-  const [turno, setTurno] = useState(0);
+  const [turno, setTurno] = useState(null);
   const [turnoNombre, setTurnoNombre] = useState("");
   const [estatus, setEstatus] = useState(null);
   const [color, setColor] = useState("");
@@ -14,6 +15,7 @@ const VisualizacionGeneral = () => {
   const [planHora, setPlanHora] = useState(0);
   const [cicleTime, setCicleTime] = useState(0);
   const [planAcumulado, setPlanAcumulado] = useState(0);
+  const [realAcumulado, setRealAcumulado] = useState(0);
   const [realHora, setRealHora] = useState(0);
   const [contador, setContador] = useState(0);
   const [horaInicio, setHoraInicio] = useState("");
@@ -35,17 +37,27 @@ const VisualizacionGeneral = () => {
       (ahora.getTime() - turnoInicioCompleto.getTime()) / (1000 * 60 * 60);
 
     console.log(horasTranscurridas);
-    setPlanAcumulado(Math.floor(planHora * horasTranscurridas));
+  };
+
+  const resetearProgresoHora = async () => {
+    const response = await axios.put(
+      `http://localhost:3000/api/turno/resetearProgresoProduccionHora/${turno.idTurno}`,
+    );
+
+    console.log(response);
   };
 
   useEffect(() => {
     socket.off("obtenerTurno");
     socket.on("obtenerTurno", (data) => {
       console.log(data[0]);
+      setTurno(data[0]);
       setTurnoNombre(data[0].nombreTurno);
+      setPlanHora(data[0].objetivoProduccionHora);
+      setRealHora(data[0].progresoProduccionHora);
+      setPlanAcumulado(data[0].objetivoProduccion);
+      setRealAcumulado(data[0].progresoProduccion);
 
-      setPlanHora(data[0].objetivoProduccion);
-      setRealHora(data[0].progresoProduccion);
       setHoraInicio(data[0].horaInicio);
 
       setCicleTime(Math.round(3600 / data[0].objetivoProduccion));
@@ -108,6 +120,7 @@ const VisualizacionGeneral = () => {
         console.log("⏰ ¡Pasaron 60 minutos! Reiniciando contador");
         //Reinicia el contador
         setRealHora(0);
+        resetearProgresoHora();
 
         // A la marca le agrega 60 minutos para establecer la siguiente
         proximaMarcaRef.current = proximaMarcaRef.current.add(60, "minute");
@@ -155,7 +168,7 @@ const VisualizacionGeneral = () => {
         <Plan
           texto1="REAL"
           texto2="ACUMULADO"
-          contador={`${realHora}`}
+          contador={`${realAcumulado}`}
           color="#FFFFFF"
         ></Plan>
       </div>

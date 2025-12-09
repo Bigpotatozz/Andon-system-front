@@ -26,6 +26,17 @@ const VisualizacionGeneral = () => {
   const [OEEHora, setOEEHora] = useState("");
   const [OEEAcumulado, setOEEAcumulado] = useState("");
 
+  const obtenerProductionRatio = async () => {
+    const response = await axios.get(
+      "http://localhost:3000/api/estatus/obtenerEstatusRatio",
+    );
+
+    console.log(response.data.response[0]);
+
+    setColor(response.data.response[0].color);
+    setEstatus(response.data.response[0].nombre);
+  };
+
   const calcularOEEH = (planHora: number, realHora: number) => {
     const calculo = (realHora / planHora) * 100;
 
@@ -125,6 +136,7 @@ const VisualizacionGeneral = () => {
   const proximaMarcaRef = useRef(null);
 
   useEffect(() => {
+    obtenerProductionRatio();
     //Si la hora de inicio es null retorna
     if (!horaInicio) return;
 

@@ -39,6 +39,14 @@ export const ProductionRatio = () => {
 
     console.log(response.data.productionRatio[0]);
 
+    if (
+      !response.data.productionRatio[0].objetivoProduccionHora ||
+      response.data.productionRatio[0].objetivoProduccionHora === 0
+    ) {
+      console.warn("Objetivo de producción es 0 o no existe");
+      setCicleTime(0); // O algún valor por defecto
+      return;
+    }
     setCicleTime(
       Math.round(
         3600 / response.data.productionRatio[0].objetivoProduccionHora,
@@ -328,6 +336,19 @@ export const ProductionRatio = () => {
             }}
           >
             Guardar
+          </Button>
+        </div>
+
+        <div className="mt-4">
+          <Button
+            color="blue"
+            style={{ width: "100%" }}
+            onClick={() => {
+              activarEstatus(1015);
+              navigation("/visualizacionGeneral");
+            }}
+          >
+            Reanudar produccion
           </Button>
         </div>
       </div>

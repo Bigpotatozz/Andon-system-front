@@ -1,4 +1,5 @@
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
+import { socket } from "@/sockets/socket";
 import axios from "axios";
 import { Button, TextInput } from "flowbite-react";
 import React, { useEffect, useState } from "react";
@@ -11,18 +12,38 @@ export const ProductionRatio = () => {
   const [tiempoPQ, setTiempoPQ] = useState("");
   const [cicleTime, setCicleTime] = useState(0);
 
-  const [turno, setTurno] = useState(0);
+  const [turno, setTurno] = useState(null);
   const [turnoNombre, setTurnoNombre] = useState("");
+  const [turnoId, setTurnoId] = useState(0);
 
   const obtenerTurno = async () => {
     const response = await axios.get(
-      "http://localhost:3000/api/turno/obtenerTurno",
+      `http://localhost:3000/api/turno/obtenerTurno/`,
     );
 
     console.log("TURNO///////////////////////////");
     console.log(response.data.turno[0]);
     setTurno(response.data.turno[0]);
     setTurnoNombre(response.data.turno[0].nombreTurno);
+    setTurnoId(response.data.turno[0].idTurno);
+
+    const idTurnoTemporal = response.data.turno[0].idTurno;
+
+    await obtenerProductionRatio(idTurnoTemporal);
+  };
+
+  const obtenerProductionRatio = async (id: number) => {
+    const response = await axios.get(
+      `http://localhost:3000/api/turno/obtenerProductionRatio/${id}`,
+    );
+
+    console.log(response.data.productionRatio[0]);
+
+    setCicleTime(
+      Math.round(
+        3600 / response.data.productionRatio[0].objetivoProduccionHora,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -70,8 +91,6 @@ export const ProductionRatio = () => {
           }
         },
       );
-
-      console.log(response.data.response);
     } catch (error) {
       console.log(error);
     }

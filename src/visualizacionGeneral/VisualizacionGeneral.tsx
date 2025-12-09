@@ -11,6 +11,8 @@ const VisualizacionGeneral = () => {
   const [turnoNombre, setTurnoNombre] = useState("");
   const [estatus, setEstatus] = useState(null);
   const [color, setColor] = useState("");
+  const [color1, setColor1] = useState("");
+  const [color2, setColor2] = useState("");
 
   const [planHora, setPlanHora] = useState(0);
   const [cicleTime, setCicleTime] = useState(0);
@@ -19,6 +21,43 @@ const VisualizacionGeneral = () => {
   const [realHora, setRealHora] = useState(0);
   const [contador, setContador] = useState(0);
   const [horaInicio, setHoraInicio] = useState("");
+
+  const horasTranscurridas = useRef(0);
+  const [OEEHora, setOEEHora] = useState("");
+  const [OEEAcumulado, setOEEAcumulado] = useState("");
+
+  const calcularOEEH = (planHora: number, realHora: number) => {
+    const calculo = (realHora / planHora) * 100;
+
+    if (calculo > 75) {
+      setColor1("#49FF00");
+    } else if (calculo >= 50 && calculo < 75) {
+      setColor1("#FBFF00");
+    } else if (calculo < 50) {
+      setColor1("#FF0000");
+    }
+    const calculoFixed = calculo.toFixed(5);
+    setOEEHora(calculoFixed);
+  };
+
+  const calcularOEEA = (realAcumulado: number, planAcumulado: number) => {
+    console.log(
+      `PLAN ACUMULADO: ${planAcumulado}, REAL ACUMULADO: ${realAcumulado}`,
+    );
+    const calculo = (realAcumulado / planAcumulado) * 100;
+
+    if (calculo > 75) {
+      setColor2("#49FF00");
+    } else if (calculo >= 50 && calculo < 75) {
+      setColor2("#FBFF00");
+    } else if (calculo < 50) {
+      setColor2("#FF0000");
+    }
+
+    const calculoFixed = calculo.toFixed(5);
+
+    setOEEAcumulado(calculoFixed);
+  };
 
   const convertirTime = (time: string, planHora: number) => {
     const ahora = new Date();
@@ -55,7 +94,9 @@ const VisualizacionGeneral = () => {
       setTurnoNombre(data[0].nombreTurno);
       setPlanHora(data[0].objetivoProduccionHora);
       setRealHora(data[0].progresoProduccionHora);
-      setPlanAcumulado(data[0].objetivoProduccion);
+      setPlanAcumulado(
+        data[0].objetivoProduccionHora * (horasTranscurridas.current + 1),
+      );
       setRealAcumulado(data[0].progresoProduccion);
 
       setHoraInicio(data[0].horaInicio);
@@ -63,6 +104,16 @@ const VisualizacionGeneral = () => {
       setCicleTime(Math.round(3600 / data[0].objetivoProduccion));
 
       convertirTime(data[0].horaInicio, data[0].objetivoProduccion);
+
+      calcularOEEH(
+        data[0].objetivoProduccionHora,
+        data[0].progresoProduccionHora,
+      );
+
+      calcularOEEA(
+        data[0].progresoProduccion,
+        data[0].objetivoProduccionHora * (horasTranscurridas.current + 1),
+      );
     });
 
     socket.emit("obtenerTurno");
@@ -93,6 +144,8 @@ const VisualizacionGeneral = () => {
     //Agarramos los minutos que pasaron y los dividmos entre 60 para sacar las horas
     const bloquesCompletos = Math.floor(minutosPasados / 60);
 
+    horasTranscurridas.current = bloquesCompletos;
+
     // agarra los bloques completos (horas) le suma 1 y luego lo pasa a minutos, para sacar la siguiente hora
     proximaMarcaRef.current = inicioTurno.add(
       (bloquesCompletos + 1) * 60,
@@ -120,10 +173,13 @@ const VisualizacionGeneral = () => {
         console.log("⏰ ¡Pasaron 60 minutos! Reiniciando contador");
         //Reinicia el contador
         setRealHora(0);
+        setOEEHora("0");
         resetearProgresoHora();
 
         // A la marca le agrega 60 minutos para establecer la siguiente
         proximaMarcaRef.current = proximaMarcaRef.current.add(60, "minute");
+
+        horasTranscurridas.current += 1;
         console.log(
           `Nueva marca: ${proximaMarcaRef.current.format("HH:mm:ss")}`,
         );
@@ -177,14 +233,14 @@ const VisualizacionGeneral = () => {
         <Plan
           texto1="OEE"
           texto2="HORA"
-          contador={`000.0%`}
-          color="#FF0000"
+          contador={`${OEEHora}%`}
+          color={color1}
         ></Plan>
         <Plan
           texto1="OEE"
           texto2="ACUMULADO"
-          contador={`000.0%`}
-          color="#FF0000"
+          contador={`${OEEAcumulado}%`}
+          color={color2}
         ></Plan>
       </div>
 

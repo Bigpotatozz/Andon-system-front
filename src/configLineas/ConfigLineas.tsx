@@ -97,10 +97,6 @@ export const ConfigLineas = () => {
     obtenerLineasRegistradas();
   }, []);
 
-  useEffect(() => {
-    console.log(lineasRegistradas);
-  }, []);
-
   //Funcion que envia la peticion HTTP al servidor
   //Recibe como parametro el arreglo
   async function postLineas(lineasTotales: string[]) {

@@ -12,9 +12,10 @@ export const ProductionRatio = () => {
   const [cicleTime, setCicleTime] = useState(0);
 
   const [turno, setTurno] = useState(null);
+  console.log(turno);
   const [turnoNombre, setTurnoNombre] = useState("");
   const [turnoId, setTurnoId] = useState(0);
-
+  console.log(turnoId);
   //PETICIONES AL API
   const obtenerTurno = async () => {
     const response = await axios.get(

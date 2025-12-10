@@ -16,6 +16,7 @@ const VisualizacionGeneral = () => {
 
   const [planHora, setPlanHora] = useState(0);
   const [cicleTime, setCicleTime] = useState(0);
+  console.log(cicleTime);
   const [planAcumulado, setPlanAcumulado] = useState(0);
   const [realAcumulado, setRealAcumulado] = useState(0);
   const [realHora, setRealHora] = useState(0);

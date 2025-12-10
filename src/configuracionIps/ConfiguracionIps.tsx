@@ -86,7 +86,7 @@ const ConfiguracionIps = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-700">
-                  {estaciones.map((estacion, index) => (
+                  {estaciones.map((estacion: any, index: number) => (
                     <tr
                       key={index}
                       className="hover:bg-gray-750 bg-gray-800 transition-colors"
@@ -125,12 +125,12 @@ const ConfiguracionIps = () => {
             onClick={() => {
               const validaciones: any = [];
 
-              estaciones.forEach((e) => {
+              estaciones.forEach((e: any) => {
                 const estatus = validarIp(e.ip);
 
                 validaciones.push(estatus);
               });
-              const passed = validaciones.some((v) => {
+              const passed = validaciones.some((v: any) => {
                 if (v === true) {
                   return true;
                 }

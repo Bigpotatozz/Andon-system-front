@@ -77,6 +77,7 @@ export const TableroGeneral = () => {
   };
   //Hook que al cargar la pagina hace automaticamente la peticion a la api con la funcion obtenerEstatus
 
+  //Hook general
   useEffect(() => {
     obtenerEstatus();
   }, []);

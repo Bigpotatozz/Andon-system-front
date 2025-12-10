@@ -31,44 +31,7 @@ export const ConfiguracionBotones = () => {
   //Declara un arreglo de estatus donde se guardaran los que se van a enviar a la api
   let estatusLimpios: Estatus[] = [];
 
-  //Funcion que limpia el arreglo estatus para pasarlo a estatusLimpios
-  const limpiarEstatus = () => {
-    estatusLimpios = estatus.filter((estatus) => estatus.peso != 0);
-  };
-
-  //Funcion que se encarga de actualizar el peso de cada uno de los estatus
-  const actualizarPeso = (indice: number, peso: number) => {
-    setEstatus((prev) => {
-      const nuevoArray = [...prev];
-      nuevoArray[indice] = { ...nuevoArray[indice], peso: peso };
-      return nuevoArray;
-    });
-  };
-
-  //Funcion que actualiza la cancion del estatus
-  const actualizarCancion = (indice: number, cancion: string) => {
-    setEstatus((prev) => {
-      const nuevoArregloMusica = [...prev];
-      nuevoArregloMusica[indice] = {
-        ...nuevoArregloMusica[indice],
-        cancion: cancion,
-      };
-      return nuevoArregloMusica;
-    });
-  };
-
-  //Funcion que actualiza los archivos de las canciones del estatus
-  const actualizarFileCanciones = (indice: number, cancion: File | null) => {
-    setCanciones((prev) => {
-      const nuevasCanciones = [...prev];
-      if (cancion === null) {
-        nuevasCanciones[indice] = new File([], "");
-        return nuevasCanciones;
-      }
-      nuevasCanciones[indice] = cancion;
-      return nuevasCanciones;
-    });
-  };
+  //PETICIONES AL API
 
   //Funcion para mandar los estatus a la api
   const postEstados = async (colores: Estatus[], canciones: File[]) => {
@@ -107,7 +70,45 @@ export const ConfiguracionBotones = () => {
     }
   };
 
-  //Frontend
+  //FUNCIONES GENERAL
+  //Funcion que limpia el arreglo estatus para pasarlo a estatusLimpios
+  const limpiarEstatus = () => {
+    estatusLimpios = estatus.filter((estatus) => estatus.peso != 0);
+  };
+
+  //Funcion que se encarga de actualizar el peso de cada uno de los estatus
+  const actualizarPeso = (indice: number, peso: number) => {
+    setEstatus((prev) => {
+      const nuevoArray = [...prev];
+      nuevoArray[indice] = { ...nuevoArray[indice], peso: peso };
+      return nuevoArray;
+    });
+  };
+
+  //Funcion que actualiza la cancion del estatus
+  const actualizarCancion = (indice: number, cancion: string) => {
+    setEstatus((prev) => {
+      const nuevoArregloMusica = [...prev];
+      nuevoArregloMusica[indice] = {
+        ...nuevoArregloMusica[indice],
+        cancion: cancion,
+      };
+      return nuevoArregloMusica;
+    });
+  };
+
+  //Funcion que actualiza los archivos de las canciones del estatus
+  const actualizarFileCanciones = (indice: number, cancion: File | null) => {
+    setCanciones((prev) => {
+      const nuevasCanciones = [...prev];
+      if (cancion === null) {
+        nuevasCanciones[indice] = new File([], "");
+        return nuevasCanciones;
+      }
+      nuevasCanciones[indice] = cancion;
+      return nuevasCanciones;
+    });
+  };
 
   //En el html se instancia otro componente donde se le pasa como prop la funcion de actualizacion
   //esto para que al hijo pueda modificar datos del padre

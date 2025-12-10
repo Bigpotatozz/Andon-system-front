@@ -41,6 +41,7 @@ export const TableroIndividual = () => {
   //Inicializacion de estado de audio
   const [reproducirAudio, setReproducirAudio] = useState(false);
 
+  //REQUEST
   //Funcion que hace la peticion http para obtener la informacion de la linea de produccion
   const obtenerEstatusLinea = async (idLinea: string | undefined) => {
     const response = await axios.get(
@@ -53,6 +54,7 @@ export const TableroIndividual = () => {
     console.log(response.data);
   };
 
+  //HOOKS
   //Hook que al iniciar la pantalla obtiene automaticamente la informacion de la linea
   //Hace la peticion
   useEffect(() => {

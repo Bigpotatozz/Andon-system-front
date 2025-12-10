@@ -27,6 +27,17 @@ export const Menu = () => {
   //state para navegar entre las diferentes
   const navegacion = useNavigate();
 
+  //PETICIONES AL API
+  const verificarLinea = async (id: string) => {
+    const response = await axios.get(
+      `http://localhost:3000/api/linea/verificarExistenciaLinea/${id}`,
+    );
+
+    console.log(response);
+    return response.data;
+  };
+
+  //FUNCIONES
   //Funcion que ejecuta el navigate para redirigirse a otra pagina
   const onClickLinea = async (idLinea: string) => {
     try {
@@ -45,15 +56,6 @@ export const Menu = () => {
       console.error("Error:", error);
       alert("Error al verificar la línea");
     }
-  };
-
-  const verificarLinea = async (id: string) => {
-    const response = await axios.get(
-      `http://localhost:3000/api/linea/verificarExistenciaLinea/${id}`,
-    );
-
-    console.log(response);
-    return response.data;
   };
 
   const data = [

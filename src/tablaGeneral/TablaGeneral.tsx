@@ -35,6 +35,7 @@ const TablaGeneral = () => {
   const [estacionSeleccionada, setEstacionSeleccionada] = useState(1);
   const [allTiempos, setAllTiempos] = useState<any[]>([]);
 
+  //PETICIONES AL API
   const obtenerTiemposTotales = async () => {
     const response = await axios.get(
       "http://localhost:3000/api/estatus/obtenerEstatusTiempos/",
@@ -63,6 +64,7 @@ const TablaGeneral = () => {
     setLineasRegistradas(response.data.lineas);
   };
 
+  //FUNCIONES
   const exportarExcel = () => {
     console.log(`TIEMPOS TOTALES //////////////////`);
     console.log(allTiempos);
@@ -82,6 +84,8 @@ const TablaGeneral = () => {
     XLSX.utils.book_append_sheet(workbook, hojaExcel, "Hoja1");
     XLSX.writeFile(workbook, "estaciones.xlsx");
   };
+
+  //HOOKS GENERALES
   useEffect(() => {
     obtenerTiemposTotales();
     obtenerTiempos(estacionSeleccionada);

@@ -15,6 +15,7 @@ export const ProductionRatio = () => {
   const [turnoNombre, setTurnoNombre] = useState("");
   const [turnoId, setTurnoId] = useState(0);
 
+  //PETICIONES AL API
   const obtenerTurno = async () => {
     const response = await axios.get(
       `http://localhost:3000/api/turno/obtenerTurno/`,
@@ -53,6 +54,7 @@ export const ProductionRatio = () => {
     );
   };
 
+  //HOOKS GENERALES
   useEffect(() => {
     obtenerTurno();
   }, []);

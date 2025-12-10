@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { socket } from "./sockets/socket";
 
 export default function App() {
+  //En cuanto inicia la aplicacion se conecta a los sockets
   useEffect(() => {
     socket.connect();
   });

@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 
 const VisualizacionGeneral = () => {
-  const [turno, setTurno] = useState(null);
+  const [turno, setTurno] = useState<any>(null);
   const [turnoNombre, setTurnoNombre] = useState("");
   const [estatus, setEstatus] = useState(null);
   const [color, setColor] = useState("");
@@ -19,13 +19,13 @@ const VisualizacionGeneral = () => {
   const [planAcumulado, setPlanAcumulado] = useState(0);
   const [realAcumulado, setRealAcumulado] = useState(0);
   const [realHora, setRealHora] = useState(0);
-  const [contador, setContador] = useState(0);
   const [horaInicio, setHoraInicio] = useState("");
 
   const horasTranscurridas = useRef(0);
   const [OEEHora, setOEEHora] = useState("");
   const [OEEAcumulado, setOEEAcumulado] = useState("");
 
+  //Peticiones a API
   const obtenerProductionRatio = async () => {
     const response = await axios.get(
       "http://localhost:3000/api/estatus/obtenerEstatusRatio",
@@ -37,6 +37,18 @@ const VisualizacionGeneral = () => {
     setEstatus(response.data.response[0].nombre);
   };
 
+  const resetearProgresoHora = async () => {
+    if (!turno) {
+      return;
+    }
+    const response = await axios.put(
+      `http://localhost:3000/api/turno/resetearProgresoProduccionHora/${turno.idTurno}`,
+    );
+
+    console.log(response);
+  };
+
+  //Funciones de calculos
   const calcularOEEH = (planHora: number, realHora: number) => {
     const calculo = (realHora / planHora) * 100;
 
@@ -70,7 +82,8 @@ const VisualizacionGeneral = () => {
     setOEEAcumulado(calculoFixed);
   };
 
-  const convertirTime = (time: string, planHora: number) => {
+  //Conversiones
+  const convertirTime = (time: string) => {
     const ahora = new Date();
     const [horas, minutos, segundos] = time.split(":").map(Number);
 
@@ -89,14 +102,8 @@ const VisualizacionGeneral = () => {
     console.log(horasTranscurridas);
   };
 
-  const resetearProgresoHora = async () => {
-    const response = await axios.put(
-      `http://localhost:3000/api/turno/resetearProgresoProduccionHora/${turno.idTurno}`,
-    );
-
-    console.log(response);
-  };
-
+  //Estado que conecta con el Socket
+  //En cuanto se renderiza el componente hace la conexion con el socket de la API
   useEffect(() => {
     socket.off("obtenerTurno");
     socket.on("obtenerTurno", (data) => {
@@ -114,7 +121,7 @@ const VisualizacionGeneral = () => {
 
       setCicleTime(Math.round(3600 / data[0].objetivoProduccion));
 
-      convertirTime(data[0].horaInicio, data[0].objetivoProduccion);
+      convertirTime(data[0].horaInicio);
 
       calcularOEEH(
         data[0].objetivoProduccionHora,
@@ -133,8 +140,9 @@ const VisualizacionGeneral = () => {
     };
   }, []);
 
-  const proximaMarcaRef = useRef(null);
+  const proximaMarcaRef = useRef<any>(null);
 
+  //Estado que se encarga de otras cosas como obtener el production ratio o el calculo de horas
   useEffect(() => {
     obtenerProductionRatio();
     //Si la hora de inicio es null retorna

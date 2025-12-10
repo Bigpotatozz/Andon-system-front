@@ -15,6 +15,7 @@ import { ProductionRatio } from "./productionRatio/ProductionRatio.tsx";
 import VisualizacionGeneral from "./visualizacionGeneral/VisualizacionGeneral.tsx";
 import TablaGeneral from "./tablaGeneral/TablaGeneral.tsx";
 
+//Declaracion de rutas de react router
 const router = createBrowserRouter([
   {
     path: "/",
@@ -62,6 +63,7 @@ const router = createBrowserRouter([
   },
 ]);
 
+//Router provider para el funcionamiento de rutas
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />

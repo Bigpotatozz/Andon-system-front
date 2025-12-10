@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { title } from "process";
+import { url } from "inspector";
 
 // Menu items.
 const items = [
@@ -59,6 +61,7 @@ const items = [
     url: "/tablaGeneral",
     icon: Table,
   },
+  { title: "Configuracion de IP", url: "/configuracionEstaciones", icon: Bolt },
 ];
 
 export function AppSidebar() {

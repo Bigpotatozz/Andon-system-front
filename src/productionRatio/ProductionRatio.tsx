@@ -1,5 +1,4 @@
 import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
-import { socket } from "@/sockets/socket";
 import axios from "axios";
 import { Button, TextInput } from "flowbite-react";
 import React, { useEffect, useState } from "react";

@@ -20,7 +20,7 @@ export const TableroGeneral = () => {
     };
   }, []);
 
-  //Funcion que hace peticion a la api y guarda la respuesta en el state estados
+  //Funcion que accede al socket para obtener los estatus
   const obtenerEstatus = async () => {
     socket.on("obtenerEstatus", (data) => {
       console.log(data);

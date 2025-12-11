@@ -5,6 +5,8 @@ import {
   Dice6,
   FileChartColumnIcon,
   Home,
+  LayoutDashboard,
+  MonitorCog,
   Table,
 } from "lucide-react";
 
@@ -35,19 +37,9 @@ const items = [
     icon: Columns3Cog,
   },
   {
-    title: "Tablero general",
-    url: "/tableroGeneral",
-    icon: Dice6,
-  },
-  {
-    title: "Analisis",
-    url: "/analisis",
-    icon: ChartArea,
-  },
-  {
-    title: "Visualización general",
-    url: "/visualizacionGeneral",
-    icon: FileChartColumnIcon,
+    title: "Configuracion de IP",
+    url: "/configuracionEstaciones",
+    icon: MonitorCog,
   },
   {
     title: "Production ratio",
@@ -55,11 +47,27 @@ const items = [
     icon: Bolt,
   },
   {
-    title: "Tabla general",
+    title: "Tablero general",
+    url: "/tableroGeneral",
+    icon: Dice6,
+  },
+
+  {
+    title: "Visualización general",
+    url: "/visualizacionGeneral",
+    icon: LayoutDashboard,
+  },
+
+  {
+    title: "Reportes",
     url: "/tablaGeneral",
     icon: Table,
   },
-  { title: "Configuracion de IP", url: "/configuracionEstaciones", icon: Bolt },
+  {
+    title: "Analisis",
+    url: "/analisis",
+    icon: ChartArea,
+  },
 ];
 
 export function AppSidebar() {

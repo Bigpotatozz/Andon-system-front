@@ -5,6 +5,13 @@ import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
 import { socket } from "@/sockets/socket";
 import dayjs from "dayjs";
 import axios from "axios";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const VisualizacionGeneral = () => {
   const [turno, setTurno] = useState<any>(null);
@@ -25,6 +32,8 @@ const VisualizacionGeneral = () => {
   const horasTranscurridas = useRef(0);
   const [OEEHora, setOEEHora] = useState("");
   const [OEEAcumulado, setOEEAcumulado] = useState("");
+
+  const [estaciones, setEstaciones] = useState([]);
 
   //Peticiones a API
   const obtenerProductionRatio = async () => {
@@ -47,6 +56,14 @@ const VisualizacionGeneral = () => {
     );
 
     console.log(response);
+  };
+
+  const obtenerEstaciones = async () => {
+    const response = await axios.get(
+      "http://localhost:3000/api/linea/obtenerLineasRegistradas",
+    );
+
+    setEstaciones(response.data.lineas);
   };
 
   //Funciones de calculos
@@ -108,7 +125,7 @@ const VisualizacionGeneral = () => {
   useEffect(() => {
     socket.off("obtenerTurno");
     socket.on("obtenerTurno", (data) => {
-      console.log(data[0]);
+      console.log(data);
       setTurno(data[0]);
       setTurnoNombre(data[0].nombreTurno);
       setPlanHora(data[0].objetivoProduccionHora);
@@ -141,11 +158,22 @@ const VisualizacionGeneral = () => {
     };
   }, []);
 
+  useEffect(() => {
+    socket.off("obtenerEstaciones");
+    socket.on("obtenerEstaciones", (data) => {
+      setEstaciones(data);
+      console.log(data);
+    });
+
+    socket.emit("obtenerEstaciones");
+  }, []);
+
   const proximaMarcaRef = useRef<any>(null);
 
   //Estado que se encarga de otras cosas como obtener el production ratio o el calculo de horas
   useEffect(() => {
     obtenerProductionRatio();
+    obtenerEstaciones();
     //Si la hora de inicio es null retorna
     if (!horaInicio) return;
 
@@ -265,13 +293,28 @@ const VisualizacionGeneral = () => {
         ></Plan>
       </div>
 
-      <div className="flex flex-wrap justify-center">
-        <PlanSquare numero={"00.00"} color="#49FF00"></PlanSquare>
-        <PlanSquare numero={"00.00"} color="#49FF00"></PlanSquare>
-        <PlanSquare numero={"00.00"} color="#49FF00"></PlanSquare>
-        <PlanSquare numero={"00.00"} color="#49FF00"></PlanSquare>
-        <PlanSquare numero={"00.00"} color="#49FF00"></PlanSquare>
-        <PlanSquare numero={"00.00"} color="#49FF00"></PlanSquare>
+      <div className="flex max-w-full justify-center px-4">
+        <div className="w-full max-w-6xl">
+          <Carousel className="w-full">
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {estaciones.map((estacion, index) => (
+                <CarouselItem
+                  key={index}
+                  className="basis-1/2 pl-2 sm:basis-1/3 md:basis-1/4 md:pl-4"
+                >
+                  <PlanSquare
+                    numero={((estacion.progreso / planAcumulado) * 100).toFixed(
+                      4,
+                    )}
+                    color="#49FF00"
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-0 hidden sm:flex" />
+            <CarouselNext className="right-0 hidden sm:flex" />
+          </Carousel>
+        </div>
       </div>
 
       <div

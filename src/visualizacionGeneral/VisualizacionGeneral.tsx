@@ -294,7 +294,7 @@ const VisualizacionGeneral = () => {
       </div>
 
       <div className="flex max-w-full justify-center px-4">
-        <div className="w-full max-w-6xl">
+        <div className="w-full max-w-5xl">
           <Carousel className="w-full">
             <CarouselContent className="-ml-2 md:-ml-4">
               {estaciones.map((estacion, index) => (

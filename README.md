@@ -1,32 +1,132 @@
-# Andon System Frontend
+# VERSION ESTABLE
 
-## Description  
-This frontend component of the [translate:Andon System] is a configurable production line monitoring interface built using React with TypeScript, Flowbite for UI components, and Chart.js for data visualization. It allows uploading audio files, setting production line statuses with color codes, assigning weights to statuses, and attaching alert sounds. The frontend supports real-time monitoring and alerting within manufacturing environments. It works offline and includes a Progressive Web App (PWA) for offline-capable client access. Inputs can come from physical button panels connected through PLCs or virtual buttons on the interface. All interactions and events are managed via API and stored persistently in the backend database.
+rama version2
 
-## Installation  
-1. Clone the repository:  
-   `git clone https://github.com/your-username/andon-frontend.git`  
-2. Install dependencies:  
-   `npm install`  
-3. Start the development server:  
-   `npm start`  
+# Sistema ANDON - Frontend
 
-## Usage  
-- Upload audio files through the UI/API to associate sounds with production line events.  
-- Monitor production line statuses with color coding and visual charts.  
-- Use physical button panels connected through PLCs or virtual buttons in the web interface to update statuses.  
-- Receive alert sounds based on assigned status weights.  
-- Works fully offline with the included PWA implementation.  
+Aplicación web con PWA integrada para la monitorización en tiempo real de líneas de producción industrial.
 
-## Configuration  
-- UI components are styled with Flowbite.  
-- Charts displaying production data use Chart.js.  
-- Status colors, weights, and alert sounds are configurable through the UI.  
+## Descripción
 
-## Technologies  
-- React  
-- TypeScript  
-- Flowbite  
-- Chart.js  
-- Vite  
-- Vite PWA Plugin  
+El frontend del sistema ANDON es una aplicación desarrollada con React y TypeScript que permite supervisar el estado de las estaciones de producción, gestionar turnos y objetivos, y visualizar métricas de rendimiento en tiempo real. La aplicación funciona como Progressive Web App (PWA), lo que permite su instalación y uso offline.
+
+## Tecnologías
+
+- **React** - Biblioteca de UI
+- **TypeScript** - Tipado estático
+- **Vite** - Herramienta de build y desarrollo
+- **Socket.IO Client** - Comunicación en tiempo real con el servidor
+- **React Router** - Navegación entre vistas
+- **Tailwind CSS** - Estilos (si aplica)
+
+## Estructura del Proyecto
+
+├── public/ # Recursos estáticos (HTML, iconos, manifest)
+├── src/ # Código fuente de la aplicación
+│ ├── main.tsx # Punto de entrada del cliente
+│ ├── App.tsx # Componente raíz
+│ ├── components/ # Componentes reutilizables
+│ ├── pages/ # Vistas principales (Home, ConfigLineas, etc.)
+│ ├── hooks/ # Custom hooks
+│ ├── services/ # Servicios de API y WebSocket
+│ ├── types/ # Tipos de TypeScript
+│ └── styles/ # Estilos globales
+├── package.json # Dependencias y scripts
+├── tsconfig.json # Configuración de TypeScript
+└── vite.config.ts # Configuración de Vite
+
+## Requisitos Previos
+
+- Node.js >= 16.x
+- npm o yarn
+- Servidor backend del sistema ANDON en ejecución
+
+## Instalación
+
+1. Clonar el repositorio:
+
+```
+git clone https://github.com/Bigpotatozz/Andon-system-front.git
+cd andonApp2
+```
+
+2. Instalar dependencias:
+
+```
+npm install
+```
+
+## Uso
+
+### Modo desarrollo
+
+```
+npm run dev
+```
+
+La aplicación estará disponible en `http://localhost:5173`
+
+### Build para producción
+
+```
+npm run build
+```
+
+Los archivos optimizados se generarán en la carpeta `dist/`
+
+### Preview de producción
+
+```
+npm run preview
+```
+
+## Características Principales
+
+- **Monitorización en tiempo real**: Visualización del estado de estaciones mediante WebSocket
+- **Gestión de líneas**: Configuración de líneas y estaciones de producción
+- **Control de turnos**: Definición y seguimiento de turnos de trabajo
+- **Objetivos de producción**: Establecimiento y tracking de metas
+- **Comunicación multi-PLC**: Conexión simultánea hasta con 30 PLCs vía TCP
+- **Compatibilidad multi-marca**: Scripts adaptables para Keyence, Allen-Bradley y Siemens
+- **PWA**: Instalable y funcional offline
+- **Responsive**: Adaptable a diferentes dispositivos
+
+## Integración con PLCs
+
+El sistema backend gestiona la comunicación TCP con los PLCs de planta, permitiendo:
+
+- Conexión simultánea de hasta 30 dispositivos PLC
+- Adaptabilidad mediante scripts configurables por marca (Keyence, Allen-Bradley, Siemens)
+- Recepción de señales en tiempo real (producción, paros, alarmas)
+- Envío de comandos y parámetros de configuración
+- Operación sin dependencia de conexión Wi-Fi o internet
+
+## Flujo de Datos
+
+1. `main.tsx` inicializa la aplicación y monta el componente raíz
+2. `App.tsx` organiza las rutas y la estructura general
+3. Los componentes de página renderizan las vistas principales
+4. Los servicios manejan la comunicación con el backend vía HTTP y WebSocket
+5. Los hooks personalizados encapsulan lógica reutilizable
+6. El backend transmite los datos de los PLCs al frontend en tiempo real
+
+## Deployment
+
+El proyecto está configurado para desplegarse en plataformas como Vercel, Netlify o cualquier servidor web estático:
+
+```
+npm run build
+```
+
+Subir el contenido de `dist/` al servidor de hosting.
+
+## Mantenimiento
+
+- Ejecutar `npm update` periódicamente para actualizar dependencias
+- Revisar y actualizar tipos de TypeScript cuando cambie la API
+- Validar funcionalidad PWA tras cada actualización
+- Verificar compatibilidad de scripts TCP con nuevas versiones de firmware de PLCs
+
+##
+
+Author: Oscar MG

@@ -1,3 +1,7 @@
+# VERSION ESTABLE
+
+rama version2
+
 # Sistema ANDON - Frontend
 
 Aplicación web con PWA integrada para la monitorización en tiempo real de líneas de producción industrial.

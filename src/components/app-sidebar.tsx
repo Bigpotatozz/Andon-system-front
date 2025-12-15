@@ -3,7 +3,6 @@ import {
   ChartArea,
   Columns3Cog,
   Dice6,
-  FileChartColumnIcon,
   Home,
   LayoutDashboard,
   MonitorCog,

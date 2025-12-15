@@ -30,6 +30,7 @@ const ConfiguracionIps = () => {
 
       console.log(response);
     } catch (e) {
+      alert("Datos invalidos");
       console.log(e);
     }
   };
@@ -126,6 +127,9 @@ const ConfiguracionIps = () => {
               const validaciones: any = [];
 
               estaciones.forEach((e: any) => {
+                if (e.ip === "" || e.ip === undefined || e.ip === null) {
+                  return;
+                }
                 const estatus = validarIp(e.ip);
 
                 validaciones.push(estatus);
@@ -145,7 +149,7 @@ const ConfiguracionIps = () => {
               }
             }}
           >
-            Registar IP
+            Registar IP / Reconectar PLC
           </Button>
         </div>
       </>

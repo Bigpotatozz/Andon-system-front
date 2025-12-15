@@ -33,7 +33,7 @@ const VisualizacionGeneral = () => {
   const [OEEHora, setOEEHora] = useState("");
   const [OEEAcumulado, setOEEAcumulado] = useState("");
 
-  const [estaciones, setEstaciones] = useState([]);
+  const [estaciones, setEstaciones] = useState<any>([]);
 
   //Peticiones a API
   const obtenerProductionRatio = async () => {
@@ -297,7 +297,7 @@ const VisualizacionGeneral = () => {
         <div className="w-full max-w-5xl">
           <Carousel className="w-full">
             <CarouselContent className="-ml-2 md:-ml-4">
-              {estaciones.map((estacion, index) => (
+              {estaciones.map((estacion: any, index: number) => (
                 <CarouselItem
                   key={index}
                   className="basis-1/2 pl-2 sm:basis-1/3 md:basis-1/4 md:pl-4"

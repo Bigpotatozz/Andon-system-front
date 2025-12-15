@@ -21,6 +21,7 @@ El frontend del sistema ANDON es una aplicación desarrollada con React y TypeSc
 
 ## Estructura del Proyecto
 
+```
 ├── public/ # Recursos estáticos (HTML, iconos, manifest)
 ├── src/ # Código fuente de la aplicación
 │ ├── main.tsx # Punto de entrada del cliente
@@ -34,6 +35,7 @@ El frontend del sistema ANDON es una aplicación desarrollada con React y TypeSc
 ├── package.json # Dependencias y scripts
 ├── tsconfig.json # Configuración de TypeScript
 └── vite.config.ts # Configuración de Vite
+```
 
 ## Requisitos Previos
 

@@ -14,7 +14,6 @@ import Analisis from "./analisis/Analisis.tsx";
 import { ProductionRatio } from "./productionRatio/ProductionRatio.tsx";
 import VisualizacionGeneral from "./visualizacionGeneral/VisualizacionGeneral.tsx";
 import TablaGeneral from "./tablaGeneral/TablaGeneral.tsx";
-import ConfiguracionIps from "./configuracionIps/ConfiguracionIps.tsx";
 
 //Declaracion de rutas de react router
 const router = createBrowserRouter([
@@ -60,10 +59,6 @@ const router = createBrowserRouter([
         element: <VisualizacionGeneral></VisualizacionGeneral>,
       },
       { path: "/tablaGeneral", element: <TablaGeneral></TablaGeneral> },
-      {
-        path: "/configuracionEstaciones",
-        element: <ConfiguracionIps></ConfiguracionIps>,
-      },
     ],
   },
 ]);

@@ -5,7 +5,6 @@ import {
   Dice6,
   Home,
   LayoutDashboard,
-  MonitorCog,
   Table,
 } from "lucide-react";
 
@@ -35,11 +34,7 @@ const items = [
     url: "/configuracionLineas",
     icon: Columns3Cog,
   },
-  {
-    title: "Configuracion de IP",
-    url: "/configuracionEstaciones",
-    icon: MonitorCog,
-  },
+
   {
     title: "Production ratio",
     url: "/productionRatio",

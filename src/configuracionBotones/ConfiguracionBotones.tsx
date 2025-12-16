@@ -70,6 +70,9 @@ export const ConfiguracionBotones = () => {
     }
   };
 
+  const iniciarPLC = async () => {
+    await axios.get("http://localhost:3000/api/linea/iniciarPLC");
+  };
   //FUNCIONES GENERAL
   //Funcion que limpia el arreglo estatus para pasarlo a estatusLimpios
   const limpiarEstatus = () => {
@@ -158,8 +161,9 @@ export const ConfiguracionBotones = () => {
                 color="green"
                 onClick={() => {
                   limpiarEstatus();
-
                   postEstados(estatusLimpios, canciones);
+
+                  iniciarPLC();
                 }}
               >
                 Confirmar

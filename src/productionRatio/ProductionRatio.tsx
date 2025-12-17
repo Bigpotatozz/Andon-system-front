@@ -419,6 +419,14 @@ export const ProductionRatio = () => {
           <Button
             color="red"
             onClick={() => {
+              const password = "123456";
+              const passwordUser = prompt("Introduce la contraseña");
+
+              if (passwordUser !== password) {
+                alert("Contraseña incorrecta");
+                return;
+              }
+
               borrarSitema();
             }}
           >

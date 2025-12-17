@@ -3,19 +3,18 @@ import { Estatus } from "@/Models/Estatus";
 import { LineaCard } from "@/tableroGeneral/components/LineaCard";
 import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import axios from "axios";
-import { Console } from "console";
 
 const ModificarEstatus = () => {
   //Accede al arreglo de ids previamente guardados en el localStorage
   let estacionesIds = localStorage.getItem("idsEstaciones");
   //Las parsea para poder usarlas
   estacionesIds = estacionesIds ? JSON.parse(estacionesIds) : [];
-  //Estado de navegacion
-  const navegacion = useNavigate();
+
   //Declara un arreglo Files que es donde iran las canciones (hook)
   const [canciones, setCanciones] = useState<File[]>([]);
+
+  console.log(canciones);
   //Declara un arreglo de estatus y los inicializa (hook)
   const [estatus, setEstatus] = useState<Estatus[]>([
     new Estatus("#49FF00", 1000, 0, ""),
@@ -29,8 +28,6 @@ const ModificarEstatus = () => {
     new Estatus("#B6EB7A", 1008, 0, ""),
     new Estatus("#F6ACC8", 1009, 0, ""),
   ]);
-  //Declara un arreglo de estatus donde se guardaran los que se van a enviar a la api
-  let estatusLimpios: Estatus[] = [];
 
   //PETICIONES AL API
 
@@ -53,15 +50,6 @@ const ModificarEstatus = () => {
     );
 
     console.log(response);
-  };
-
-  const iniciarPLC = async () => {
-    await axios.get("http://localhost:3000/api/linea/iniciarPLC");
-  };
-  //FUNCIONES GENERAL
-  //Funcion que limpia el arreglo estatus para pasarlo a estatusLimpios
-  const limpiarEstatus = () => {
-    estatusLimpios = estatus.filter((estatus) => estatus.peso != 0);
   };
 
   //Funcion que se encarga de actualizar el peso de cada uno de los estatus

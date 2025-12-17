@@ -1,10 +1,9 @@
 import { TextInput, FileInput } from "flowbite-react";
 import React from "react";
-import type { Estatus } from "../../Models/Estatus";
 
 //Props del componente
 type InputEstatusProps = {
-  estatus: Estatus;
+  estatus: any;
   actualizarPeso: (value: number) => void;
   actualizarCancion: (value: string) => void;
   actualizarArchivo: (value: File | null) => void;

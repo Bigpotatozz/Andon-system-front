@@ -3,6 +3,7 @@ import {
   ChartArea,
   Columns3Cog,
   Dice6,
+  Edit,
   Home,
   LayoutDashboard,
   Table,
@@ -20,6 +21,8 @@ import {
 } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { title } from "process";
+import { url } from "inspector";
 
 // Menu items.
 const items = [
@@ -61,6 +64,11 @@ const items = [
     title: "Analisis",
     url: "/analisis",
     icon: ChartArea,
+  },
+  {
+    title: "Modificar estatus",
+    url: "/modificarEstatus",
+    icon: Edit,
   },
 ];
 

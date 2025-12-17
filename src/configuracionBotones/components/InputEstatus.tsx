@@ -42,7 +42,7 @@ export const InputEstatus = ({
             id="small"
             type="number"
             sizing="sm"
-            placeholder="Importancia"
+            placeholder={`${estatus.prioridad}`}
             className="h-full"
             onChange={(e) => {
               //Inovacion de funcion que actualiza el peso del estatus - padre

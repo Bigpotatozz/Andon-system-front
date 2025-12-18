@@ -4,6 +4,7 @@ import { Button } from "flowbite-react";
 import { Link } from "react-router";
 import { convertirSegundos } from "@/helpers/conversorSegundos";
 import { socket } from "@/sockets/socket";
+import axios from "axios";
 
 //En el tablero general puedes ver la informacion general de todas las lineas de produccion
 
@@ -14,7 +15,12 @@ export const TableroGeneral = () => {
   //Se declara un estado de tipo useRef
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  const iniciarPLC = async () => {
+    await axios.get("http://localhost:3000/api/linea/iniciarPLC");
+  };
+
   useEffect(() => {
+    iniciarPLC();
     return () => {
       socket.off("obtenerEstatus");
     };

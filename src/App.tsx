@@ -5,17 +5,21 @@ import { useEffect } from "react";
 import { socket } from "./sockets/socket";
 
 export default function App() {
-  //En cuanto inicia la aplicacion se conecta a los sockets
   useEffect(() => {
+    document.documentElement.classList.add("dark");
+
+    document.documentElement.style.colorScheme = "dark";
+
     socket.connect();
-  });
+  }, []);
+
   return (
-    <div className="w-full">
-      <div className="min-h-screen">
-        <SidebarProvider>
+    <div className="dark w-full">
+      <div className="min-h-screen bg-gray-950 text-gray-50">
+        <SidebarProvider defaultOpen={true}>
           <AppSidebar />
-          <main className="flex-1 p-4">
-            <SidebarTrigger />
+          <main className="flex-1 bg-gray-950 p-4">
+            <SidebarTrigger className="text-white" />
             <Outlet />
           </main>
         </SidebarProvider>

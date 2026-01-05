@@ -144,12 +144,12 @@ export const ConfigLineas = () => {
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl">
         <h1 className="mb-8 text-center font-bold text-white">
-          Registra tus estaciónes
+          Registra tus estaciones
         </h1>
 
         <div className="mb-10 rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-bold text-white">
-            Estaciónes registradas
+            Estaciones registradas
           </h2>
 
           {lineasRegistradas && lineasRegistradas.length > 0 ? (
@@ -175,7 +175,7 @@ export const ConfigLineas = () => {
                         {linea.idEstacion}
                       </td>
                       <td className="px-6 py-4 font-medium">
-                        {`Estacion: ${linea.nombre}`}
+                        {`Estación: ${linea.nombre}`}
                       </td>
                     </tr>
                   ))}
@@ -184,14 +184,14 @@ export const ConfigLineas = () => {
             </div>
           ) : (
             <div className="py-8 text-center">
-              <p className="text-gray-400">No hay estaciónes registradas aún</p>
+              <p className="text-gray-400">No hay estaciones registradas aún</p>
             </div>
           )}
         </div>
 
         <div className="mb-8 rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-bold text-white">
-            Configuracion de turnos
+            Configuración de turnos
           </h2>
 
           {turnos.map((e, index) => {
@@ -315,7 +315,7 @@ export const ConfigLineas = () => {
               }, 2000);
             }}
           >
-            Registrar Estaciónes
+            Registrar Estaciones
           </Button>
         </div>
       </div>

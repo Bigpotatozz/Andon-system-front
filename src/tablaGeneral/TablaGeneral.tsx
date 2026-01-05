@@ -46,11 +46,12 @@ const TablaGeneral = () => {
 
   const obtenerTiempos = async (id: number) => {
     const response = await axios.get(
-      `http://localhost:3000/api/estatus/obtenerEstatusEspecifico/${id}`,
+      `http://localhost:3000/api/estatus/obtenerTiemposEstatus/${id}`,
     );
 
-    console.log("estatusEspecifico" + response.data.response2);
-    setEstaciones(response.data.response2);
+    console.log(response);
+    console.log("estatusEspecifico" + response);
+    setEstaciones(response.data.tiempos);
   };
 
   const obtenerEstacionesRegistradas = async () => {
@@ -109,7 +110,7 @@ const TablaGeneral = () => {
         <div className="mb-5 flex justify-end gap-3">
           <Dropdown
             className="max-h-60 overflow-y-auto"
-            label="Dropdown button"
+            label="Seleccionar estación"
             dismissOnClick={true}
           >
             {lineasRegistradas.map((estacion, index) => {

@@ -350,7 +350,7 @@ export const ProductionRatio = () => {
               navigation("/visualizacionGeneral");
             }}
           >
-            Reanudar produccion
+            Reanudar producción
           </Button>
         </div>
       </div>

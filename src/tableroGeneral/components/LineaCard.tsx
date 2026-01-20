@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { convertirSegundos } from "@/helpers/conversorSegundos";
+import { useEffect, useRef, useState } from "react";
 
 //Componente que representa cada uno de los estatus en el tablero general
 
@@ -16,8 +17,19 @@ export const LineaCard = ({
   tiempo,
   color,
 }: LineaCardProps) => {
-  useEffect(() => {}, [estatus]);
+  const [time, setTime] = useState(tiempo);
 
+  useEffect(() => {
+    setTime(tiempo);
+  }, [tiempo]);
+
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      setTime((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(intervalo);
+  }, []);
   return (
     <>
       <div
@@ -26,7 +38,7 @@ export const LineaCard = ({
       >
         <h2 className="text-8xl">{nombre}</h2>
         <p className="text-xl">{estatus}</p>
-        <p className="text-lg">{tiempo}</p>
+        <p className="text-lg">{convertirSegundos(parseInt(time))}</p>
         <br></br>
       </div>
     </>

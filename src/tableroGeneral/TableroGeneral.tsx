@@ -99,7 +99,7 @@ export const TableroGeneral = () => {
                 key={estado.idEstacion}
                 nombre={estado.nombreEstacion}
                 estatus={estado.estatusActual ?? 0}
-                tiempo={convertirSegundos(estado.total ?? 0)}
+                tiempo={estado.total}
                 color={estado.color}
               />
             );

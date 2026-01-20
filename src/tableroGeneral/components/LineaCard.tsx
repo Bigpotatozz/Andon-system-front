@@ -17,12 +17,15 @@ export const LineaCard = ({
   tiempo,
   color,
 }: LineaCardProps) => {
+  //Se pasa el tiempo a un state para usarlo
   const [time, setTime] = useState(tiempo);
 
+  //si el tiempo (prop) cambia le seteamos el nuevo valor al estado
   useEffect(() => {
     setTime(tiempo);
   }, [tiempo]);
 
+  //Cada que se recompone el componente se inicia el interval por segundo y se va sumando
   useEffect(() => {
     const intervalo = setInterval(() => {
       setTime((prev) => prev + 1);

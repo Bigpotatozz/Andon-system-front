@@ -19,6 +19,7 @@ export const LineaCard = ({
 }: LineaCardProps) => {
   //Se pasa el tiempo a un state para usarlo
   const [time, setTime] = useState(tiempo);
+  const [localTime, setLocalTime] = useState(0);
 
   //si el tiempo (prop) cambia le seteamos el nuevo valor al estado
   useEffect(() => {
@@ -29,6 +30,8 @@ export const LineaCard = ({
   useEffect(() => {
     const intervalo = setInterval(() => {
       setTime((prev) => prev + 1);
+
+      setLocalTime((prev) => prev + 1);
     }, 1000);
 
     return () => clearInterval(intervalo);
@@ -42,6 +45,7 @@ export const LineaCard = ({
         <h2 className="text-8xl">{nombre}</h2>
         <p className="text-xl">{estatus}</p>
         <p className="text-lg">{convertirSegundos(parseInt(time))}</p>
+        <p className="text-lg">{convertirSegundos(localTime)}</p>
         <br></br>
       </div>
     </>

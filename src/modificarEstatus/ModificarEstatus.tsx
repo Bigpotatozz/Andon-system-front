@@ -1,7 +1,7 @@
 import { InputEstatus } from "@/configuracionBotones/components/InputEstatus";
 import { Estatus } from "@/Models/Estatus";
 import { LineaCard } from "@/tableroGeneral/components/LineaCard";
-import { Button } from "flowbite-react";
+import { Button, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -11,12 +11,8 @@ const ModificarEstatus = () => {
   //Las parsea para poder usarlas
   estacionesIds = estacionesIds ? JSON.parse(estacionesIds) : [];
 
-  //Declara un arreglo Files que es donde iran las canciones (hook)
-  const [canciones, setCanciones] = useState<File[]>([]);
-
-  console.log(canciones);
   //Declara un arreglo de estatus y los inicializa (hook)
-  const [estatus, setEstatus] = useState<Estatus[]>([
+  const [estatus, setEstatus] = useState<any[]>([
     new Estatus("#49FF00", 1000, 0, ""),
     new Estatus("#FBFF00", 1001, 0, ""),
     new Estatus("#FF9300", 1002, 0, ""),
@@ -36,11 +32,12 @@ const ModificarEstatus = () => {
       "http://localhost:3000/api/estatus/obtenerEstatusModificar",
     );
 
-    console.log(response.data.estatus);
     setEstatus(response.data.estatus);
+
+    console.log(estatus);
   };
 
-  const actualizarEstatus = async (estatus: Estatus[]) => {
+  const actualizarEstatus = async (estatus: any[]) => {
     const response = await axios.put(
       "http://localhost:3000/api/estatus/modificarEstatus",
 
@@ -53,36 +50,11 @@ const ModificarEstatus = () => {
   };
 
   //Funcion que se encarga de actualizar el peso de cada uno de los estatus
-  const actualizarPeso = (indice: number, peso: number) => {
+  const actualizarPeso = (indice: number, peso: number | string) => {
     setEstatus((prev) => {
       const nuevoArray = [...prev];
-      nuevoArray[indice] = { ...nuevoArray[indice], peso: peso };
+      nuevoArray[indice] = { ...nuevoArray[indice], prioridad: peso };
       return nuevoArray;
-    });
-  };
-
-  //Funcion que actualiza la cancion del estatus
-  const actualizarCancion = (indice: number, cancion: string) => {
-    setEstatus((prev) => {
-      const nuevoArregloMusica = [...prev];
-      nuevoArregloMusica[indice] = {
-        ...nuevoArregloMusica[indice],
-        cancion: cancion,
-      };
-      return nuevoArregloMusica;
-    });
-  };
-
-  //Funcion que actualiza los archivos de las canciones del estatus
-  const actualizarFileCanciones = (indice: number, cancion: File | null) => {
-    setCanciones((prev) => {
-      const nuevasCanciones = [...prev];
-      if (cancion === null) {
-        nuevasCanciones[indice] = new File([], "");
-        return nuevasCanciones;
-      }
-      nuevasCanciones[indice] = cancion;
-      return nuevasCanciones;
     });
   };
 
@@ -99,21 +71,24 @@ const ModificarEstatus = () => {
         </h1>
         <div className="flex flex-col p-3">
           <div className="mb-6 flex justify-center gap-10">
-            <div>
+            <div className="flex flex-col items-center justify-center gap-3">
               {estatus.map((objeto, index) => (
-                <InputEstatus
-                  key={index}
-                  estatus={objeto}
-                  actualizarPeso={(nuevoPeso) => {
-                    actualizarPeso(index, nuevoPeso);
-                  }}
-                  actualizarCancion={(cancion) => {
-                    actualizarCancion(index, cancion);
-                  }}
-                  actualizarArchivo={(cancion) => {
-                    actualizarFileCanciones(index, cancion);
-                  }}
-                />
+                <>
+                  <div className="flex justify-center gap-2">
+                    <div
+                      className={`h-10 w-3 rounded-xl border`}
+                      style={{ backgroundColor: objeto.color }}
+                    ></div>
+                    <TextInput
+                      type="number"
+                      key={index}
+                      value={objeto.prioridad}
+                      onChange={(e) => {
+                        actualizarPeso(index, e.target.value);
+                      }}
+                    ></TextInput>
+                  </div>
+                </>
               ))}
             </div>
 

@@ -24,6 +24,7 @@ export const LineaCard = ({
   //si el tiempo (prop) cambia le seteamos el nuevo valor al estado
   useEffect(() => {
     setTime(tiempo);
+    setLocalTime(0);
   }, [tiempo]);
 
   //Cada que se recompone el componente se inicia el interval por segundo y se va sumando

@@ -18,6 +18,7 @@ export const ConfigLineas = () => {
     { nombre: "", horaInicio: "", horaFin: "" },
   ]);
 
+  const [nombreLinea, setNombreLinea] = useState("");
   //Se declara un arreglo que agrupa las 3 columnas
   let lineasGeneral: string[] = [];
 
@@ -106,6 +107,7 @@ export const ConfigLineas = () => {
     //Realiza la peticion HTTP
     const response = await axios
       .post("http://localhost:3000/api/linea/crearLinea", {
+        nombreLinea: nombreLinea,
         estaciones: lineasTotales,
         turnos: turnosLimpios,
       })
@@ -158,6 +160,9 @@ export const ConfigLineas = () => {
                 <thead className="bg-gray-700 text-white uppercase">
                   <tr>
                     <th className="px-6 py-3 text-left font-semibold">
+                      Identificador de linea
+                    </th>
+                    <th className="px-6 py-3 text-left font-semibold">
                       Identificador
                     </th>
                     <th className="px-6 py-3 text-left font-semibold">
@@ -171,6 +176,9 @@ export const ConfigLineas = () => {
                       key={index}
                       className="hover:bg-gray-750 bg-gray-800 transition-colors"
                     >
+                      <td className="px-6 py-4 font-medium">
+                        {linea.idLineaProduccion}
+                      </td>
                       <td className="px-6 py-4 font-medium">
                         {linea.idEstacion}
                       </td>
@@ -191,7 +199,24 @@ export const ConfigLineas = () => {
 
         <div className="mb-8 rounded-lg bg-gray-800 p-6">
           <h2 className="mb-4 text-xl font-bold text-white">
-            Configuración de turnos
+            Nombre de la linea de producción:
+          </h2>
+
+          <div className="flex w-full flex-col justify-center">
+            <Input
+              id={nombreLinea}
+              type="text"
+              value={nombreLinea}
+              onChange={(e) => {
+                setNombreLinea(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="mb-8 rounded-lg bg-gray-800 p-6">
+          <h2 className="mb-4 text-xl font-bold text-white">
+            Configuracion de turnos
           </h2>
 
           {turnos.map((e, index) => {

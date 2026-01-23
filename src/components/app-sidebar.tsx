@@ -19,59 +19,60 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import axios from "axios";
-
-// Menu items.
-const items = [
-  {
-    title: "Inicio",
-    url: "/",
-    icon: Home,
-  },
-
-  {
-    title: "Configurar estaciones",
-    url: "/configuracionLineas",
-    icon: Columns3Cog,
-  },
-
-  {
-    title: "Production ratio",
-    url: "/productionRatio",
-    icon: Bolt,
-  },
-  {
-    title: "Tablero general",
-    url: "/tableroGeneral",
-    icon: Dice6,
-  },
-
-  {
-    title: "Visualización general",
-    url: "/visualizacionGeneral",
-    icon: LayoutDashboard,
-  },
-
-  {
-    title: "Reportes",
-    url: "/tablaGeneral",
-    icon: Table,
-  },
-  {
-    title: "Analisis",
-    url: "/analisis",
-    icon: ChartArea,
-  },
-  {
-    title: "Modificar estatus",
-    url: "/modificarEstatus",
-    icon: Edit,
-  },
-];
 
 export function AppSidebar() {
   const navegacion = useNavigate();
+
+  // Menu items.
+  const items = [
+    {
+      title: "Inicio",
+      url: "/",
+      icon: Home,
+      command: () => {},
+    },
+
+    {
+      title: "Configurar estaciones",
+      url: "/configuracionLineas",
+      icon: Columns3Cog,
+    },
+
+    {
+      title: "Production ratio",
+      url: "/productionRatio",
+      icon: Bolt,
+    },
+    {
+      title: "Tablero general",
+      url: "/tableroGeneral",
+      icon: Dice6,
+    },
+
+    {
+      title: "Visualización general",
+      url: "/visualizacionGeneral",
+      icon: LayoutDashboard,
+    },
+
+    {
+      title: "Reportes",
+      url: "/tablaGeneral",
+      icon: Table,
+    },
+    {
+      title: "Analisis",
+      url: "/analisis",
+      icon: ChartArea,
+    },
+    {
+      title: "Modificar estatus",
+      url: "/modificarEstatus",
+      icon: Edit,
+    },
+  ];
   const onClickLinea = async (idLinea: string) => {
     try {
       if (parseInt(idLinea) <= 0 || isNaN(parseInt(idLinea))) {
@@ -134,10 +135,10 @@ export function AppSidebar() {
                   return (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton asChild>
-                        <a href={item.url}>
+                        <Link to={item.url}>
                           <item.icon />
                           <span>{item.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   );

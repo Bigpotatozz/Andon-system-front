@@ -1,13 +1,4 @@
-import {
-  Bolt,
-  ChartArea,
-  Columns3Cog,
-  Dice6,
-  Edit,
-  Home,
-  LayoutDashboard,
-  Table,
-} from "lucide-react";
+import { ChartArea, Columns3Cog, Dice6, Edit, Home, Table } from "lucide-react";
 
 import {
   Sidebar,

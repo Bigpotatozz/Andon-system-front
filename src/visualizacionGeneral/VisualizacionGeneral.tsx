@@ -219,7 +219,7 @@ const VisualizacionGeneral = () => {
       // si la hora actual es mayor o igual a la marca que ya esta
       if (ahoraActual.valueOf() >= proximaMarcaRef.current.valueOf()) {
         //Imprime que ya paso la hora
-        console.log("⏰ ¡Pasaron 60 minutos! Reiniciando contador");
+        console.log("Reiniciando contador");
         //Reinicia el contador
         setRealHora(0);
         setOEEHora("0");

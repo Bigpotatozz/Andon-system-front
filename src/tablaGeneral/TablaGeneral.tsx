@@ -40,8 +40,10 @@ const TablaGeneral = () => {
   const [estacionesRegistradas, setEstacionesRegistradas] = useState<
     EstacionRegistrada[]
   >([]);
-  const [estacionSeleccionada, setEstacionSeleccionada] = useState<number>(1);
+  const [estacionSeleccionada, setEstacionSeleccionada] = useState<number>(0);
   const [allTiempos, setAllTiempos] = useState<any[]>([]);
+
+  const [tiemposPorLinea, setTiemposPorLinea] = useState<any[]>([]);
 
   const obtenerLineasProduccion = async () => {
     try {
@@ -84,22 +86,60 @@ const TablaGeneral = () => {
     }
   };
 
-  const exportarExcel = () => {
+  const obtenerTiemposPorLinea = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/linea/tiemposPorLinea/${lineaProduccionSelected}`,
+      );
+
+      console.log("TIEMPOS POR LINEA:", response.data.tiempos);
+      setTiemposPorLinea(response.data.tiempos);
+
+      return response.data.tiempos;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const exportarExcel = async () => {
+    const tiempos = await obtenerTiemposPorLinea();
+
     const datosFormateados = [
-      ["ID", "NOMBRE", "VECES", "COLOR", "TOTAL"],
-      ...allTiempos.map((estacion: any) => [
-        estacion.idEstacion || "-",
-        estacion.nombre || "-",
-        estacion.contador || 0,
-        estacion.color || "-",
-        convertirSegundos(estacion.total || 0),
+      [
+        "ID Línea",
+        "Línea",
+        "ID Estación",
+        "Estación",
+        "ID Estatus",
+        "Prioridad",
+        "Color",
+        "Fecha",
+        "Inicio",
+        "Final",
+        "Total (seg)",
+        "Contador",
+      ],
+      ...tiempos.map((t: any) => [
+        t.idLineaProduccion,
+        t.nombre,
+        t.idEstacion,
+        t.nombreEstacion,
+        t.idEstatus,
+        t.prioridad,
+        t.color,
+        t.fecha ? new Date(t.fecha).toLocaleDateString("es-MX") : "-",
+        t.inicio ? new Date(t.inicio).toLocaleString("es-MX") : "-",
+        t.final ? new Date(t.final).toLocaleString("es-MX") : "-",
+        t.total ?? 0,
+        t.contador ?? 0,
       ]),
     ];
 
     const hojaExcel = XLSX.utils.aoa_to_sheet(datosFormateados);
+
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, hojaExcel, "Estaciones");
-    XLSX.writeFile(workbook, `estaciones_${Date.now()}.xlsx`);
+    XLSX.utils.book_append_sheet(workbook, hojaExcel, "Tiempos por Estación");
+    XLSX.writeFile(workbook, `tiempos_linea_${Date.now()}.xlsx`);
   };
 
   useEffect(() => {
@@ -110,12 +150,17 @@ const TablaGeneral = () => {
     if (lineaProduccionSelected > 0) {
       obtenerEstacionesRegistradas(lineaProduccionSelected);
     }
+
+    console.log(estaciones);
+    console.log(estacionSeleccionada);
   }, [lineaProduccionSelected]);
 
   useEffect(() => {
     if (estacionSeleccionada > 0) {
       obtenerTiempos(estacionSeleccionada);
     }
+
+    console.log(estacionSeleccionada);
   }, [estacionSeleccionada]);
 
   return (
@@ -128,14 +173,19 @@ const TablaGeneral = () => {
         </h1>
 
         <div className="flex items-center gap-4">
-          <Dropdown label="Línea de producción" dismissOnClick>
+          <Dropdown
+            label={`${lineaProduccionSelected > 0 ? lineasProduccionRegistradas.find((id) => lineaProduccionSelected === id.idLineaProduccion)?.nombre : "Selecciona línea"}`}
+            dismissOnClick
+          >
             {lineasProduccionRegistradas.length > 0 ? (
               lineasProduccionRegistradas.map((linea) => (
                 <DropdownItem
+                  value={linea.nombre}
                   key={linea.idLineaProduccion}
-                  onClick={() =>
-                    setLineaProduccionSelected(linea.idLineaProduccion)
-                  }
+                  onClick={() => {
+                    setLineaProduccionSelected(linea.idLineaProduccion);
+                    setEstacionSeleccionada(0);
+                  }}
                 >
                   {linea.nombre}
                 </DropdownItem>
@@ -145,7 +195,10 @@ const TablaGeneral = () => {
             )}
           </Dropdown>
 
-          <Dropdown label="Estación" dismissOnClick>
+          <Dropdown
+            label={`${estacionSeleccionada > 0 ? estacionesRegistradas.find((estacion) => estacionSeleccionada === estacion.idEstacion)?.nombre : "Selecciona estación"}`}
+            dismissOnClick
+          >
             {estacionesRegistradas.length > 0 ? (
               estacionesRegistradas.map((estacion) => (
                 <DropdownItem
@@ -162,7 +215,9 @@ const TablaGeneral = () => {
 
           <Button
             color="success"
-            onClick={exportarExcel}
+            onClick={() => {
+              exportarExcel();
+            }}
             style={{ background: "#107c41" }}
           >
             Exportar Excel

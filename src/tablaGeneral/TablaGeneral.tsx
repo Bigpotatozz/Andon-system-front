@@ -78,7 +78,7 @@ const TablaGeneral = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/linea/obtenerEstacionesTiempos/${id}`,
+        `http://localhost:3000/api/linea/tiemposPorEstacion/${id}`,
       );
 
       console.log("TIEMPOS:", response.data);

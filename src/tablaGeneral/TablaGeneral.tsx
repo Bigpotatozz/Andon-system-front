@@ -45,6 +45,8 @@ const TablaGeneral = () => {
 
   const [tiemposPorLinea, setTiemposPorLinea] = useState<any[]>([]);
 
+  const [enableExcel, setEnableExcel] = useState<boolean>(false);
+
   const obtenerLineasProduccion = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/linea/");
@@ -185,6 +187,7 @@ const TablaGeneral = () => {
                   onClick={() => {
                     setLineaProduccionSelected(linea.idLineaProduccion);
                     setEstacionSeleccionada(0);
+                    setEnableExcel(true);
                   }}
                 >
                   {linea.nombre}
@@ -219,6 +222,7 @@ const TablaGeneral = () => {
               exportarExcel();
             }}
             style={{ background: "#107c41" }}
+            disabled={enableExcel === false}
           >
             Exportar Excel
           </Button>

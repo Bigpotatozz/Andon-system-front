@@ -15,6 +15,7 @@ import { ProductionRatio } from "./productionRatio/ProductionRatio.tsx";
 import VisualizacionGeneral from "./visualizacionGeneral/VisualizacionGeneral.tsx";
 import TablaGeneral from "./tablaGeneral/TablaGeneral.tsx";
 import ModificarEstatus from "./modificarEstatus/ModificarEstatus.tsx";
+import ContainerTableroGeneral from "./tableroGeneral/ContainerTableroGeneral";
 
 //Declaracion de rutas de react router
 const router = createBrowserRouter([
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/tableroGeneral",
-        element: <TableroGeneral></TableroGeneral>,
+        element: <ContainerTableroGeneral></ContainerTableroGeneral>,
       },
       {
         path: "/tableroLinea/:idLinea",

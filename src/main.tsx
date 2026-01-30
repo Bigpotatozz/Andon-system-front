@@ -8,7 +8,6 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { ConfiguracionBotones } from "./configuracionBotones/ConfiguracionBotones.tsx";
 import { ConfigLineas } from "./configLineas/ConfigLineas.tsx";
 import { Menu } from "./menu/Menu.tsx";
-import { TableroGeneral } from "./tableroGeneral/TableroGeneral.tsx";
 import { TableroIndividual } from "./tableroIndividual/TableroIndividual.tsx";
 import Analisis from "./analisis/Analisis.tsx";
 import { ProductionRatio } from "./productionRatio/ProductionRatio.tsx";

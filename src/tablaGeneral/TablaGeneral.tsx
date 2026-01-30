@@ -41,10 +41,11 @@ const TablaGeneral = () => {
     EstacionRegistrada[]
   >([]);
   const [estacionSeleccionada, setEstacionSeleccionada] = useState<number>(0);
-  const [allTiempos, setAllTiempos] = useState<any[]>([]);
 
+  /* eslint-disable */
   const [tiemposPorLinea, setTiemposPorLinea] = useState<any[]>([]);
 
+  /* eslint-disable */
   const [enableExcel, setEnableExcel] = useState<boolean>(false);
 
   const obtenerLineasProduccion = async () => {

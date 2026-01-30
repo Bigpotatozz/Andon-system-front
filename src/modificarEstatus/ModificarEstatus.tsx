@@ -1,4 +1,3 @@
-import { InputEstatus } from "@/configuracionBotones/components/InputEstatus";
 import { Estatus } from "@/Models/Estatus";
 import { LineaCard } from "@/tableroGeneral/components/LineaCard";
 import { Button, TextInput } from "flowbite-react";

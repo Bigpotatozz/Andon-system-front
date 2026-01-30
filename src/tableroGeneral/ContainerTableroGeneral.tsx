@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TableroGeneral } from "./TableroGeneral";
 import { Dropdown, DropdownItem } from "flowbite-react";
 import axios from "axios";

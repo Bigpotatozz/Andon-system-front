@@ -1,5 +1,5 @@
 import { convertirSegundos } from "@/helpers/conversorSegundos";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 //Componente que representa cada uno de los estatus en el tablero general
 

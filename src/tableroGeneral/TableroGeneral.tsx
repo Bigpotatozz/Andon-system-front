@@ -2,7 +2,6 @@ import { LineaCard } from "./components/LineaCard";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "flowbite-react";
 import { Link } from "react-router";
-import { convertirSegundos } from "@/helpers/conversorSegundos";
 import { socket } from "@/sockets/socket";
 import axios from "axios";
 
@@ -14,9 +13,6 @@ type TableroGeneralProps = {
 export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
   //Inicializacion de los estados que se recibiran de la API
   const [estados, setEstados] = useState<any[]>([]);
-  const [dispositivosAudio, setDispositivosAudio] = useState<MediaDeviceInfo>(
-    [],
-  );
 
   const [audioDevice, setAudioDevice] = useState("");
   //Se declara un estado de tipo useRef
@@ -30,6 +26,7 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
     const elegirAudioDevice = async () => {
       try {
         const device = await navigator.mediaDevices.selectAudioOutput();
+
         console.log(device);
         setAudioDevice(device.deviceId);
       } catch (e) {

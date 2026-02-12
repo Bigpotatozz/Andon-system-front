@@ -121,7 +121,7 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
   return (
     <>
       <audio ref={audioRef} hidden></audio>
-      <div className="flex w-full flex-col items-center justify-center pt-5">
+      <div className="flex w-full flex-col items-center justify-center">
         {/* Botón necesario para activar la API de Audio y el permiso de reproducción */}
         {!audioDevice && (
           <Button

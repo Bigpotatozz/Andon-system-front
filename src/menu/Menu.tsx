@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
-import { Columns3Cog, Dice1, Dice6 } from "lucide-react";
+import { Columns3Cog, Dice1, Dice6, Table2Icon } from "lucide-react";
 import axios from "axios";
 
 //Component que almacena el menu principal, este es el endpoint de la aplicacion.
@@ -240,29 +240,22 @@ export const Menu = () => {
           <div className="opcion3 md:w-1/3">
             <Card>
               <CardHeader>
-                <CardTitle>Tablero de linea</CardTitle>
+                <CardTitle>Reportes</CardTitle>
                 <CardDescription>
-                  Accede al monitoreo detallado de una línea de producción
-                  específica. Visualiza su estado actual en tiempo real, tiempos
-                  de ciclo, duración de eventos y métricas individuales de
-                  rendimiento.
+                  Optimice el seguimiento de su planta mediante el acceso a los
+                  reportes individuales de cada línea de producción. El sistema
+                  le permite consolidar estos indicadores y exportarlos a
+                  formato Excel.
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col items-center justify-center gap-5 p-5">
-                <Dice1 size={50}></Dice1>
+                <Table2Icon size={50}></Table2Icon>
                 <Button
                   onClick={() => {
-                    const idLinea = prompt("ID DE LA LINEA:");
-
-                    if (idLinea === null || idLinea == "0") {
-                      alert("Debes introducir un ID");
-                      return;
-                    } else {
-                      onClickLinea(idLinea);
-                    }
+                    navegacion("/tablaGeneral");
                   }}
                 >
-                  Configurar lineas
+                  Ver reportes
                 </Button>
               </CardContent>
             </Card>

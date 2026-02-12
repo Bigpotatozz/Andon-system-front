@@ -58,11 +58,15 @@ const items = [
     url: "/analisis",
     icon: ChartArea,
   },
+
+  /*
   {
     title: "Modificar estatus",
     url: "/modificarEstatus",
     icon: Edit,
   },
+
+  */
 ];
 
 export function AppSidebar() {

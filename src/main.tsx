@@ -60,10 +60,12 @@ const router = createBrowserRouter([
         element: <VisualizacionGeneral></VisualizacionGeneral>,
       },
       { path: "/tablaGeneral", element: <TablaGeneral></TablaGeneral> },
+      /*
       {
         path: "/modificarEstatus",
         element: <ModificarEstatus></ModificarEstatus>,
       },
+      */
     ],
   },
 ]);

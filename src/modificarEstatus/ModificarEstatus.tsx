@@ -16,12 +16,6 @@ const ModificarEstatus = () => {
     new Estatus("#FBFF00", 1001, 0, ""),
     new Estatus("#FF9300", 1002, 0, ""),
     new Estatus("#FF0000", 1003, 0, ""),
-    new Estatus("#0046FF", 1004, 0, ""),
-    new Estatus("#7B542F", 1005, 0, ""),
-    new Estatus("#3338A0", 1006, 0, ""),
-    new Estatus("#2DCDDF", 1007, 0, ""),
-    new Estatus("#B6EB7A", 1008, 0, ""),
-    new Estatus("#F6ACC8", 1009, 0, ""),
   ]);
 
   //PETICIONES AL API
@@ -71,7 +65,7 @@ const ModificarEstatus = () => {
         <div className="flex flex-col p-3">
           <div className="mb-6 flex justify-center gap-10">
             <div className="flex flex-col items-center justify-center gap-3">
-              {estatus.map((objeto, index) => (
+              {estatus.slice(0, 4).map((objeto, index) => (
                 <>
                   <div className="flex justify-center gap-2">
                     <div
@@ -90,18 +84,27 @@ const ModificarEstatus = () => {
                 </>
               ))}
             </div>
-
-            <div className="flex max-w-2xl flex-wrap">
-              {estatus.slice(4).map((e, index) => {
-                return (
-                  <LineaCard
-                    color={e.color}
-                    estatus={10}
-                    tiempo="00:10:01"
-                    nombre={`P${index}`}
-                  ></LineaCard>
-                );
-              })}
+          </div>
+          <div className="mb-6 flex justify-center gap-10">
+            <div className="flex flex-col items-center justify-center gap-3">
+              {estatus.slice(0, 4).map((objeto, index) => (
+                <>
+                  <div className="flex justify-center gap-2">
+                    <div
+                      className={`h-10 w-3 rounded-xl border`}
+                      style={{ backgroundColor: objeto.color }}
+                    ></div>
+                    <TextInput
+                      type="number"
+                      key={index}
+                      value={objeto.prioridad}
+                      onChange={(e) => {
+                        actualizarPeso(index, e.target.value);
+                      }}
+                    ></TextInput>
+                  </div>
+                </>
+              ))}
             </div>
           </div>
 

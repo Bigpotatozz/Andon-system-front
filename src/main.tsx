@@ -15,6 +15,7 @@ import VisualizacionGeneral from "./visualizacionGeneral/VisualizacionGeneral.ts
 import TablaGeneral from "./tablaGeneral/TablaGeneral.tsx";
 import ModificarEstatus from "./modificarEstatus/ModificarEstatus.tsx";
 import ContainerTableroGeneral from "./tableroGeneral/ContainerTableroGeneral";
+import { ConfiguracionTurno } from "./configuracionTurno/ConfiguracionTurno.tsx";
 
 //Declaracion de rutas de react router
 const router = createBrowserRouter([
@@ -66,6 +67,11 @@ const router = createBrowserRouter([
         element: <ModificarEstatus></ModificarEstatus>,
       },
       */
+
+      {
+        path: "/configuracionTurno",
+        element: <ConfiguracionTurno></ConfiguracionTurno>,
+      },
     ],
   },
 ]);

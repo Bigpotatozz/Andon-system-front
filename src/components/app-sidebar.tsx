@@ -1,4 +1,12 @@
-import { ChartArea, Columns3Cog, Dice6, Edit, Home, Table } from "lucide-react";
+import {
+  Bolt,
+  ChartArea,
+  Columns3Cog,
+  Dice6,
+  Edit,
+  Home,
+  Table,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -12,6 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
+import { title } from "process";
 
 // Menu items.
 const items = [
@@ -33,14 +42,13 @@ const items = [
     url: "/productionRatio",
     icon: Bolt,
   },
-  */
+*/
   {
     title: "Tablero general",
     url: "/tableroGeneral",
     icon: Dice6,
   },
   /*
-
   {
     title: "Visualización general",
     url: "/visualizacionGeneral",
@@ -67,6 +75,12 @@ const items = [
   },
 
   */
+
+  {
+    title: "Configuracion de turnos",
+    url: "/configuracionTurno",
+    icon: Edit,
+  },
 ];
 
 export function AppSidebar() {

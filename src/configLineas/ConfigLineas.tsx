@@ -214,64 +214,65 @@ export const ConfigLineas = () => {
           </div>
         </div>
 
-        <div className="mb-8 rounded-lg bg-gray-800 p-6">
-          <h2 className="mb-4 text-xl font-bold text-white">
-            Configuracion de turnos
-          </h2>
+        {lineasRegistradas && lineasRegistradas.length === 0 && (
+          <div className="mb-8 rounded-lg bg-gray-800 p-6">
+            <h2 className="mb-4 text-xl font-bold text-white">
+              Configuracion de turnos
+            </h2>
 
-          {turnos.map((e, index) => {
-            return (
-              <div key={index}>
-                <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-3">
-                  <div>
-                    <Label htmlFor={`turno${index}`}>
-                      Nombre de turno {index + 1}:
-                    </Label>
-                    <Input
-                      id={`turno${index}`}
-                      type="text"
-                      value={e.nombre}
-                      onChange={(e) => {
-                        actualizarNombreTurno(index, e);
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="time-picker" className="px-1">
-                      Hora de inicio
-                    </Label>
-                    <Input
-                      value={e.horaInicio}
-                      onChange={(e) => {
-                        actualizarHoraInicioTurno(index, e);
-                      }}
-                      type="time"
-                      id="time-picker"
-                      step="1"
-                      className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="time-picker" className="px-1">
-                      Hora de fin
-                    </Label>
-                    <Input
-                      value={e.horaFin}
-                      onChange={(e) => {
-                        actualizarHoraFinTurno(index, e);
-                      }}
-                      type="time"
-                      id="time-picker"
-                      step="1"
-                      className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-                    />
+            {turnos.map((e, index) => {
+              return (
+                <div key={index}>
+                  <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-3">
+                    <div>
+                      <Label htmlFor={`turno${index}`}>
+                        Nombre de turno {index + 1}:
+                      </Label>
+                      <Input
+                        id={`turno${index}`}
+                        type="text"
+                        value={e.nombre}
+                        onChange={(e) => {
+                          actualizarNombreTurno(index, e);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="time-picker" className="px-1">
+                        Hora de inicio
+                      </Label>
+                      <Input
+                        value={e.horaInicio}
+                        onChange={(e) => {
+                          actualizarHoraInicioTurno(index, e);
+                        }}
+                        type="time"
+                        id="time-picker"
+                        step="1"
+                        className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="time-picker" className="px-1">
+                        Hora de fin
+                      </Label>
+                      <Input
+                        value={e.horaFin}
+                        onChange={(e) => {
+                          actualizarHoraFinTurno(index, e);
+                        }}
+                        type="time"
+                        id="time-picker"
+                        step="1"
+                        className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
+              );
+            })}
+          </div>
+        )}
         <div className="mb-8 rounded-lg bg-gray-800 p-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div>

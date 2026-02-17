@@ -12,6 +12,8 @@ export const ConfigLineas = () => {
   const [lineas3, setLineas3] = useState(new Array(10).fill(""));
   const [lineasRegistradas, setLineasRegistradas] = useState<any[]>([]);
 
+  const [cicleTime, setCicleTime] = useState(0);
+
   const [turnos, setTurnos] = useState([
     { nombre: "", horaInicio: "", horaFin: "" },
     { nombre: "", horaInicio: "", horaFin: "" },
@@ -36,6 +38,10 @@ export const ConfigLineas = () => {
       arregloNuevo[indice].nombre = e.target.value;
       return arregloNuevo;
     });
+  };
+
+  const actualizarCicleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCicleTime(parseInt(e.target.value));
   };
 
   const actualizarHoraInicioTurno = (
@@ -106,8 +112,11 @@ export const ConfigLineas = () => {
     console.log(turnosLimpios);
     //Realiza la peticion HTTP
     const response = await axios
-      .post("http://localhost:3000/api/linea/crearLinea", {
-        nombreLinea: nombreLinea,
+      .post("http://localhost:3000/api/linea/crearLinea2", {
+        linea: {
+          nombreLinea: nombreLinea,
+          cicleTime: cicleTime,
+        },
         estaciones: lineasTotales,
         turnos: turnosLimpios,
       })
@@ -130,6 +139,21 @@ export const ConfigLineas = () => {
     }
   }
 
+  const obtenerTurnos = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/turno/obtenerTurnos",
+      );
+
+      if (response.data.turnos.length === 0) {
+        return;
+      }
+      setTurnos(response.data.turnos);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //Funcion que agrega todas las lineas a un solo arreglo
   const agregarLinea = (
     e: React.ChangeEvent<HTMLInputElement>, //Elemento HTML con el id de la linea nueva
@@ -142,6 +166,9 @@ export const ConfigLineas = () => {
     setLineaParametro(lineasModificadas); //Setea el nuevo arreglo
   };
 
+  useEffect(() => {
+    obtenerTurnos();
+  }, []);
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-7xl">
@@ -209,6 +236,17 @@ export const ConfigLineas = () => {
               value={nombreLinea}
               onChange={(e) => {
                 setNombreLinea(e.target.value);
+              }}
+            />
+          </div>
+          <h2 className="mb-4 text-xl font-bold text-white">Cicle time:</h2>
+
+          <div className="flex w-full flex-col justify-center">
+            <Input
+              type="number"
+              value={cicleTime}
+              onChange={(e) => {
+                setCicleTime(parseInt(e.target.value));
               }}
             />
           </div>

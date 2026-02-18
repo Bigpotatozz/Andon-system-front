@@ -3,31 +3,28 @@ import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
 import { useEffect, useState } from "react";
 import { socket } from "./sockets/socket";
+import { useTurnoStore } from "./store/turnoStore";
 
 export default function App() {
-  const [turno, setTurno] = useState({});
+  const actualizarTurno = useTurnoStore((state) => state.actualizarTurno);
   useEffect(() => {
     document.documentElement.classList.add("dark");
-
     document.documentElement.style.colorScheme = "dark";
-
     socket.connect();
   }, []);
 
   useEffect(() => {
     socket.off("obtenerTurno");
     socket.on("obtenerTurno", (data) => {
-      setTurno(data[0]);
-
-      localStorage.setItem("turnoActual", JSON.stringify(data[0]));
+      console.log(data);
+      actualizarTurno(data[0]);
     });
 
     socket.emit("obtenerTurno");
     return () => {
       socket.off("obtenerTurno");
     };
-  }, []);
-
+  }, [actualizarTurno]);
   return (
     <div className="dark w-full">
       <div className="min-h-screen bg-gray-950 text-gray-50">

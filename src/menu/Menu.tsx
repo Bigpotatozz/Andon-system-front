@@ -21,12 +21,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Columns3Cog, Dice1, Dice6, Table2Icon } from "lucide-react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 //Component que almacena el menu principal, este es el endpoint de la aplicacion.
 export const Menu = () => {
   //state para navegar entre las diferentes
   const navegacion = useNavigate();
 
+  const [turno, setTurno] = useState(
+    JSON.parse(
+      localStorage.getItem("turno") ||
+        `{
+      idTurno: 0,
+      nombreTurno: "",
+      horaInicio: "",
+      horaFin: "",
+      estado: "",
+    }`,
+    ),
+  );
   //PETICIONES AL API
   const verificarLinea = async (id: string) => {
     const response = await axios.get(
@@ -103,17 +116,25 @@ export const Menu = () => {
     },
   ];
 
+  useEffect(() => {
+    console.log(turno);
+  }, []);
+
   //Frontend
   return (
     <>
       <div className="p-2 text-center">
         <div className="bg-card rounded-lg">
           <h1 className="p-3">
-            <strong className="text-white">Analisis</strong>
+            <strong className="text-white">
+              Turno actual: <br />
+              {turno.nombreTurno}
+            </strong>
           </h1>
           {/*GRAFICA QUE INDICA LA EFICIENCIA, LOS PAROS DE TIPO ROJO Y LAS UNIDADES PRODUCIDAS*/}
           <div className="md-xl mx-auto rounded-lg p-6 shadow-lg">
             <ResponsiveContainer width="100%" height={250}>
+              <h1></h1>
               <LineChart
                 data={data}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}

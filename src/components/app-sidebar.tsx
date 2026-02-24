@@ -76,11 +76,13 @@ const items = [
 
   */
 
+  /*
   {
     title: "Configuracion de turnos",
     url: "/configuracionTurno",
     icon: Edit,
   },
+  */
 ];
 
 export function AppSidebar() {

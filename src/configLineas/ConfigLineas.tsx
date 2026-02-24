@@ -148,6 +148,7 @@ export const ConfigLineas = () => {
       if (response.data.turnos.length === 0) {
         return;
       }
+
       setTurnos(response.data.turnos);
     } catch (e) {
       console.log(e);

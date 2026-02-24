@@ -66,6 +66,7 @@ export const ConfiguracionBotones = () => {
     if (response) {
       navegacion("/tableroGeneral");
     } else {
+      console.log(response);
       alert("Error al registrar estatus");
     }
   };

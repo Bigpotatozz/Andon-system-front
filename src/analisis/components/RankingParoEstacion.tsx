@@ -94,7 +94,7 @@ export const RankingParoEstacion = () => {
 
       <div className="mt-4 border-t border-gray-700 pt-4">
         <p className="text-xs text-gray-500 italic">
-          * Datos calculados en base al turno actual y reportes de incidencia.
+          * Datos calculados en base a los paros registrados en el sistema.
         </p>
       </div>
     </div>

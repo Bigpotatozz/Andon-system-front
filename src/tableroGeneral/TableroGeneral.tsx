@@ -101,6 +101,7 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
 
         // Intentar reproducir (fallará si el usuario no ha hecho clic en la página aún)
         audioRef.current.play().catch((e) => {
+          console.error(e);
           console.warn(
             "Reproducción bloqueada: El usuario debe interactuar con la interfaz primero.",
           );

@@ -43,9 +43,6 @@ const TablaGeneral = () => {
   const [estacionSeleccionada, setEstacionSeleccionada] = useState<number>(0);
 
   /* eslint-disable */
-  const [tiemposPorLinea, setTiemposPorLinea] = useState<any[]>([]);
-
-  /* eslint-disable */
   const [enableExcel, setEnableExcel] = useState<boolean>(false);
 
   const obtenerLineasProduccion = async () => {
@@ -96,7 +93,6 @@ const TablaGeneral = () => {
       );
 
       console.log("TIEMPOS POR LINEA:", response.data.tiempos);
-      setTiemposPorLinea(response.data.tiempos);
 
       return response.data.tiempos;
     } catch (e) {

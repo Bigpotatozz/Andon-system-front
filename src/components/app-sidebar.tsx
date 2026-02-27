@@ -1,12 +1,4 @@
-import {
-  Bolt,
-  ChartArea,
-  Columns3Cog,
-  Dice6,
-  Edit,
-  Home,
-  Table,
-} from "lucide-react";
+import { ChartArea, Columns3Cog, Dice6, Home, Table } from "lucide-react";
 
 import {
   Sidebar,
@@ -20,7 +12,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
-import { title } from "process";
 
 // Menu items.
 const items = [

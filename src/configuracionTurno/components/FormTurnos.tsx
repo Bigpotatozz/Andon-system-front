@@ -1,8 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { Button, Label, TextInput } from "flowbite-react";
-import React, { useState } from "react";
+import { useState } from "react";
 
-export const FormTurnos = ({ lineas }: { lineas: any[] }) => {
+export const FormTurnos = ({ lineas }: { lineas: any }) => {
   const [cicleTime, setCicleTime] = useState(0);
   return (
     <div>
@@ -31,7 +31,7 @@ export const FormTurnos = ({ lineas }: { lineas: any[] }) => {
           </div>
         </div>
 
-        {lineas.turno.map((e, index) => {
+        {lineas.turno.map((e: any, index: number) => {
           return (
             <div key={index}>
               <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-3">

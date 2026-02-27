@@ -1,21 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  TrendingUp,
-  TrendingDown,
-  Target,
-  Zap,
-  Sun,
-  Sunset,
-  Moon,
-  ColumnsIcon,
-  Dice1,
-} from "lucide-react";
-import {
-  RadialBarChart,
-  RadialBar,
-  ResponsiveContainer,
-  PolarAngleAxis,
-} from "recharts";
+import { Dice1 } from "lucide-react";
 
 interface OEEAcumuladoProps {
   idLineaProduccion: number;

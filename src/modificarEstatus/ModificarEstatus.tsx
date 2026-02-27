@@ -1,5 +1,4 @@
 import { Estatus } from "@/Models/Estatus";
-import { LineaCard } from "@/tableroGeneral/components/LineaCard";
 import { Button, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import axios from "axios";

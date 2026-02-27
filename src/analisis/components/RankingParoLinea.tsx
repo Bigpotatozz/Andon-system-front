@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Badge } from "flowbite-react";
-import { TrendingDown, Clock, Activity } from "lucide-react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -12,7 +10,7 @@ import {
 import { convertirSegundos } from "@/helpers/conversorSegundos";
 
 export const RankingParoLinea = () => {
-  const [ranking, setRanking] = useState([]);
+  const [ranking, setRanking] = useState<any>([]);
 
   const obtenerRanking = async () => {
     try {
@@ -55,7 +53,7 @@ export const RankingParoLinea = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {ranking.map((row, index) => (
+            {ranking.map((row: any, index: number) => (
               <TableRow
                 key={row.idLineaProduccion}
                 className="group border-gray-700 transition-colors hover:bg-gray-800/30"

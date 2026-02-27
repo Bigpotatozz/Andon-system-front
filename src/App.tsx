@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import { AppSidebar } from "./components/app-sidebar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { socket } from "./sockets/socket";
 import { useTurnoStore } from "./store/turnoStore";
 

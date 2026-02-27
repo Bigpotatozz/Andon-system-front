@@ -1,5 +1,4 @@
 import { RankingParoLinea } from "./components/RankingParoLinea.tsx";
-import LineChartComponent from "./components/LineChartComponent.tsx";
 import { RankingParoEstacion } from "./components/RankingParoEstacion.tsx";
 
 const Analisis = () => {

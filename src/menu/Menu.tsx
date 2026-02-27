@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
-import { Columns3Cog, Dice1, Dice6, Table2Icon } from "lucide-react";
+import { Columns3Cog, Dice6, Table2Icon } from "lucide-react";
 import axios from "axios";
 import { OEEAcumulado } from "./components/OEEAcumulado";
 import { useEffect, useState } from "react";
@@ -19,16 +19,8 @@ export const Menu = () => {
   //state para navegar entre las diferentes
   const navegacion = useNavigate();
 
-  const [oee, setOee] = useState([]);
+  const [oee, setOee] = useState<any>([]);
   //PETICIONES AL API
-  const verificarLinea = async (id: string) => {
-    const response = await axios.get(
-      `http://localhost:3000/api/linea/verificarExistenciaLinea/${id}`,
-    );
-
-    return response.data;
-  };
-
   const obtenerOEE = async () => {
     const hoy = new Date();
     const año = hoy.getFullYear();
@@ -62,7 +54,7 @@ export const Menu = () => {
           </CardHeader>
 
           <div className="flex flex-wrap justify-center gap-2.5">
-            {oee.map((e) => (
+            {oee.map((e: any) => (
               <OEEAcumulado
                 key={e.idLineaProduccion}
                 idLineaProduccion={e.idLineaProduccion}

@@ -40,10 +40,6 @@ export const ConfigLineas = () => {
     });
   };
 
-  const actualizarCicleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCicleTime(parseInt(e.target.value));
-  };
-
   const actualizarHoraInicioTurno = (
     indice: number,
     e: React.ChangeEvent<HTMLInputElement>,

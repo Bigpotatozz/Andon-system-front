@@ -1,4 +1,11 @@
-import { ChartArea, Columns3Cog, Dice6, Home, Table } from "lucide-react";
+import {
+  ChartArea,
+  Columns3Cog,
+  Dice6,
+  FileSliders,
+  Home,
+  Table,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -74,6 +81,12 @@ const items = [
     icon: Edit,
   },
   */
+
+  {
+    title: "Configurar PLC",
+    url: "/configuracionPLC",
+    icon: FileSliders,
+  },
 ];
 
 export function AppSidebar() {

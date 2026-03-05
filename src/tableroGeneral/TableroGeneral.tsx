@@ -4,6 +4,7 @@ import { Button } from "flowbite-react";
 import { Link } from "react-router";
 import { socket } from "@/sockets/socket";
 import axios from "axios";
+import { usePLCStore } from "@/store/plcStore";
 
 type TableroGeneralProps = {
   lineaProduccion: number;
@@ -14,9 +15,17 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
   const [audioDevice, setAudioDevice] = useState("");
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  const { ip, brand } = usePLCStore();
+
   const iniciarPLC = async () => {
     try {
-      await axios.get("http://localhost:3000/api/linea/iniciarPLC");
+      if (!ip || !brand) return;
+      console.log("IP: ", ip);
+      console.log("Marca: ", brand);
+      await axios.post("http://localhost:3000/api/linea/iniciarPLC", {
+        ip,
+        marca: brand,
+      });
     } catch (error) {
       console.error("Error al iniciar PLC:", error);
     }

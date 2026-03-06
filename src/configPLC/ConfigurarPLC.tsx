@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -43,6 +43,7 @@ export const ConfigurarPLC = () => {
       );
 
       console.log(plc);
+      alert("PLC configurado correctamente");
     } catch (error) {
       console.error("Error saving PLC config:", error);
     }

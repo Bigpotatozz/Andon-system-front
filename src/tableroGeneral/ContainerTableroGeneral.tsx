@@ -27,6 +27,16 @@ const ContainerTableroGeneral = () => {
     obtenerLineasProduccion();
   }, []);
 
+  useEffect(() => {
+    const checkRefresh = setInterval(() => {
+      const ahora = new Date();
+      if (ahora.getHours() === 1 && ahora.getMinutes() === 0) {
+        window.location.reload();
+      }
+    }, 60000); // Revisa cada minuto
+
+    return () => clearInterval(checkRefresh);
+  }, []);
   return (
     <div>
       <TableroGeneral lineaProduccion={lineaSelected}></TableroGeneral>

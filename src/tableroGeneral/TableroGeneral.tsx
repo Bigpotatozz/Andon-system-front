@@ -1,10 +1,10 @@
-import { LineaCard } from "./components/LineaCard";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "flowbite-react";
 import { Link } from "react-router";
 import { socket } from "@/sockets/socket";
 import axios from "axios";
 import { usePLCStore } from "@/store/plcStore";
+import { LineaCard } from "./components/LineaCard";
 
 type TableroGeneralProps = {
   lineaProduccion: number;
@@ -17,11 +17,10 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
 
   const { ip, brand } = usePLCStore();
 
+  // Logica para iniciar el PLC
   const iniciarPLC = async () => {
     try {
       if (!ip || !brand) return;
-      console.log("IP: ", ip);
-      console.log("Marca: ", brand);
       await axios.post("http://localhost:3000/api/linea/iniciarPLC", {
         ip,
         marca: brand,
@@ -31,11 +30,20 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
     }
   };
 
-  // Función para solicitar permiso y elegir dispositivo (Requiere clic del usuario)
+  useEffect(() => {
+    iniciarPLC();
+  }, []);
+
+  // Configuración de salida de audio
   const configurarSalidaAudio = async () => {
     try {
-      if (navigator.mediaDevices && navigator.mediaDevices.selectAudioOutput) {
-        const device = await navigator.mediaDevices.selectAudioOutput();
+      if (
+        navigator.mediaDevices &&
+        (navigator.mediaDevices as any).selectAudioOutput
+      ) {
+        const device = await (
+          navigator.mediaDevices as any
+        ).selectAudioOutput();
         setAudioDevice(device.deviceId);
       } else {
         alert(
@@ -47,7 +55,7 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
     }
   };
 
-  // Efecto para cambiar la salida de audio cuando se selecciona un dispositivo
+  // Efecto para asignar el dispositivo de audio (SinkId)
   useEffect(() => {
     if (
       audioRef.current &&
@@ -56,111 +64,117 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
     ) {
       (audioRef.current as any)
         .setSinkId(audioDevice)
-        .then(() => console.log("Salida de audio configurada en:", audioDevice))
         .catch((e: any) =>
           console.error("Error al asignar salida de audio:", e),
         );
     }
   }, [audioDevice]);
 
-  // Inicialización del PLC
+  // Lógica central de Sockets y Audio (Refactorizada para evitar fugas de rendimiento)
   useEffect(() => {
-    iniciarPLC();
-  }, []);
-
-  const obtenerEstatus = () => {
-    // Limpiamos el evento previo para no duplicar sonidos
-    socket.off("obtenerEstatus");
-
-    socket.on("obtenerEstatus", (data) => {
+    //Funcion que recibe un dato
+    const manejarEstatus = (data: any) => {
+      //Crea una variable local para almacenar los datos
       let dataFiltrada = data;
-
+      //Si la linea de produccion es mayor a 0
       if (lineaProduccion > 0) {
+        //Empieza a filtrar por ID
         dataFiltrada = data.filter(
           (estacion: any) => estacion.idLineaProduccion === lineaProduccion,
         );
       }
 
+      //Establece los datos filtrados
       setEstados(dataFiltrada);
 
-      // Lógica de prioridad de audio
-      let audioNuevo = "";
+      //Logica de audio
       let maxPrioridad = -1;
+      let cancionSugerida = "";
 
+      //Recorre las estaciones
       dataFiltrada.forEach((estado: any) => {
+        //Si la prioridad actual es mayor a la anterior
         if (estado.prioridad > maxPrioridad) {
+          //Establece nueva prioridad y nueva cancion
           maxPrioridad = estado.prioridad;
-          audioNuevo = estado.cancion;
+          cancionSugerida = estado.cancion;
         }
       });
 
+      //Si el audio es el mismo retorna
       if (!audioRef.current) return;
 
-      if (!audioNuevo) {
-        audioRef.current.pause();
-        audioRef.current.src = "";
-        return;
+      //Si no hay alguna cancion
+      if (!cancionSugerida) {
+        // Si no hay alertas, pausar y limpiar para liberar RAM
+        if (!audioRef.current.paused) {
+          audioRef.current.pause();
+          audioRef.current.src = "";
+        }
+      } else {
+        //Establece la ruta de la cancion
+        const nuevaRuta = `http://localhost:3000/uploads/${cancionSugerida}`;
+
+        // Solo cambiar el src si la canción es diferente
+        if (audioRef.current.src !== nuevaRuta) {
+          //Establece la nueva cancion
+          audioRef.current.src = nuevaRuta;
+          audioRef.current.loop = true;
+          audioRef.current.play().catch((e) => {
+            // Error común si el navegador bloquea el autoplay
+            console.warn("Reproducción bloqueada por el navegador.");
+          });
+        }
       }
-
-      const nuevaRuta = `http://localhost:3000/uploads/${audioNuevo}`;
-
-      if (audioRef.current.src !== nuevaRuta) {
-        audioRef.current.src = nuevaRuta;
-        audioRef.current.loop = true;
-
-        // Intentar reproducir (fallará si el usuario no ha hecho clic en la página aún)
-        audioRef.current.play().catch((e) => {
-          console.error(e);
-          console.warn(
-            "Reproducción bloqueada: El usuario debe interactuar con la interfaz primero.",
-          );
-        });
-      }
-    });
-
-    socket.emit("obtenerEstatus");
-  };
-
-  useEffect(() => {
-    obtenerEstatus();
-    return () => {
-      socket.off("obtenerEstatus");
     };
-  }, [lineaProduccion, audioDevice]); // Se reinicia si cambia la línea o el dispositivo
+
+    // Se conecta al socket
+    socket.on("obtenerEstatus", manejarEstatus);
+    // Pide los datos del socket
+    socket.emit("obtenerEstatus");
+    //Cada que se ejecuta el useEffect se desconecta del socket y lo limpia
+    return () => {
+      socket.off("obtenerEstatus", manejarEstatus);
+    };
+  }, [lineaProduccion]); // Se reinicia si cambia la línea
 
   return (
-    <>
-      <audio ref={audioRef} hidden></audio>
-      <div className="flex w-full flex-col items-center justify-center">
-        {/* Botón necesario para activar la API de Audio y el permiso de reproducción */}
-        {!audioDevice && (
-          <Button
-            color="warning"
-            className="mb-5"
-            onClick={configurarSalidaAudio}
-          >
-            Activar Sonidos de Alerta
-          </Button>
-        )}
+    <div className="flex w-full flex-col items-center justify-center p-4">
+      <audio ref={audioRef} hidden />
 
-        <div className="flex flex-wrap justify-center">
-          {estados?.map((estado) => (
+      {!audioDevice && (
+        <Button
+          color="warning"
+          className="mb-5 animate-pulse"
+          onClick={configurarSalidaAudio}
+        >
+          Activar Sonidos de Alerta
+        </Button>
+      )}
+
+      <div className="flex flex-wrap justify-center gap-1">
+        {estados.length > 0 ? (
+          estados.map((estado) => (
             <LineaCard
               key={estado.idEstacion}
               nombre={estado.nombreEstacion}
               estatus={estado.estatusActual ?? 0}
-              tiempo={estado.total}
+              tiempo={estado.total} // Se asume que es el tiempo total acumulado
               color={estado.color}
             />
-          ))}
-        </div>
-
-        <Link to={"/"}>
-          <Button className="mt-10 bg-purple-700 text-white hover:bg-purple-800">
-            Regresar al inicio
-          </Button>
-        </Link>
+          ))
+        ) : (
+          <p className="text-gray-500 italic">Esperando datos de la línea...</p>
+        )}
       </div>
-    </>
+
+      <Link to={"/"} className="mt-10">
+        <Button className="bg-purple-700 text-white hover:bg-purple-800">
+          Regresar al inicio
+        </Button>
+      </Link>
+    </div>
   );
 };
+
+export default TableroGeneral;

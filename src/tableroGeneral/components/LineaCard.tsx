@@ -18,25 +18,20 @@ export const LineaCard = ({
   color,
 }: LineaCardProps) => {
   //Se pasa el tiempo a un state para usarlo
-  const [time, setTime] = useState(tiempo);
+  const [segundosVisuales, setSegundosVisuales] = useState(parseInt(tiempo));
   const [localTime, setLocalTime] = useState(0);
-
-  //si el tiempo (prop) cambia le seteamos el nuevo valor al estado
-  useEffect(() => {
-    setTime(tiempo);
-    setLocalTime(0);
-  }, [tiempo]);
-
   //Cada que se recompone el componente se inicia el interval por segundo y se va sumando
   useEffect(() => {
+    const inicioReal = Date.now();
+    const tiempoBase = parseInt(tiempo);
     const intervalo = setInterval(() => {
-      setTime((prev) => prev + 1);
-
-      setLocalTime((prev) => prev + 1);
+      const diferencia = Math.floor((Date.now() - inicioReal) / 1000);
+      setSegundosVisuales(tiempoBase + diferencia);
+      setLocalTime(diferencia);
     }, 1000);
 
     return () => clearInterval(intervalo);
-  }, []);
+  }, [tiempo]);
   return (
     <>
       <div
@@ -45,7 +40,7 @@ export const LineaCard = ({
       >
         <h2 className="text-8xl">{nombre}</h2>
         <p className="text-xl">{estatus}</p>
-        <p className="text-lg">{convertirSegundos(parseInt(time))}</p>
+        <p className="text-lg">{convertirSegundos(segundosVisuales)}</p>
         <p className="text-lg">{convertirSegundos(localTime)}</p>
         <br></br>
       </div>

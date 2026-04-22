@@ -30,11 +30,19 @@ export const Menu = () => {
 
     const fechaFin = new Date(año, mes + 1, 0).toISOString().split("T")[0];
 
-    const response = await axios.get(
-      `http://localhost:3000/api/analisis/obtenerOEE?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`,
-    );
+    try {
+      console.log(fechaInicio);
+      console.log(fechaFin);
+      const response = await axios.get(
+        `http://localhost:3000/api/analisis/obtenerOEE?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`,
+      );
 
-    setOee(response.data);
+      console.log("OEE");
+      console.log(response.data);
+      setOee(response.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
   useEffect(() => {
     obtenerOEE();

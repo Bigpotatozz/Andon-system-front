@@ -14,6 +14,7 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
   const [estados, setEstados] = useState<any[]>([]);
   const [audioDevice, setAudioDevice] = useState("");
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [oee, setOee] = useState<any[]>([]);
 
   const { ip, brand } = usePLCStore();
 
@@ -122,30 +123,47 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
           audioRef.current.loop = true;
           audioRef.current.play().catch((e) => {
             // Error común si el navegador bloquea el autoplay
+            console.log(e);
             console.warn("Reproducción bloqueada por el navegador.");
           });
         }
       }
     };
 
+    // Handler para OEE via socket
+    const manejarOEE = (data: any) => {
+      console.log("OEE Socket:", data);
+      setOee(data);
+    };
+
     // Se conecta al socket
     socket.on("obtenerEstatus", manejarEstatus);
+    socket.on("obtenerOEESocket", manejarOEE);
     // Pide los datos del socket
     socket.emit("obtenerEstatus");
+    socket.emit("obtenerOEESocket");
     //Cada que se ejecuta el useEffect se desconecta del socket y lo limpia
     return () => {
       socket.off("obtenerEstatus", manejarEstatus);
+      socket.off("obtenerOEESocket", manejarOEE);
     };
   }, [lineaProduccion]); // Se reinicia si cambia la línea
 
+  // Helper para color del porcentaje OEE
+  const getOEEColor = (porcentaje: number) => {
+    if (porcentaje >= 85) return "#22c55e";
+    if (porcentaje >= 60) return "#eab308";
+    return "#ef4444";
+  };
+
   return (
-    <div className="flex w-full flex-col items-center justify-center p-4">
+    <div className="flex w-full flex-col items-center justify-center p-2">
       <audio ref={audioRef} hidden />
 
       {!audioDevice && (
         <Button
           color="warning"
-          className="mb-5 animate-pulse"
+          className="mb-3 animate-pulse"
           onClick={configurarSalidaAudio}
         >
           Activar Sonidos de Alerta
@@ -168,7 +186,73 @@ export const TableroGeneral = ({ lineaProduccion }: TableroGeneralProps) => {
         )}
       </div>
 
-      <Link to={"/"} className="mt-10">
+      {/* Sección OEE acumulado */}
+      {oee.length > 0 && (
+        <div className="mt-3 w-full">
+          <h3 className="mb-2 text-center text-lg font-bold text-white">
+            OEE Acumulado del Mes
+          </h3>
+          <div className="flex flex-wrap justify-center gap-2">
+            {oee.map((item: any) => {
+              const pct = parseFloat(item.OEE) || 0;
+              return (
+                <div
+                  key={`${item.idLineaProduccion}-${item.idTurno}`}
+                  className="max-w-[220px] min-w-[160px] flex-1 rounded-lg border border-gray-600 bg-gray-800 p-3"
+                >
+                  <div className="mb-1 flex items-center justify-between">
+                    <span className="truncate text-sm font-bold text-white">
+                      {item.nombre}
+                    </span>
+                    <span
+                      className="text-lg font-black"
+                      style={{ color: getOEEColor(pct) }}
+                    >
+                      {pct.toFixed(1)}%
+                    </span>
+                  </div>
+                  <p className="text-[10px] tracking-wider text-gray-400 uppercase">
+                    {item.nombreTurno}
+                  </p>
+                  <div className="mt-1.5 flex justify-between text-xs text-gray-300">
+                    <span>
+                      Obj:{" "}
+                      <strong>
+                        {Number(item.objetivoProduccion).toLocaleString()}
+                      </strong>
+                    </span>
+                    <span>
+                      Real:{" "}
+                      <strong
+                        style={{
+                          color:
+                            item.progresoProduccion >= item.objetivoProduccion
+                              ? "#22c55e"
+                              : "inherit",
+                        }}
+                      >
+                        {Number(item.progresoProduccion).toLocaleString()}
+                      </strong>
+                    </span>
+                  </div>
+
+                  <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-gray-700">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${Math.min(pct, 100)}%`,
+                        backgroundColor: getOEEColor(pct),
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <Link to={"/"} className="mt-4">
         <Button className="bg-purple-700 text-white hover:bg-purple-800">
           Regresar al inicio
         </Button>

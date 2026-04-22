@@ -142,6 +142,30 @@ export function AppSidebar() {
                             //Invocacion de la funcion
                             onClickLinea(idLinea);
                           }}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                } else if (item.title === "Configurar estaciones") {
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <a
+                          onClick={() => {
+                            const password = prompt(
+                              "Ingrese la contraseña para configurar estaciones:",
+                            );
+                            if (password === "admin123") {
+                              navegacion(item.url);
+                            } else if (password !== null) {
+                              alert("Contraseña incorrecta");
+                            }
+                          }}
+                          style={{ cursor: "pointer" }}
                         >
                           <item.icon />
                           <span>{item.title}</span>

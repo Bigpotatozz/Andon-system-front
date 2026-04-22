@@ -200,6 +200,7 @@ export const ProductionRatio = () => {
           >
             <p>Cicle time (seg):</p>
             <TextInput
+              disabled
               type="number"
               style={{ width: "80px" }}
               value={cicleTime}
@@ -217,6 +218,7 @@ export const ProductionRatio = () => {
               Establece el tiempo de lunch:
             </p>
             <TextInput
+              disabled
               type="number"
               value={tiempoLunch}
               onChange={(e) => {
@@ -226,6 +228,7 @@ export const ProductionRatio = () => {
 
             <div className="mt-2 w-full">
               <Button
+                disabled
                 style={{ background: "#F5C857", color: "black" }}
                 className="w-full"
                 onClick={() => {
@@ -242,6 +245,7 @@ export const ProductionRatio = () => {
               Establece el tiempo de break:
             </p>
             <TextInput
+              disabled
               type="number"
               value={tiempoBreak}
               onChange={(e) => {
@@ -251,6 +255,7 @@ export const ProductionRatio = () => {
 
             <div className="mt-2 w-full">
               <Button
+                disabled
                 className="w-full"
                 style={{ background: "#FF9013" }}
                 onClick={() => {
@@ -268,6 +273,7 @@ export const ProductionRatio = () => {
               Establece el tiempo de paro:
             </p>
             <TextInput
+              disabled
               value={tiempoParo}
               type="number"
               onChange={(e) => {
@@ -277,6 +283,7 @@ export const ProductionRatio = () => {
 
             <div className="mt-2 w-full">
               <Button
+                disabled
                 color="red"
                 className="w-full"
                 onClick={() => {
@@ -294,6 +301,7 @@ export const ProductionRatio = () => {
               Establece el tiempo PQ Time / KYT:
             </p>
             <TextInput
+              disabled
               type="number"
               value={tiempoPQ}
               onChange={(e) => {
@@ -303,6 +311,7 @@ export const ProductionRatio = () => {
 
             <div className="mt-2 w-full">
               <Button
+                disabled
                 style={{ background: "#08CB00" }}
                 className="w-full"
                 onClick={() => {
@@ -318,6 +327,7 @@ export const ProductionRatio = () => {
 
         <div className="mt-8">
           <Button
+            disabled
             color="green"
             style={{ width: "100%" }}
             onClick={() => {
@@ -343,6 +353,7 @@ export const ProductionRatio = () => {
 
         <div className="mt-4">
           <Button
+            disabled
             color="blue"
             style={{ width: "100%" }}
             onClick={() => {
@@ -365,7 +376,7 @@ export const ProductionRatio = () => {
               Esta acción eliminará todos los datos actuales
             </p>
           </div>
-          <Button color="red" onClick={resetearProduccion}>
+          <Button disabled color="red" onClick={resetearProduccion}>
             Resetear
           </Button>
         </div>
@@ -381,7 +392,9 @@ export const ProductionRatio = () => {
               Esta accion activara el production ratio
             </p>
           </div>
-          <Button color="blue">Activar</Button>
+          <Button disabled color="blue">
+            Activar
+          </Button>
         </div>
       </div>
 
@@ -419,7 +432,7 @@ export const ProductionRatio = () => {
           <Button
             color="red"
             onClick={() => {
-              const password = "123456";
+              const password = "admin123";
               const passwordUser = prompt("Introduce la contraseña");
 
               if (passwordUser !== password) {

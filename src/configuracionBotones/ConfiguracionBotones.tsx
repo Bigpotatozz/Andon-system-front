@@ -17,16 +17,16 @@ export const ConfiguracionBotones = () => {
   const [canciones, setCanciones] = useState<File[]>([]);
   //Declara un arreglo de estatus y los inicializa (hook)
   const [estatus, setEstatus] = useState<Estatus[]>([
-    new Estatus("#49FF00", 1000, 0, ""),
-    new Estatus("#FBFF00", 1001, 0, ""),
-    new Estatus("#FF9300", 1002, 0, ""),
-    new Estatus("#FF0000", 1003, 0, ""),
-    new Estatus("#0046FF", 1004, 0, ""),
-    new Estatus("#7B542F", 1005, 0, ""),
-    new Estatus("#3338A0", 1006, 0, ""),
-    new Estatus("#2DCDDF", 1007, 0, ""),
-    new Estatus("#B6EB7A", 1008, 0, ""),
-    new Estatus("#F6ACC8", 1009, 0, ""),
+    new Estatus("", "#49FF00", 1000, 0, ""),
+    new Estatus("", "#FBFF00", 1001, 0, ""),
+    new Estatus("", "#FF9300", 1002, 0, ""),
+    new Estatus("", "#FF0000", 1003, 0, ""),
+    new Estatus("", "#0046FF", 1004, 0, ""),
+    new Estatus("", "#7B542F", 1005, 0, ""),
+    new Estatus("", "#3338A0", 1006, 0, ""),
+    new Estatus("", "#2DCDDF", 1007, 0, ""),
+    new Estatus("", "#B6EB7A", 1008, 0, ""),
+    new Estatus("", "#F6ACC8", 1009, 0, ""),
   ]);
   //Declara un arreglo de estatus donde se guardaran los que se van a enviar a la api
   let estatusLimpios: Estatus[] = [];
@@ -77,7 +77,18 @@ export const ConfiguracionBotones = () => {
   //FUNCIONES GENERAL
   //Funcion que limpia el arreglo estatus para pasarlo a estatusLimpios
   const limpiarEstatus = () => {
-    estatusLimpios = estatus.filter((estatus) => estatus.peso != 0);
+    estatusLimpios = estatus.filter(
+      (estatus) => estatus.peso != 0 && estatus.nombre.trim() !== "",
+    );
+  };
+
+  //Funcion que se encarga de actualizar el nombre de cada uno de los estatus
+  const actualizarNombre = (indice: number, nombre: string) => {
+    setEstatus((prev) => {
+      const nuevoArray = [...prev];
+      nuevoArray[indice] = { ...nuevoArray[indice], nombre: nombre };
+      return nuevoArray;
+    });
   };
 
   //Funcion que se encarga de actualizar el peso de cada uno de los estatus
@@ -129,6 +140,9 @@ export const ConfiguracionBotones = () => {
                 <InputEstatus
                   key={index}
                   estatus={objeto}
+                  actualizarNombre={(nuevoNombre) => {
+                    actualizarNombre(index, nuevoNombre);
+                  }}
                   actualizarPeso={(nuevoPeso) => {
                     actualizarPeso(index, nuevoPeso);
                   }}
@@ -140,19 +154,6 @@ export const ConfiguracionBotones = () => {
                   }}
                 />
               ))}
-            </div>
-
-            <div className="flex max-w-2xl flex-wrap">
-              {estatus.slice(4).map((e, index) => {
-                return (
-                  <LineaCard
-                    color={e.color}
-                    estatus={10}
-                    tiempo="00:10:01"
-                    nombre={`P${index}`}
-                  ></LineaCard>
-                );
-              })}
             </div>
           </div>
 

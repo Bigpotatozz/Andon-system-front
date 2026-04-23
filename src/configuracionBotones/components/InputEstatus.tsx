@@ -4,6 +4,7 @@ import React from "react";
 //Props del componente
 type InputEstatusProps = {
   estatus: any;
+  actualizarNombre: (value: string) => void;
   actualizarPeso: (value: number) => void;
   actualizarCancion: (value: string) => void;
   actualizarArchivo: (value: File | null) => void;
@@ -12,6 +13,7 @@ type InputEstatusProps = {
 //Este componente lleva una serie de props que son setters para poder modificar datos del padre
 export const InputEstatus = ({
   estatus,
+  actualizarNombre,
   actualizarPeso,
   actualizarCancion,
   actualizarArchivo,
@@ -35,6 +37,18 @@ export const InputEstatus = ({
             className="h-7 w-10 rounded-lg"
             style={{ backgroundColor: estatus.color }}
           ></div>
+        </div>
+        <div className="nombre flex items-center">
+          <TextInput
+            type="text"
+            sizing="sm"
+            placeholder="Nombre"
+            className="h-full w-32"
+            value={estatus.nombre}
+            onChange={(e) => {
+              actualizarNombre(e.target.value);
+            }}
+          />
         </div>
         <div className="peso flex items-center">
           <TextInput

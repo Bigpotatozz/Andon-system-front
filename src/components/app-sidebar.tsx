@@ -1,9 +1,11 @@
 import {
+  Bolt,
   ChartArea,
   Columns3Cog,
   Dice6,
   FileSliders,
   Home,
+  LayoutDashboard,
   Table,
 } from "lucide-react";
 
@@ -34,25 +36,23 @@ const items = [
     icon: Columns3Cog,
   },
 
-  /*
   {
     title: "Production ratio",
     url: "/productionRatio",
     icon: Bolt,
   },
-*/
+
   {
     title: "Tablero general",
     url: "/tableroGeneral",
     icon: Dice6,
   },
-  /*
+
   {
     title: "Visualización general",
     url: "/visualizacionGeneral",
     icon: LayoutDashboard,
   },
-  */
 
   {
     title: "Reportes",

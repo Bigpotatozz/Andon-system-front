@@ -115,7 +115,7 @@ const TablaGeneral = () => {
         "Fecha",
         "Inicio",
         "Final",
-        "Total (seg)",
+        "Total (dd:hh:mm:ss)",
         "Contador",
       ],
       ...tiempos.map((t: any) => [
@@ -129,7 +129,7 @@ const TablaGeneral = () => {
         t.fecha ? new Date(t.fecha).toLocaleDateString("es-MX") : "-",
         t.inicio ? new Date(t.inicio).toLocaleString("es-MX") : "-",
         t.final ? new Date(t.final).toLocaleString("es-MX") : "-",
-        t.total ?? 0,
+        convertirSegundos(t.total ?? 0),
         t.contador ?? 0,
       ]),
     ];

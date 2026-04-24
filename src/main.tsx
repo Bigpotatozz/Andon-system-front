@@ -53,11 +53,11 @@ const router = createBrowserRouter([
         element: <Analisis></Analisis>,
       },
       {
-        path: "/productionRatio",
+        path: "/productionRatio/:idLinea",
         element: <ProductionRatio></ProductionRatio>,
       },
       {
-        path: "/visualizacionGeneral",
+        path: "/visualizacionGeneral/:idLinea",
         element: <VisualizacionGeneral></VisualizacionGeneral>,
       },
       { path: "/tablaGeneral", element: <TablaGeneral></TablaGeneral> },

@@ -4,7 +4,6 @@ import { useState } from "react";
 import { InputEstatus } from "./components/InputEstatus";
 import { Estatus } from "../Models/Estatus";
 import { useNavigate } from "react-router";
-import { LineaCard } from "../tableroGeneral/components/LineaCard";
 
 export const ConfiguracionBotones = () => {
   //Accede al arreglo de ids previamente guardados en el localStorage

@@ -2,9 +2,10 @@ import { HeaderTurno } from "@/components/myComponents/HeaderTurno";
 import axios from "axios";
 import { Button, TextInput } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 export const ProductionRatio = () => {
+  const { idLinea } = useParams();
   const [tiempoLunch, setTiempoLunch] = useState("");
   const [tiempoBreak, setTiempoBreak] = useState("");
   const [tiempoParo, setTiempoParo] = useState("");
@@ -16,12 +17,14 @@ export const ProductionRatio = () => {
   const [turnoNombre, setTurnoNombre] = useState("");
   const [turnoId, setTurnoId] = useState(0);
   console.log(turnoId);
+
   //PETICIONES AL API
+
+  //Se obtiene el turno actual
   const obtenerTurno = async () => {
     const response = await axios.get(
       `http://localhost:3000/api/turno/obtenerTurno/`,
     );
-
     console.log("TURNO///////////////////////////");
     console.log(response.data.turno[0]);
     setTurno(response.data.turno[0]);
@@ -33,26 +36,28 @@ export const ProductionRatio = () => {
     await obtenerProductionRatio(idTurnoTemporal);
   };
 
+  //Se obtienen los tiempos de production ratio
   const obtenerProductionRatio = async (id: number) => {
     const response = await axios.get(
       `http://localhost:3000/api/turno/obtenerProductionRatio/${id}`,
+      {
+        params: {
+          linea: idLinea,
+        },
+      },
     );
 
     console.log(response.data.productionRatio[0]);
 
     if (
-      !response.data.productionRatio[0].objetivoProduccionHora ||
-      response.data.productionRatio[0].objetivoProduccionHora === 0
+      !response.data.productionRatio[0].cicleTime ||
+      response.data.productionRatio[0].cicleTime === 0
     ) {
       console.warn("Objetivo de producción es 0 o no existe");
-      setCicleTime(0); // O algún valor por defecto
+      setCicleTime(0);
       return;
     }
-    setCicleTime(
-      Math.round(
-        3600 / response.data.productionRatio[0].objetivoProduccionHora,
-      ),
-    );
+    setCicleTime(response.data.productionRatio[0].cicleTime);
   };
 
   //HOOKS GENERALES
@@ -75,67 +80,27 @@ export const ProductionRatio = () => {
     }
   };
 
-  const obtenerEstatus = async () => {
+  const obtenerTiemposPorLinea = async () => {
+    if (!idLinea) return;
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/estatus/obtenerEstatusProductionRatio",
+        `http://localhost:3000/api/linea/obtenerProductionRatioPorLinea/${idLinea}`,
       );
-
-      response.data.response.forEach(
-        (e: { colorId: number; tiempoDefinido: string }) => {
-          console.log(e);
-
-          switch (e.colorId) {
-            case 1011:
-              setTiempoLunch(e.tiempoDefinido);
-              break;
-            case 1012:
-              setTiempoBreak(e.tiempoDefinido);
-              break;
-            case 1013:
-              setTiempoParo(e.tiempoDefinido);
-              break;
-            case 1014:
-              setTiempoPQ(e.tiempoDefinido);
-              break;
-          }
-        },
-      );
+      const pr = response.data.productionRatio;
+      if (pr) {
+        setTiempoLunch(pr.tiempoLunch ?? "");
+        setTiempoBreak(pr.break ?? "");
+        setTiempoParo(pr.paro ?? "");
+        setTiempoPQ(pr.pqTime ?? "");
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const activarEstatus = async (colorId: number) => {
-    const response = await axios.post(
-      "http://localhost:3000/api/estatus/activarEstatus",
-      {
-        colorId: colorId,
-      },
-    );
-
-    if (response.status === 200) {
-      alert("Estatus activado");
-    } else {
-      alert("Error al activar estatus");
-    }
-  };
-
-  const resetearProduccion = async () => {
-    const response = await axios.post(
-      "http://localhost:3000/api/historico/reset",
-    );
-
-    if (response.status === 200) {
-      alert("Produccion reseteado correctamente");
-    } else {
-      alert("Error al resetear produccion");
-    }
-  };
-
   useEffect(() => {
-    obtenerEstatus();
-  }, []);
+    obtenerTiemposPorLinea();
+  }, [idLinea]);
 
   const setTime = (
     minuto: string,
@@ -148,27 +113,46 @@ export const ProductionRatio = () => {
     setter(`${int}`);
   };
 
+  const activarEstatus = async (estatus: string) => {
+    const response = await axios.post(
+      `http://localhost:3000/api/estatus/activarEstatus/${idLinea}`,
+      { estatus },
+    );
+    if (response.status === 200) {
+      alert("Estatus activado");
+      navigation(`/visualizacionGeneral/${idLinea}`);
+    } else {
+      alert("Error al activar estatus");
+    }
+  };
+
+  const resetearProduccion = async () => {
+    const response = await axios.post(
+      "http://localhost:3000/api/historico/reset",
+    );
+    if (response.status === 200) {
+      alert("Produccion reseteado correctamente");
+    } else {
+      alert("Error al resetear produccion");
+    }
+  };
+
   const updateProductionRatio = async (
     tiempoLunch: string,
     tiempoBreak: string,
     tiempoParo: string,
     tiempoPQ: string,
-    turno: number,
-    cicleTime: number,
   ) => {
     try {
       await axios.put(
-        "http://localhost:3000/api/linea/actualizarProductionRatio",
+        `http://localhost:3000/api/linea/actualizarProductionRatio/${idLinea}`,
         {
           lunch: tiempoLunch,
           descanso: tiempoBreak,
           paro: tiempoParo,
-          kyt: tiempoPQ,
-          turno: turno,
-          cicleTime: cicleTime,
+          pqTime: tiempoPQ,
         },
       );
-
       alert("Production ratio actualizado");
     } catch (error) {
       console.log(error);
@@ -194,22 +178,6 @@ export const ProductionRatio = () => {
               Registro de tiempos (min)
             </h2>
           </div>
-          <div
-            className="flex items-center gap-x-2"
-            style={{ width: "fit-content" }}
-          >
-            <p>Cicle time (seg):</p>
-            <TextInput
-              disabled
-              type="number"
-              style={{ width: "80px" }}
-              value={cicleTime}
-              onChange={(e) => {
-                const numero = parseInt(e.target.value);
-                setCicleTime(numero);
-              }}
-            />
-          </div>
         </div>
 
         <div className="mt-10 grid grid-cols-3 items-center gap-4 text-center">
@@ -218,7 +186,6 @@ export const ProductionRatio = () => {
               Establece el tiempo de lunch:
             </p>
             <TextInput
-              disabled
               type="number"
               value={tiempoLunch}
               onChange={(e) => {
@@ -228,12 +195,10 @@ export const ProductionRatio = () => {
 
             <div className="mt-2 w-full">
               <Button
-                disabled
                 style={{ background: "#F5C857", color: "black" }}
                 className="w-full"
                 onClick={() => {
-                  activarEstatus(1011);
-                  navigation("/visualizacionGeneral");
+                  activarEstatus("lunch");
                 }}
               >
                 Lunch
@@ -245,7 +210,6 @@ export const ProductionRatio = () => {
               Establece el tiempo de break:
             </p>
             <TextInput
-              disabled
               type="number"
               value={tiempoBreak}
               onChange={(e) => {
@@ -255,12 +219,10 @@ export const ProductionRatio = () => {
 
             <div className="mt-2 w-full">
               <Button
-                disabled
                 className="w-full"
                 style={{ background: "#FF9013" }}
                 onClick={() => {
-                  activarEstatus(1012);
-                  navigation("/visualizacionGeneral");
+                  activarEstatus("break");
                 }}
               >
                 Break
@@ -273,7 +235,6 @@ export const ProductionRatio = () => {
               Establece el tiempo de paro:
             </p>
             <TextInput
-              disabled
               value={tiempoParo}
               type="number"
               onChange={(e) => {
@@ -283,12 +244,10 @@ export const ProductionRatio = () => {
 
             <div className="mt-2 w-full">
               <Button
-                disabled
                 color="red"
                 className="w-full"
                 onClick={() => {
-                  activarEstatus(1013);
-                  navigation("/visualizacionGeneral");
+                  activarEstatus("paro");
                 }}
               >
                 Paro
@@ -301,7 +260,6 @@ export const ProductionRatio = () => {
               Establece el tiempo PQ Time / KYT:
             </p>
             <TextInput
-              disabled
               type="number"
               value={tiempoPQ}
               onChange={(e) => {
@@ -311,12 +269,10 @@ export const ProductionRatio = () => {
 
             <div className="mt-2 w-full">
               <Button
-                disabled
                 style={{ background: "#08CB00" }}
                 className="w-full"
                 onClick={() => {
-                  activarEstatus(1014);
-                  navigation("/visualizacionGeneral");
+                  activarEstatus("pqTime");
                 }}
               >
                 PQ Time
@@ -327,23 +283,14 @@ export const ProductionRatio = () => {
 
         <div className="mt-8">
           <Button
-            disabled
             color="green"
             style={{ width: "100%" }}
             onClick={() => {
-              if (isNaN(cicleTime) || cicleTime <= 0) {
-                alert("Ingresa un numero valido");
-                return;
-              }
-
-              localStorage.setItem("cicleTime", `${cicleTime}`);
               updateProductionRatio(
                 tiempoLunch,
                 tiempoBreak,
                 tiempoParo,
                 tiempoPQ,
-                1,
-                cicleTime,
               );
             }}
           >
@@ -353,12 +300,10 @@ export const ProductionRatio = () => {
 
         <div className="mt-4">
           <Button
-            disabled
             color="blue"
             style={{ width: "100%" }}
             onClick={() => {
-              activarEstatus(1015);
-              navigation("/visualizacionGeneral");
+              activarEstatus("produccion");
             }}
           >
             Reanudar producción
@@ -376,7 +321,7 @@ export const ProductionRatio = () => {
               Esta acción eliminará todos los datos actuales
             </p>
           </div>
-          <Button disabled color="red" onClick={resetearProduccion}>
+          <Button color="red" onClick={resetearProduccion}>
             Resetear
           </Button>
         </div>
@@ -392,9 +337,7 @@ export const ProductionRatio = () => {
               Esta accion activara el production ratio
             </p>
           </div>
-          <Button disabled color="blue">
-            Activar
-          </Button>
+          <Button color="blue">Activar</Button>
         </div>
       </div>
 

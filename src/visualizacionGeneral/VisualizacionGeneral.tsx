@@ -12,11 +12,23 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useParams } from "react-router";
+
+// Mapeo de activo (estatuspr) a nombre legible y color
+//Diccionario de estatus
+const ESTATUS_MAP: Record<string, { nombre: string; color: string }> = {
+  lunch: { nombre: "LUNCH", color: "#F5C857" },
+  break: { nombre: "BREAK", color: "#FF9013" },
+  paro: { nombre: "PARO", color: "#FF0000" },
+  pqTime: { nombre: "PQ TIME / KYT", color: "#08CB00" },
+  produccion: { nombre: "PRODUCCIÓN", color: "#3B82F6" },
+};
 
 const VisualizacionGeneral = () => {
+  const { idLinea } = useParams();
   const [turno, setTurno] = useState<any>(null);
   const [turnoNombre, setTurnoNombre] = useState("");
-  const [estatus, setEstatus] = useState(null);
+  const [estatus, setEstatus] = useState<string | null>(null);
   const [color, setColor] = useState("");
   const [color1, setColor1] = useState("");
   const [color2, setColor2] = useState("");
@@ -35,16 +47,29 @@ const VisualizacionGeneral = () => {
 
   const [estaciones, setEstaciones] = useState<any>([]);
 
+  // Datos de estatuspr (tiempos configurados y estatus activo)
+  const [estatusPR, setEstatusPR] = useState<any>(null);
+
   //Peticiones a API
   const obtenerProductionRatio = async () => {
-    const response = await axios.get(
-      "http://localhost:3000/api/estatus/obtenerEstatusRatio",
-    );
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/estatus/obtenerEstatusRatio/${idLinea}`,
+      );
 
-    console.log(response.data.response[0]);
+      if (response.data.response && response.data.response[0]) {
+        const data = response.data.response[0];
+        setEstatusPR(data);
 
-    setColor(response.data.response[0].color);
-    setEstatus(response.data.response[0].nombre);
+        const activo = data.activo || "produccion";
+        const mapped = ESTATUS_MAP[activo] || ESTATUS_MAP["produccion"];
+
+        setColor(mapped.color);
+        setEstatus(mapped.nombre);
+      }
+    } catch (e) {
+      console.log("Error obteniendo estatus ratio:", e);
+    }
   };
 
   const resetearProgresoHora = async () => {
@@ -174,8 +199,16 @@ const VisualizacionGeneral = () => {
   useEffect(() => {
     obtenerProductionRatio();
     obtenerEstaciones();
+
+    // Polling del estatus ratio cada 5 segundos para mantenerlo actualizado
+    const estatusInterval = setInterval(() => {
+      obtenerProductionRatio();
+    }, 5000);
+
     //Si la hora de inicio es null retorna
-    if (!horaInicio) return;
+    if (!horaInicio) {
+      return () => clearInterval(estatusInterval);
+    }
 
     // Usamos el state hora inicio y lo dividimos en horas minutos y segundos
     const [horas, minutos, segundos] = horaInicio.split(":").map(Number);
@@ -241,7 +274,10 @@ const VisualizacionGeneral = () => {
     // Interval cada minuto
     const interval = setInterval(verificarMarcaHora, 60000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearInterval(estatusInterval);
+    };
   }, [horaInicio]);
 
   return (
@@ -323,6 +359,17 @@ const VisualizacionGeneral = () => {
       >
         <h2 className="flex justify-center p-5 text-5xl font-bold text-white">
           {estatus}
+          {estatusPR &&
+            estatusPR.activo &&
+            estatusPR.activo !== "produccion" && (
+              <span className="ml-4 text-3xl font-semibold opacity-90">
+                —{" "}
+                {estatusPR.activo === "lunch" && `${estatusPR.tiempoLunch} min`}
+                {estatusPR.activo === "break" && `${estatusPR.break} min`}
+                {estatusPR.activo === "paro" && `${estatusPR.paro} min`}
+                {estatusPR.activo === "pqTime" && `${estatusPR.pqTime} min`}
+              </span>
+            )}
         </h2>
       </div>
     </div>

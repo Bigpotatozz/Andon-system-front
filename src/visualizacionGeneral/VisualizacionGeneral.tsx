@@ -138,10 +138,8 @@ const VisualizacionGeneral = () => {
       minutos,
       segundos,
     );
-
     const horasTranscurridas =
       (ahora.getTime() - turnoInicioCompleto.getTime()) / (1000 * 60 * 60);
-
     console.log(horasTranscurridas);
   };
 
@@ -151,6 +149,10 @@ const VisualizacionGeneral = () => {
     socket.off("obtenerTurno");
     socket.on("obtenerTurno", (data) => {
       console.log(data);
+      if (!data || data.length === 0) {
+        console.warn("No se encontró turno activo para esta línea");
+        return;
+      }
       setTurno(data[0]);
       setTurnoNombre(data[0].nombreTurno);
       setPlanHora(data[0].objetivoProduccionHora);
@@ -177,11 +179,11 @@ const VisualizacionGeneral = () => {
       );
     });
 
-    socket.emit("obtenerTurno");
+    socket.emit("obtenerTurno", idLinea);
     return () => {
       socket.off("obtenerTurno");
     };
-  }, []);
+  }, [idLinea]);
 
   useEffect(() => {
     socket.off("obtenerEstaciones");

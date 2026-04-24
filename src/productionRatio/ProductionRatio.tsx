@@ -72,7 +72,6 @@ export const ProductionRatio = () => {
       const response = await axios.delete(
         "http://localhost:3000/api/historico/deleteAll",
       );
-      console.log(response);
 
       alert("Sistema reseteado correctamente");
     } catch (e) {
@@ -308,36 +307,6 @@ export const ProductionRatio = () => {
           >
             Reanudar producción
           </Button>
-        </div>
-      </div>
-
-      <div className="m-3 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Resetear datos de producción
-            </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              Esta acción eliminará todos los datos actuales
-            </p>
-          </div>
-          <Button color="red" onClick={resetearProduccion}>
-            Resetear
-          </Button>
-        </div>
-      </div>
-
-      <div className="m-3 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Activar production ratio
-            </h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              Esta accion activara el production ratio
-            </p>
-          </div>
-          <Button color="blue">Activar</Button>
         </div>
       </div>
 
